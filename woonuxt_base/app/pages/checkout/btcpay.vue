@@ -58,11 +58,11 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router';
 import { useCart } from '~/composables/useCart';
 
 const route = useRoute();
 const router = useRouter();
+
 const { emptyCart, refreshCart } = useCart();
 
 const orderId = computed(() => route.query.order_id);

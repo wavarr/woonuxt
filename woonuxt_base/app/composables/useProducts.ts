@@ -1,6 +1,15 @@
 import { ref } from 'vue';
-import type { Product } from '~/types';
 import { useAsyncQuery } from '#imports';
+import { useHelpers } from '~/composables/useHelpers';
+import { useSorting } from '~/composables/useSorting';
+import { useFiltering } from '~/composables/useFiltering';
+import { useSearching } from '~/composables/useSearching';
+
+// Define a basic Product interface if you don't have access to the types file
+interface Product {
+  id: string;
+  [key: string]: any;
+}
 
 let allProducts: Product[] = [];
 

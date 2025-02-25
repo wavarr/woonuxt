@@ -2,6 +2,14 @@
   "extends": "../.nuxt/tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
-    "types": ["@nuxt/image", "@nuxtjs/i18n"]
+    "types": ["@nuxt/image", "@nuxtjs/i18n"],
+    "paths": {
+      "#imports": ["./.nuxt/imports"],
+      "#app": ["./.nuxt/app"], 
+      "~/*": ["./app/*"],
+      "@/*": ["./app/*"]
+    },
+    "target": "ESNext",
+    "module": "ESNext"
   }
 }

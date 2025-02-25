@@ -28,9 +28,18 @@ export default defineNuxtConfig({
 
   plugins: [resolve('./app/plugins/init.ts')],
 
-  components: [{ path: resolve('./app/components'), pathPrefix: false }],
+  components: {
+    dirs: ['~/components']
+  },
 
-  modules: ['woonuxt-settings', 'nuxt-graphql-client', '@nuxtjs/tailwindcss', '@nuxt/icon', '@nuxt/image', '@nuxtjs/i18n'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxt/image',
+    'woonuxt-settings',
+    'nuxt-graphql-client',
+    '@nuxt/icon',
+    '@nuxtjs/i18n'
+  ],
 
   'graphql-client': {
     clients: {
@@ -47,6 +56,10 @@ export default defineNuxtConfig({
   },
 
   alias: {
+    '#imports': './.nuxt/imports',
+    '#app': './.nuxt/app',
+    '~': './app',
+    '@': './app',
     '#constants': resolve('./app/constants'),
     '#woo': '../.nuxt/gql/default',
   },
@@ -104,5 +117,23 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+
+  typescript: {
+    strict: true,
+    typeCheck: true,
+    shim: false
+  },
+
+  imports: {
+    autoImport: true,
+    dirs: ['composables/**']
+  },
+
+  routeRules: {
+    '/': { prerender: true },
+    '/products/**': { swr: 3600 },
+    '/checkout/order-received/**': { ssr: false },
+    '/order-summary/**': { ssr: false },
+  },
 });

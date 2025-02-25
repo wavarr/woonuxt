@@ -1,12 +1,30 @@
 <script setup lang="ts">
+import { onMounted, watch } from 'vue';
+import { useRoute, useHead } from '#imports';
+import { useProducts } from '~/composables/useProducts';
+import { useHelpers } from '~/composables/useHelpers';
+import { useAppConfig } from '#app';
+import type { Product } from '~/types';
+
+// Get all necessary composables
 const { setProducts, updateProductList, products, productsLoading, productsError } = useProducts();
 const route = useRoute();
 const { storeSettings } = useAppConfig();
 const { isQueryEmpty } = useHelpers();
 
-const { data } = await useAsyncGql('getProducts');
-const allProducts = (data.value?.products?.nodes || []) as Product[];
-setProducts(allProducts);
+// Move the async data fetching into an async setup function
+const fetchInitialProducts = async () => {
+  try {
+    const { data } = await useAsyncQuery('getProducts');
+    const allProducts = (data.value?.products?.nodes || []) as Product[];
+    setProducts(allProducts);
+  } catch (error) {
+    console.error('Error fetching initial products:', error);
+  }
+};
+
+// Call the fetch function
+await fetchInitialProducts();
 
 onMounted(() => {
   if (!isQueryEmpty.value) updateProductList();
@@ -21,7 +39,7 @@ watch(
 );
 
 useHead({
-  title: `Products`,
+  title: 'Products',
   meta: [{ hid: 'description', name: 'description', content: 'Products' }],
 });
 </script>
