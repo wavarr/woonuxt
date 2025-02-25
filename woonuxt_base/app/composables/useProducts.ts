@@ -1,21 +1,23 @@
-let allProducts = [] as Product[];
+import { ref } from 'vue';
+import type { Product } from '~/types';
+import { useAsyncQuery } from '#imports';
+
+let allProducts: Product[] = [];
 
 export function useProducts() {
-  const products = ref([]);
+  const products = ref<Product[]>([]);
   const productsLoading = ref(false);
-  const productsError = ref(null);
+  const productsError = ref<string | null>(null);
 
   const fetchProducts = async (variables = {}) => {
     productsLoading.value = true;
     productsError.value = null;
     
     try {
-      // Add debug logging
       console.log('Fetching products with variables:', variables);
       
       const { data, error } = await useAsyncQuery('getProducts', variables);
       
-      // Log the raw response
       console.log('GraphQL response:', data.value, error.value);
       
       if (error.value) {
@@ -27,9 +29,9 @@ export function useProducts() {
       } else {
         productsError.value = 'No products found';
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Error in fetchProducts:', err);
-      productsError.value = err.message || 'Error loading products';
+      productsError.value = err instanceof Error ? err.message : 'Error loading products';
     } finally {
       productsLoading.value = false;
     }
