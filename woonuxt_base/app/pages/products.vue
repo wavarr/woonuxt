@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useProducts } from '~/composables/useProducts';
 const { setProducts, updateProductList } = useProducts();
 const route = useRoute();
 const { storeSettings } = useAppConfig();
@@ -28,17 +27,26 @@ useHead({
 </script>
 
 <template>
-  <div class="container flex items-start gap-16" v-if="allProducts.length">
-    <Filters v-if="storeSettings.showFilters" />
-
-    <div class="w-full">
-      <div class="flex items-center justify-between w-full gap-4 mt-8 md:gap-8">
-        <ProductResultCount />
-        <OrderByDropdown class="hidden md:inline-flex" v-if="storeSettings.showOrderByDropdown" />
-        <ShowFilterTrigger v-if="storeSettings.showFilters" class="md:hidden" />
-      </div>
-      <ProductGrid />
+  <div class="container my-8">
+    <h1 class="text-2xl font-bold mb-8">Products</h1>
+    
+    <div v-if="productsLoading" class="flex justify-center py-12">
+      <LoadingIcon />
     </div>
+    
+    <div v-else-if="productsError" class="text-center py-12">
+      <p class="text-red-500">{{ productsError }}</p>
+    </div>
+    
+    <div v-else-if="products && products.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <ProductCard v-for="product in products" :key="product.id" :product="product" />
+    </div>
+    
+    <div v-else class="text-center py-12">
+      <p>No products found.</p>
+    </div>
+    
+    <!-- Add debug component -->
+    <DebugProductDebug :products="products" :loading="productsLoading" :error="productsError" />
   </div>
-  <NoProductsFound v-else>Could not fetch products from your store. Please check your configuration.</NoProductsFound>
 </template>

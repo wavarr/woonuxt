@@ -1,37 +1,38 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-// Define props with validation and default values
 const props = defineProps({
   product: {
     type: Object,
-    required: true,
-    // Add default to prevent undefined errors
-    default: () => ({
-      name: 'Product',
-      slug: '',
-      price: '',
-      regularPrice: '',
-      salePrice: '',
-      onSale: false,
-      stockStatus: 'IN_STOCK',
-      image: null
-    })
+    required: true
   }
 });
 
-// Add defensive checks
-const productSlug = computed(() => {
-  return props.product?.slug || '';
+// Debug the product structure
+console.log('Product in card:', props.product);
+
+// Extract product data with proper type handling
+const productData = computed(() => {
+  // Handle different product types
+  if (props.product.__typename === 'SimpleProduct' || props.product.__typename === 'VariableProduct') {
+    return props.product;
+  }
+  
+  // For products that might be wrapped in a node structure
+  if (props.product.node) {
+    return props.product.node;
+  }
+  
+  return props.product;
 });
 
-const productName = computed(() => {
-  return props.product?.name || 'Product';
-});
-
-const productImage = computed(() => {
-  return props.product?.image || null;
-});
+const productSlug = computed(() => productData.value?.slug || '');
+const productName = computed(() => productData.value?.name || 'Product');
+const productImage = computed(() => productData.value?.image || null);
+const productPrice = computed(() => productData.value?.price || '');
+const productRegularPrice = computed(() => productData.value?.regularPrice || '');
+const isOnSale = computed(() => productData.value?.onSale || false);
+const stockStatus = computed(() => productData.value?.stockStatus || 'IN_STOCK');
 </script>
 
 <template>
@@ -52,19 +53,19 @@ const productImage = computed(() => {
       </div>
     </div>
 
-    <!-- Product details with defensive rendering -->
+    <!-- Product details -->
     <div class="flex flex-1 flex-col space-y-2 p-4">
       <h3 class="text-sm font-medium text-gray-900">{{ productName }}</h3>
       
-      <div v-if="product && product.price" class="flex-1 flex items-end">
-        <p class="text-base font-medium text-gray-900" v-html="product.price"></p>
-        <p v-if="product.onSale && product.regularPrice" class="ml-2 text-sm text-gray-500 line-through" v-html="product.regularPrice"></p>
+      <div class="flex-1 flex items-end">
+        <p class="text-base font-medium text-gray-900" v-html="productPrice"></p>
+        <p v-if="isOnSale && productRegularPrice" class="ml-2 text-sm text-gray-500 line-through" v-html="productRegularPrice"></p>
       </div>
       
-      <div v-if="product && product.stockStatus" class="text-xs">
-        <span v-if="product.stockStatus === 'IN_STOCK'" class="text-green-600">In Stock</span>
-        <span v-else-if="product.stockStatus === 'OUT_OF_STOCK'" class="text-red-600">Out of Stock</span>
-        <span v-else class="text-yellow-600">{{ product.stockStatus }}</span>
+      <div class="text-xs">
+        <span v-if="stockStatus === 'IN_STOCK'" class="text-green-600">In Stock</span>
+        <span v-else-if="stockStatus === 'OUT_OF_STOCK'" class="text-red-600">Out of Stock</span>
+        <span v-else class="text-yellow-600">{{ stockStatus }}</span>
       </div>
     </div>
   </NuxtLink>
