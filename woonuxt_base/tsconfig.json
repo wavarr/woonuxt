@@ -1,15 +1,39 @@
 {
-  "extends": "../.nuxt/tsconfig.json",
+  "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
-    "types": ["@nuxt/image", "@nuxtjs/i18n"],
-    "paths": {
-      "#imports": ["./.nuxt/imports"],
-      "#app": ["./.nuxt/app"], 
-      "~/*": ["./app/*"],
-      "@/*": ["./app/*"]
-    },
     "target": "ESNext",
-    "module": "ESNext"
-  }
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "allowJs": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "types": [
+      "node",
+      "@nuxt/types",
+      "@nuxtjs/i18n",
+      "@nuxt/image",
+      "nuxt-graphql-client"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./app/*"],
+      "@/*": ["./app/*"],
+      "#imports": ["./.nuxt/imports.d.ts"],
+      "#app": ["./.nuxt/app.d.ts"],
+      "#gql": ["./.nuxt/gql/default"]
+    },
+    "skipLibCheck": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "./.nuxt/nuxt.d.ts",
+    "./app/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    ".nuxt",
+    "dist"
+  ]
 }

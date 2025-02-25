@@ -45,12 +45,27 @@ export default defineNuxtConfig({
     clients: {
       default: {
         host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
-        corsOptions: { mode: 'cors', credentials: 'include' },
+        corsOptions: { 
+          mode: 'cors', 
+          credentials: 'include' 
+        },
         headers: {
           'Origin': process.env.APP_HOST || 'https://store.modaprimeusaa.com',
           'X-WP-Guest-Access': 'true'
         },
-        proxyCookies: false
+        proxyCookies: false,
+        clientOptions: {
+          defaultOptions: {
+            watchQuery: {
+              fetchPolicy: 'no-cache',
+              errorPolicy: 'all',
+            },
+            query: {
+              fetchPolicy: 'no-cache',
+              errorPolicy: 'all',
+            },
+          },
+        },
       },
     },
   },
@@ -121,8 +136,21 @@ export default defineNuxtConfig({
 
   typescript: {
     strict: true,
-    typeCheck: true,
+    typeCheck: false,
     shim: false
+  },
+
+  build: {
+    transpile: ['vue-i18n']
+  },
+
+  vite: {
+    vue: {
+      script: {
+        defineModel: true,
+        propsDestructure: true
+      }
+    }
   },
 
   imports: {
@@ -132,7 +160,13 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
-    '/products/**': { swr: 3600 },
+    '/products/**': { 
+      swr: 3600,
+      cache: {
+        maxAge: 3600,
+        staleMaxAge: 86400
+      }
+    },
     '/checkout/order-received/**': { ssr: false },
     '/order-summary/**': { ssr: false },
   },

@@ -93,3 +93,16 @@ interface UserInfo {
   password: string;
   username: string;
 }
+
+declare module '#app' {
+  interface PageMeta {
+    title?: string
+  }
+}
+
+export interface Product {
+  id: string;
+  [key: string]: any;
+}
+
+export {}
