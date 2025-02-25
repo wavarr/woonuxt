@@ -1,4 +1,4 @@
-/// <reference types="@nuxt/types" />
+/// <reference types="@nuxt/schema" />
 /// <reference types="@nuxtjs/i18n" />
 /// <reference types="nuxt-graphql-client" />
 
@@ -12,4 +12,11 @@ declare module '#imports' {
   export * from '@nuxt/schema'
   export * from 'vue'
   export * from '@vue/runtime-core'
+  export { useAsyncQuery } from 'nuxt-graphql-client'
+}
+
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $graphql: any
+  }
 } 

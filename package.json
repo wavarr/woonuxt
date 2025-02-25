@@ -15,7 +15,6 @@
     "@vueuse/core": "^12.7.0"
   },
   "devDependencies": {
-    "@nuxt/types": "^3.0.0",
     "@types/node": "^18.0.0",
     "@nuxt/icon": "^1.10.3",
     "@nuxt/image": "1.9.0",
@@ -23,6 +22,7 @@
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@tailwindcss/typography": "^0.5.16",
     "nuxt": "^3.15.4",
+    "@nuxt/schema": "^3.15.4",
     "nuxt-graphql-client": "^0.2.43",
     "prettier": "^3.5.1",
     "woonuxt-settings": "^1.0.66"
