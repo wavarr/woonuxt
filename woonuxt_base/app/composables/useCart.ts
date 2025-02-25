@@ -1,4 +1,6 @@
 import type { AddToCartInput } from '#gql';
+import { ref } from '#imports'
+import type { Cart } from '~/types'
 
 /**
  * @name useCart
@@ -7,7 +9,7 @@ import type { AddToCartInput } from '#gql';
 export function useCart() {
   const { storeSettings } = useAppConfig();
 
-  const cart = useState<Cart | null>('cart', () => null);
+  const cart = ref<Cart | null>(null);
   const isShowingCart = useState<boolean>('isShowingCart', () => false);
   const isUpdatingCart = useState<boolean>('isUpdatingCart', () => false);
   const isUpdatingCoupon = useState<boolean>('isUpdatingCoupon', () => false);
@@ -18,25 +20,14 @@ export function useCart() {
    * @returns {Promise<boolean>} - A promise that resolves
    * to true if the cart was successfully refreshed
    */
-  async function refreshCart(): Promise<boolean> {
+  const refreshCart = async () => {
     try {
-      const { cart, customer, viewer, paymentGateways, loginClients } = await GqlGetCart();
-      const { updateCustomer, updateViewer, updateLoginClients } = useAuth();
-
-      if (cart) updateCart(cart);
-      if (customer) updateCustomer(customer);
-      if (viewer) updateViewer(viewer);
-      if (paymentGateways) updatePaymentGateways(paymentGateways);
-      if (loginClients) updateLoginClients(loginClients.filter((client) => client !== null));
-
-      return true; // Cart was successfully refreshed
-    } catch (error: any) {
-      logGQLError(error);
-      clearAllCookies();
-      resetInitialState();
-      return false; // Cart was not successfully refreshed
-    } finally {
-      isUpdatingCart.value = false;
+      const { data } = await useAsyncQuery('getCart')
+      cart.value = data.value?.cart || null
+      return true;
+    } catch (error) {
+      console.error('Error refreshing cart:', error)
+      return false;
     }
   }
 
@@ -92,14 +83,8 @@ export function useCart() {
   }
 
   // empty the cart
-  async function emptyCart(): Promise<void> {
-    try {
-      isUpdatingCart.value = true;
-      const { emptyCart } = await GqlEmptyCart();
-      updateCart(emptyCart?.cart);
-    } catch (error: any) {
-      logGQLError(error);
-    }
+  const emptyCart = () => {
+    cart.value = null;
   }
 
   // Update shipping method

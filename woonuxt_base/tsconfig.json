@@ -21,7 +21,9 @@
       "@/*": ["./app/*"],
       "#imports": ["./.nuxt/imports.d.ts"],
       "#app": ["./.nuxt/app.d.ts"],
-      "#gql": ["./.nuxt/gql/default"]
+      "#gql": ["./.nuxt/gql/default"],
+      "#components": ["./app/components"],
+      "#composables": ["./app/composables"]
     },
     "skipLibCheck": true,
     "jsx": "preserve"

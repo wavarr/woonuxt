@@ -29,7 +29,13 @@ export default defineNuxtConfig({
   plugins: [resolve('./app/plugins/init.ts')],
 
   components: {
-    dirs: ['~/components']
+    dirs: [
+      {
+        path: '~/components',
+        pathPrefix: false,
+        global: true
+      }
+    ]
   },
 
   modules: [
@@ -155,7 +161,10 @@ export default defineNuxtConfig({
 
   imports: {
     autoImport: true,
-    dirs: ['composables/**']
+    dirs: [
+      'composables/**',
+      'components/**'
+    ]
   },
 
   routeRules: {
