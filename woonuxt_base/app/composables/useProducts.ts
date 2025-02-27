@@ -3,7 +3,7 @@ import { useAsyncGql } from '#imports';
 import { useHelpers } from '~/composables/useHelpers';
 import { useSorting } from '~/composables/useSorting';
 import { useFiltering } from '~/composables/useFiltering';
-import { useSearching } from '~/composables/useSearching';
+import { useSearching } from '~/composables/useSearch';
 
 // Define a basic Product interface if you don't have access to the types file
 interface Product {
