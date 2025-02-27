@@ -23,21 +23,35 @@ const testimonials: Testimonial[] = [
     name: 'Sarah Johnson',
     role: 'Customer',
     content: 'The quality of products from Moda Prime USA is exceptional. Fast shipping and great customer service!',
-    avatar: '/images/avatar-1.jpg'
+    avatar: '/images/avatars/reddit-avatar-1.svg'
   },
   {
     id: 2,
     name: 'Michael Chen',
     role: 'Verified Buyer',
     content: 'I\'ve been a loyal customer for over 2 years. Their products are consistently high quality and effective.',
-    avatar: '/images/avatar-2.jpg'
+    avatar: '/images/avatars/reddit-avatar-2.svg'
   },
   {
     id: 3,
     name: 'Emily Rodriguez',
     role: 'Regular Customer',
     content: 'The best place to buy Modafinil online. Secure, reliable, and always delivers as promised.',
-    avatar: '/images/avatar-3.jpg'
+    avatar: '/images/avatars/reddit-avatar-3.svg'
+  },
+  {
+    id: 4,
+    name: 'David Wilson',
+    role: 'New Customer',
+    content: 'I was skeptical at first, but the product quality exceeded my expectations. Will definitely order again!',
+    avatar: '/images/avatars/reddit-avatar-4.svg'
+  },
+  {
+    id: 5,
+    name: 'Jessica Martinez',
+    role: 'Loyal Customer',
+    content: 'Their customer support team is amazing. They helped me resolve an issue with my order quickly and efficiently.',
+    avatar: '/images/avatars/reddit-avatar-5.svg'
   }
 ];
 
@@ -163,12 +177,12 @@ useSeoMeta({
             class="testimonial-card bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
           >
             <div class="flex items-center mb-4">
-              <div class="w-12 h-12 rounded-full bg-gray-300 overflow-hidden mr-4">
+              <div class="w-16 h-16 rounded-full overflow-hidden mr-4 bg-white p-1 border border-gray-200">
                 <img 
                   v-if="testimonial.avatar" 
                   :src="testimonial.avatar" 
                   :alt="testimonial.name" 
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-contain"
                 />
                 <span v-else class="w-full h-full flex items-center justify-center text-white bg-primary">
                   {{ testimonial.name.charAt(0) }}

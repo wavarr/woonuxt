@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="60" cy="60" r="60" fill="#673AB7" opacity="0.1"/>
+  
+  <!-- Avatar Body -->
+  <circle cx="60" cy="65" r="40" fill="#673AB7"/>
+  
+  <!-- Eyes with Glasses -->
+  <circle cx="45" cy="55" r="8" fill="white"/>
+  <circle cx="75" cy="55" r="8" fill="white"/>
+  <circle cx="45" cy="55" r="4" fill="black"/>
+  <circle cx="75" cy="55" r="4" fill="black"/>
+  
+  <!-- Glasses -->
+  <rect x="33" y="47" width="24" height="16" rx="8" stroke="#FFD54F" stroke-width="2" fill="none"/>
+  <rect x="63" y="47" width="24" height="16" rx="8" stroke="#FFD54F" stroke-width="2" fill="none"/>
+  <line x1="57" y1="55" x2="63" y2="55" stroke="#FFD54F" stroke-width="2"/>
+  <line x1="33" y1="55" x2="27" y2="50" stroke="#FFD54F" stroke-width="2"/>
+  <line x1="87" y1="55" x2="93" y2="50" stroke="#FFD54F" stroke-width="2"/>
+  
+  <!-- Mouth -->
+  <path d="M45,80 Q60,85 75,80" stroke="white" stroke-width="3" fill="none"/>
+  
+  <!-- Antenna -->
+  <line x1="60" y1="25" x2="60" y2="10" stroke="#FFD54F" stroke-width="3"/>
+  <circle cx="60" cy="7" r="5" fill="#FFD54F"/>
+  
+  <!-- Arms -->
+  <path d="M20,65 Q25,55 30,60" stroke="#673AB7" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M100,65 Q95,55 90,60" stroke="#673AB7" stroke-width="8" fill="none" stroke-linecap="round"/>
+  
+  <!-- Legs -->
+  <path d="M45,105 Q50,95 55,100" stroke="#673AB7" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M75,105 Q70,95 65,100" stroke="#673AB7" stroke-width="8" fill="none" stroke-linecap="round"/>
+</svg> 
