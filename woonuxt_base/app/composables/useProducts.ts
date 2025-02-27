@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { useAsyncQuery } from '#imports';
+import { useAsyncGql } from '#imports';
 import { useHelpers } from '~/composables/useHelpers';
 import { useSorting } from '~/composables/useSorting';
 import { useFiltering } from '~/composables/useFiltering';
@@ -25,7 +25,7 @@ export function useProducts() {
     try {
       console.log('Fetching products with variables:', variables);
       
-      const { data, error } = await useAsyncQuery('getProducts', variables);
+      const { data, error } = await useAsyncGql('getProducts', variables);
       
       console.log('GraphQL response:', data.value, error.value);
       
