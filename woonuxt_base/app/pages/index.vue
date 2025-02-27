@@ -46,35 +46,35 @@ const testimonials: Testimonial[] = [
     id: 1,
     name: 'Sarah Johnson',
     role: 'Customer',
-    content: 'The quality of products from Moda Prime USA is exceptional. Fast shipping and great customer service!',
+    content: 'Honestly wasn\'t sure about ordering online at first, but wow! Package arrived in 4 days and the product is exactly what I needed. Will definitely be back for more!',
     avatar: '/images/avatars/reddit-avatar-1.svg'
   },
   {
     id: 2,
     name: 'Michael Chen',
     role: 'Verified Buyer',
-    content: 'I\'ve been a loyal customer for over 2 years. Their products are consistently high quality and effective.',
+    content: 'Been ordering from these guys for like 2 years now. Never had any issues with shipping or payment. Their customer service actually responds to emails too, which is rare these days!',
     avatar: '/images/avatars/reddit-avatar-2.svg'
   },
   {
     id: 3,
     name: 'Emily Rodriguez',
     role: 'Regular Customer',
-    content: 'The best place to buy Modafinil online. Secure, reliable, and always delivers as promised.',
+    content: 'So glad I found this site! After trying a bunch of sketchy places, it\'s nice to have somewhere reliable to get my moda. Quick shipping and the product is always legit. 👍',
     avatar: '/images/avatars/reddit-avatar-3.svg'
   },
   {
     id: 4,
     name: 'David Wilson',
     role: 'New Customer',
-    content: 'I was skeptical at first, but the product quality exceeded my expectations. Will definitely order again!',
+    content: 'First time buyer here. Gotta say I was pretty nervous but everything went smoothly. Product works great and helped me through my finals week! Already told my roommates about this place.',
     avatar: '/images/avatars/reddit-avatar-4.svg'
   },
   {
     id: 5,
     name: 'Jessica Martinez',
     role: 'Loyal Customer',
-    content: 'Their customer support team is amazing. They helped me resolve an issue with my order quickly and efficiently.',
+    content: 'Had a mix-up with my order last month and reached out to support. They fixed it right away and even threw in a small discount on my next purchase! That\'s how you keep customers coming back.',
     avatar: '/images/avatars/reddit-avatar-5.svg'
   }
 ];
