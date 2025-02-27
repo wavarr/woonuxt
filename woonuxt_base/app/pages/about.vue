@@ -1,89 +1,79 @@
-<script setup lang="ts">
-const { siteName, description, shortDescription, siteImage } = useAppConfig();
-
-useSeoMeta({
-  title: `About Us`,
-  ogTitle: `About ${siteName}`,
-  description: `Learn more about ${siteName} and our commitment to quality products and service.`,
-  ogDescription: shortDescription,
-  ogImage: siteImage,
-  twitterCard: `summary_large_image`,
-});
-</script>
-
 <template>
-  <main>
-    <div class="container mx-auto px-4 py-16">
-      <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-bold mb-8 text-gray-900">About Us</h1>
+  <div class="container mx-auto px-4 py-12 md:py-16">
+    <h1 class="text-2xl md:text-3xl font-medium mb-8 text-center">About Us</h1>
+    
+    <div class="max-w-3xl mx-auto prose prose-sm prose-gray mb-12">
+      <p>
+        We are a provider of quality products, committed to delivering value and reliability to our customers.
+      </p>
+      
+      <h2>Our Approach</h2>
+      <p>
+        Founded on principles of quality and efficiency, our company has established itself as a trusted source for premium products. We operate with a focus on customer satisfaction and product excellence.
+      </p>
+      
+      <h2>Our Objective</h2>
+      <p>
+        Our objective is to provide customers with reliable products that meet their needs. We maintain high standards in our product selection and customer service processes.
+      </p>
+      
+      <h2>Our Standards</h2>
+      <ul>
+        <li><strong>Quality:</strong> We select products based on strict quality criteria.</li>
+        <li><strong>Reliability:</strong> We maintain consistent standards in all our operations.</li>
+        <li><strong>Efficiency:</strong> We optimize our processes to deliver value to customers.</li>
+        <li><strong>Improvement:</strong> We continuously refine our systems and offerings.</li>
+      </ul>
+      
+      <h2>Our Guarantee</h2>
+      <p>
+        We guarantee:
+      </p>
+      <ul>
+        <li>Product quality assurance</li>
+        <li>Responsive customer service</li>
+        <li>Efficient order processing</li>
+        <li>Secure transactions</li>
+      </ul>
+    </div>
+    
+    <!-- Company Information -->
+    <section class="py-10 bg-gray-50 rounded-sm">
+      <div class="container mx-auto px-4">
+        <h2 class="text-xl font-medium mb-8 text-center">Company Information</h2>
         
-        <div class="prose prose-lg max-w-none">
-          <p class="text-xl text-gray-700 mb-8">
-            At Moda Prime, we're dedicated to providing premium quality products that help our customers achieve their goals.
-          </p>
-          
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Our Story</h2>
-          <p>
-            Founded in 2018, Moda Prime began with a simple mission: to provide access to high-quality products with exceptional customer service. 
-            What started as a small operation has grown into a trusted source for customers around the world.
-          </p>
-          
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Our Commitment</h2>
-          <p>
-            We believe in transparency, quality, and customer satisfaction. Every product we offer undergoes rigorous quality control to ensure you receive only the best.
-          </p>
-          
-          <div class="bg-blue-50 p-8 rounded-xl my-12">
-            <h3 class="text-xl font-semibold text-blue-800 mb-4">Our Values</h3>
-            <ul class="space-y-4">
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Quality:</strong> We source only the highest quality products.</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Integrity:</strong> We operate with honesty and transparency.</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Customer Focus:</strong> Your satisfaction is our priority.</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Innovation:</strong> We continuously improve our products and services.</span>
-              </li>
-            </ul>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="text-center">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-gray-700 rounded-sm mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <h3 class="text-base font-medium mb-1">Established</h3>
+            <p class="text-gray-600 text-sm">2018</p>
           </div>
           
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Our Team</h2>
-          <p>
-            Our team consists of dedicated professionals with expertise in pharmaceuticals, customer service, and logistics. 
-            We work together to ensure that every aspect of your experience with us exceeds expectations.
-          </p>
+          <div class="text-center">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-gray-700 rounded-sm mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-base font-medium mb-1">Global Reach</h3>
+            <p class="text-gray-600 text-sm">Serving customers worldwide</p>
+          </div>
           
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Contact Us</h2>
-          <p>
-            Have questions or need assistance? Our customer service team is available to help. 
-            Visit our <NuxtLink to="/contact" class="text-primary hover:underline">Contact page</NuxtLink> to get in touch.
-          </p>
+          <div class="text-center">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-gray-100 text-gray-700 rounded-sm mb-4">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <h3 class="text-base font-medium mb-1">Security</h3>
+            <p class="text-gray-600 text-sm">Secure transactions and data protection</p>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </section>
+  </div>
 </template>
-
-<style scoped>
-.prose h2 {
-  color: #4f46e5;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 0.5rem;
-}
-</style> 
