@@ -142,7 +142,7 @@ const testimonials: Testimonial[] = [
   <div>
     <!-- Hero Banner -->
     <HeroBanner />
-    
+  
     <!-- Featured Categories -->
     <section class="py-12 md:py-16">
       <div class="container mx-auto px-4">
