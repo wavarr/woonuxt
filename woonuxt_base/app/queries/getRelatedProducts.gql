@@ -8,11 +8,19 @@ query getRelatedProducts($category: String, $productId: ID) {
       databaseId
       name
       slug
-      onSale
-      price
-      regularPrice
-      salePrice
-      stockStatus
+      ... on SimpleProduct {
+        onSale
+        price
+        regularPrice
+        salePrice
+        stockStatus
+      }
+      ... on VariableProduct {
+        onSale
+        price
+        regularPrice
+        stockStatus
+      }
       image {
         ...Image
       }
