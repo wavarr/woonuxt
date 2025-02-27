@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-query getRelatedProducts($category: String, $productId: Int) {
-=======
 query getRelatedProducts($category: String, $productId: ID) {
->>>>>>> e45e173 (refactor: simplify product reviews and related products GraphQL queries)
   products(
     first: 4
     where: { category: $category, exclude: [$productId] }
@@ -10,30 +6,6 @@ query getRelatedProducts($category: String, $productId: ID) {
     nodes {
       id
       databaseId
-<<<<<<< HEAD
-      ... on SimpleProduct {
-        name
-        slug
-        onSale
-        price
-        regularPrice
-        salePrice
-        stockStatus
-        image {
-          ...Image
-        }
-      }
-      ... on VariableProduct {
-        name
-        slug
-        onSale
-        price
-        regularPrice
-        stockStatus
-        image {
-          ...Image
-        }
-=======
       name
       slug
       onSale
@@ -43,7 +15,6 @@ query getRelatedProducts($category: String, $productId: ID) {
       stockStatus
       image {
         ...Image
->>>>>>> e45e173 (refactor: simplify product reviews and related products GraphQL queries)
       }
     }
   }
