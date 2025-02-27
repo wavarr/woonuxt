@@ -1,12 +1,36 @@
 <script lang="ts" setup>
-import { ProductsOrderByEnum } from '#woo';
+// Declare auto-imported composables for TypeScript
+// These are auto-imported by Nuxt but TypeScript doesn't know about them
+declare const useAppConfig: any;
+declare const useAsyncGql: any;
+declare const useSeoMeta: any;
+declare const ref: any;
+declare const onMounted: any;
+
 const { siteName, description, shortDescription, siteImage } = useAppConfig();
 
-const { data } = await useAsyncGql('getProductCategories', { first: 6 });
-const productCategories = data.value?.productCategories?.nodes || [];
+// Use ref to store data
+const productCategories = ref([]);
+const popularProducts = ref([]);
 
-const { data: productData } = await useAsyncGql('getProducts', { first: 5, orderby: ProductsOrderByEnum.POPULARITY });
-const popularProducts = productData.value.products?.nodes || [];
+// Fetch data in an async function
+const fetchData = async () => {
+  try {
+    const { data } = await useAsyncGql('getProductCategories', { first: 6 });
+    productCategories.value = data.value?.productCategories?.nodes || [];
+    
+    const { data: productData } = await useAsyncGql('getProducts', { 
+      first: 5, 
+      orderby: 'POPULARITY' // Use string literal instead of enum
+    });
+    popularProducts.value = productData.value.products?.nodes || [];
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+// Call the fetch function on component mount
+onMounted(fetchData);
 
 // Testimonials data with proper type annotation
 interface Testimonial {
