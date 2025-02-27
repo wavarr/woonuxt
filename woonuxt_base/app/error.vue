@@ -1,57 +1,29 @@
-<script setup lang="ts">
-const route = useRoute();
-const { error } = defineProps<{ error: any }>();
-const { isShowingCart, toggleCart } = useCart();
-const { isShowingMobileMenu, toggleMobileMenu, addBodyClass, removeBodyClass } = useHelpers();
-
-const closeCartAndMenu = () => {
-  toggleCart(false);
-  toggleMobileMenu(false);
-};
-
-watch([isShowingCart, isShowingMobileMenu], () => {
-  isShowingCart.value || isShowingMobileMenu.value ? addBodyClass('overflow-hidden') : removeBodyClass('overflow-hidden');
-});
-
-watch(
-  () => route.path,
-  () => closeCartAndMenu(),
-);
-
-useSeoMeta({
-  title: error?.statusCode ? `Error ${error.statusCode}` : 'Error',
-  description: error?.message || '',
-});
-
-const handleError = () => {
-  clearError({ redirect: '/' });
-};
-</script>
-
 <template>
-  <div class="flex flex-col min-h-screen">
-    <AppHeader />
-
-    <Transition name="slide-from-right">
-      <LazyCart v-if="isShowingCart" />
-    </Transition>
-
-    <Transition name="slide-from-left">
-      <MobileMenu v-if="isShowingMobileMenu" />
-    </Transition>
-
-    <div class="flex flex-col items-center justify-center flex-1 gap-4 min-h-[500px]">
-      <h1 class="text-6xl font-bold">{{ error?.statusCode === 404 ? 'Page Not Found' : 'An Error Occurred' }}</h1>
-      <div class="error-details">
-        <p v-if="error?.message" class="text-lg">{{ error.message }}</p>
+  <div class="min-h-screen flex items-center justify-center px-4">
+    <div class="text-center">
+      <div class="flex justify-center mb-6">
+        <RedditAvatar size="xl" type="4" alt="Error" />
       </div>
-      <button @click="handleError">Try Again</button>
+      <h1 class="text-4xl font-bold mb-4">{{ error.statusCode === 404 ? 'Page Not Found' : 'An Error Occurred' }}</h1>
+      <p class="text-gray-600 mb-8">{{ error.message || "We couldn't find the page you're looking for." }}</p>
+      <button 
+        @click="handleError" 
+        class="px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors duration-300"
+      >
+        Go Back Home
+      </button>
     </div>
-
-    <Transition name="fade">
-      <div v-if="isShowingCart || isShowingMobileMenu" class="bg-black opacity-25 inset-0 z-40 fixed" @click="closeCartAndMenu" />
-    </Transition>
-
-    <AppFooter />
   </div>
 </template>
+
+<script setup>
+import RedditAvatar from './components/RedditAvatar/RedditAvatar.vue';
+
+defineProps({
+  error: Object
+})
+
+function handleError() {
+  clearError({ redirect: '/' })
+}
+</script>

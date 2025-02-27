@@ -1,89 +1,81 @@
-<script setup lang="ts">
-const { siteName, description, shortDescription, siteImage } = useAppConfig();
-
-useSeoMeta({
-  title: `About Us`,
-  ogTitle: `About ${siteName}`,
-  description: `Learn more about ${siteName} and our commitment to quality products and service.`,
-  ogDescription: shortDescription,
-  ogImage: siteImage,
-  twitterCard: `summary_large_image`,
-});
-</script>
-
 <template>
-  <main>
-    <div class="container mx-auto px-4 py-16">
-      <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-bold mb-8 text-gray-900">About Us</h1>
+  <div class="container mx-auto px-4 py-16">
+    <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center">About Us</h1>
+    
+    <div class="max-w-3xl mx-auto prose prose-lg mb-16">
+      <p>
+        Welcome to Moda Prime USA, your trusted source for high-quality products. We are dedicated to providing exceptional service and premium products to our customers.
+      </p>
+      
+      <h2>Our Story</h2>
+      <p>
+        Founded with a passion for quality and customer satisfaction, Moda Prime USA has grown from a small startup to a trusted name in the industry. Our journey began with a simple mission: to provide customers with products they can trust at prices they can afford.
+      </p>
+      
+      <h2>Our Mission</h2>
+      <p>
+        At Moda Prime USA, our mission is to deliver exceptional products that enhance our customers' lives. We believe in transparency, integrity, and building lasting relationships with our customers.
+      </p>
+      
+      <h2>Our Values</h2>
+      <ul>
+        <li><strong>Quality:</strong> We source only the highest quality products.</li>
+        <li><strong>Integrity:</strong> We operate with honesty and transparency in all our dealings.</li>
+        <li><strong>Customer Focus:</strong> Our customers are at the heart of everything we do.</li>
+        <li><strong>Innovation:</strong> We continuously seek to improve and innovate.</li>
+      </ul>
+      
+      <h2>Our Commitment</h2>
+      <p>
+        We are committed to providing:
+      </p>
+      <ul>
+        <li>Premium quality products</li>
+        <li>Exceptional customer service</li>
+        <li>Fast and reliable shipping</li>
+        <li>Secure and easy shopping experience</li>
+      </ul>
+    </div>
+    
+    <!-- Team Section with Reddit-style Avatars -->
+    <section class="py-12 bg-gray-50 rounded-xl">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-12 text-center">Meet Our Team</h2>
         
-        <div class="prose prose-lg max-w-none">
-          <p class="text-xl text-gray-700 mb-8">
-            At Moda Prime, we're dedicated to providing premium quality products that help our customers achieve their goals.
-          </p>
-          
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Our Story</h2>
-          <p>
-            Founded in 2018, Moda Prime began with a simple mission: to provide access to high-quality products with exceptional customer service. 
-            What started as a small operation has grown into a trusted source for customers around the world.
-          </p>
-          
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Our Commitment</h2>
-          <p>
-            We believe in transparency, quality, and customer satisfaction. Every product we offer undergoes rigorous quality control to ensure you receive only the best.
-          </p>
-          
-          <div class="bg-blue-50 p-8 rounded-xl my-12">
-            <h3 class="text-xl font-semibold text-blue-800 mb-4">Our Values</h3>
-            <ul class="space-y-4">
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Quality:</strong> We source only the highest quality products.</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Integrity:</strong> We operate with honesty and transparency.</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Customer Focus:</strong> Your satisfaction is our priority.</span>
-              </li>
-              <li class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-                <span><strong>Innovation:</strong> We continuously improve our products and services.</span>
-              </li>
-            </ul>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center">
+            <div class="mx-auto mb-4 flex justify-center">
+              <RedditAvatar size="xl" type="1" alt="Team Member" />
+            </div>
+            <h3 class="text-xl font-semibold mb-1">Alex Johnson</h3>
+            <p class="text-gray-500 mb-3">Founder & CEO</p>
+            <p class="text-gray-600">Passionate about providing quality products and exceptional customer service.</p>
           </div>
           
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Our Team</h2>
-          <p>
-            Our team consists of dedicated professionals with expertise in pharmaceuticals, customer service, and logistics. 
-            We work together to ensure that every aspect of your experience with us exceeds expectations.
-          </p>
+          <div class="text-center">
+            <div class="mx-auto mb-4 flex justify-center">
+              <RedditAvatar size="xl" type="3" alt="Team Member" />
+            </div>
+            <h3 class="text-xl font-semibold mb-1">Jamie Smith</h3>
+            <p class="text-gray-500 mb-3">Product Specialist</p>
+            <p class="text-gray-600">Expert in finding the best products to meet our customers' needs.</p>
+          </div>
           
-          <h2 class="text-2xl font-semibold mt-12 mb-4">Contact Us</h2>
-          <p>
-            Have questions or need assistance? Our customer service team is available to help. 
-            Visit our <NuxtLink to="/contact" class="text-primary hover:underline">Contact page</NuxtLink> to get in touch.
-          </p>
+          <div class="text-center">
+            <div class="mx-auto mb-4 flex justify-center">
+              <RedditAvatar size="xl" type="5" alt="Team Member" />
+            </div>
+            <h3 class="text-xl font-semibold mb-1">Taylor Reed</h3>
+            <p class="text-gray-500 mb-3">Customer Support Lead</p>
+            <p class="text-gray-600">Dedicated to ensuring every customer has a positive experience.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </section>
+  </div>
 </template>
 
-<style scoped>
-.prose h2 {
-  color: #4f46e5;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 0.5rem;
-}
-</style> 
+<script setup>
+// Import the RedditAvatar component
+import RedditAvatar from '../components/RedditAvatar/RedditAvatar.vue';
+</script>

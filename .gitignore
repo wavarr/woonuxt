@@ -27,3 +27,5 @@ logs
 .netlify
 
 *.pem
+woonuxt_base/concat.sh
+woonuxt_base/app/combined_components.txt
