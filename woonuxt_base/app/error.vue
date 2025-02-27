@@ -1,3 +1,13 @@
+<script setup>
+defineProps({
+  error: Object
+})
+
+function handleError() {
+  clearError({ redirect: '/' })
+}
+</script>
+
 <template>
   <div class="min-h-screen flex items-center justify-center px-4">
     <div class="text-center">
@@ -17,13 +27,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-defineProps({
-  error: Object
-})
-
-function handleError() {
-  clearError({ redirect: '/' })
-}
-</script>

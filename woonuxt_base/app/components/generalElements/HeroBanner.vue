@@ -1,112 +1,128 @@
-<template>
-  <div class="relative w-full bg-gradient-to-r from-blue-50 to-indigo-50 h-[100vh] overflow-hidden">
-    <!-- Animated background elements -->
-    <div class="absolute inset-0 overflow-hidden">
-      <div class="absolute inset-0 opacity-10" style="background-image: url('/images/bgsymbol.png'); background-repeat: repeat; background-size: 400px;"></div>
-      
-      <!-- Animated circles -->
-      <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-300 opacity-20 animate-float" style="animation-duration: 15s;"></div>
-      <div class="absolute bottom-1/4 right-1/3 w-96 h-96 rounded-full bg-indigo-300 opacity-20 animate-float-reverse" style="animation-duration: 20s;"></div>
-      <div class="absolute top-1/3 right-1/4 w-48 h-48 rounded-full bg-purple-300 opacity-10 animate-pulse" style="animation-duration: 8s;"></div>
-    </div>
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue';
 
-    <div class="container relative h-full mx-auto">
-      <!-- Main Content -->
-      <div class="relative z-10 h-full flex flex-col justify-center items-start px-4">
-        <!-- Hero Text Section -->
-        <div class="flex flex-col items-start w-full">
-          <div class="overflow-hidden">
-            <h1 
-              class="text-[15vw] sm:text-[18vw] md:text-[20vw] font-black tracking-tighter leading-[0.85] motion-safe:animate-float notable-regular"
-              style="font-family: 'Notable', sans-serif; text-transform: uppercase; letter-spacing: -0.08em; word-wrap: break-word; background-image: linear-gradient(135deg, #172445 0%, #4f46e5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
-            >
-              <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 0ms;">Moda</span>
-              <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 200ms;">Prime</span>
-              <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 400ms;">USA</span>
-            </h1>
-          </div>
-          
-          <p 
-            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-700 mt-4 leading-relaxed max-w-3xl hero-text-animate"
-            style="animation-delay: 600ms; font-family: 'Poppins', sans-serif;"
-          >
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold">Modafinil</span>
-            <span class="text-gray-600"> - Premium Quality</span>
-          </p>
-          
-          <div class="mt-8 flex flex-wrap gap-4 hero-text-animate" style="animation-delay: 800ms;">
+// Slideshow data
+const slides = [
+  {
+    id: 1,
+    title: 'Premium Quality Products',
+    subtitle: 'Curated selection of high-quality items',
+    cta: {
+      text: 'Shop Now',
+      link: '/products'
+    },
+    image: '/images/banner/slide-1.jpg'
+  },
+  {
+    id: 2,
+    title: 'Efficient Delivery',
+    subtitle: 'Fast shipping on all orders',
+    cta: {
+      text: 'Learn More',
+      link: '/about'
+    },
+    image: '/images/banner/slide-2.jpg'
+  }
+];
+
+const currentSlide = ref(0);
+const slideInterval = ref<number | null>(null);
+
+const nextSlide = () => {
+  currentSlide.value = (currentSlide.value + 1) % slides.length;
+};
+
+const prevSlide = () => {
+  currentSlide.value = (currentSlide.value - 1 + slides.length) % slides.length;
+};
+
+const goToSlide = (index: number) => {
+  currentSlide.value = index;
+  resetInterval();
+};
+
+const resetInterval = () => {
+  if (slideInterval.value) {
+    clearInterval(slideInterval.value);
+  }
+  slideInterval.value = window.setInterval(nextSlide, 5000);
+};
+
+onMounted(() => {
+  resetInterval();
+});
+
+onUnmounted(() => {
+  if (slideInterval.value) {
+    clearInterval(slideInterval.value);
+  }
+});
+</script>
+
+<template>
+  <div class="relative overflow-hidden">
+    <!-- Slides -->
+    <div class="relative h-[400px] md:h-[500px]">
+      <div 
+        v-for="(slide, index) in slides" 
+        :key="slide.id"
+        class="absolute inset-0 transition-opacity duration-500"
+        :class="index === currentSlide ? 'opacity-100' : 'opacity-0 pointer-events-none'"
+      >
+        <img 
+          :src="slide.image" 
+          :alt="slide.title"
+          class="w-full h-full object-cover"
+        />
+        
+        <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+        
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="text-center text-white px-4 max-w-xl">
+            <h2 class="text-2xl md:text-4xl font-medium mb-2 md:mb-4">{{ slide.title }}</h2>
+            <p class="text-sm md:text-base mb-4 md:mb-6 opacity-90">{{ slide.subtitle }}</p>
             <NuxtLink 
-              class="inline-flex items-center justify-center px-8 sm:px-10 py-4 text-xl sm:text-2xl font-semibold text-white rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-              to="/products"
+              :to="slide.cta.link" 
+              class="inline-block px-5 py-2 bg-white text-gray-900 text-sm font-medium rounded-sm hover:bg-gray-100 transition-colors duration-300"
             >
-              <span>Shop Now</span>
-              <svg class="w-8 h-8 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </NuxtLink>
-            
-            <NuxtLink 
-              class="inline-flex items-center justify-center px-8 sm:px-10 py-4 text-xl sm:text-2xl font-semibold text-indigo-600 rounded-full border-2 border-indigo-600 hover:bg-indigo-50 transform hover:scale-105 transition-all duration-300"
-              to="/about"
-            >
-              <span>Learn More</span>
+              {{ slide.cta.text }}
             </NuxtLink>
           </div>
         </div>
       </div>
     </div>
     
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce">
-      <span class="text-gray-500 mb-2">Scroll Down</span>
-      <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    <!-- Navigation Arrows -->
+    <button 
+      @click="prevSlide"
+      class="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white bg-opacity-30 backdrop-blur-sm rounded-sm text-white hover:bg-opacity-50 transition-colors"
+      aria-label="Previous slide"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
       </svg>
+    </button>
+    
+    <button 
+      @click="nextSlide"
+      class="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-white bg-opacity-30 backdrop-blur-sm rounded-sm text-white hover:bg-opacity-50 transition-colors"
+      aria-label="Next slide"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+    
+    <!-- Dots -->
+    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+      <button 
+        v-for="(slide, index) in slides" 
+        :key="slide.id"
+        @click="goToSlide(index)"
+        class="w-2 h-2 rounded-full transition-colors"
+        :class="index === currentSlide ? 'bg-white' : 'bg-white bg-opacity-50 hover:bg-opacity-75'"
+        :aria-label="`Go to slide ${index + 1}`"
+      ></button>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-// Component logic here
-</script>
-
-<style scoped>
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes float-reverse {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(20px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-float-reverse {
-  animation: float-reverse 7s ease-in-out infinite;
-}
-
-.hero-text-animate {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>
