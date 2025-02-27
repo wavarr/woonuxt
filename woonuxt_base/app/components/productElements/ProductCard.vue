@@ -1,5 +1,8 @@
 <script setup lang="ts">
-// Define props
+import { computed } from 'vue';
+
+// No need to import computed in Nuxt as it's globally available
+
 const props = defineProps({
   node: {
     type: Object,

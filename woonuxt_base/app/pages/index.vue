@@ -29,7 +29,7 @@ const testimonials: Testimonial[] = [
     id: 2,
     name: 'Michael Chen',
     role: 'Verified Buyer',
-    content: 'I\'ve been a loyal customer for over 2 years. Their products are consistently high quality and effective.',
+    content: 'I've been a loyal customer for over 2 years. Their products are consistently high quality and effective.',
     avatar: '/images/avatar-2.jpg'
   },
   {
@@ -195,7 +195,7 @@ useSeoMeta({
       <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto text-center">
           <h2 class="text-3xl md:text-4xl font-bold mb-4">Stay Updated</h2>
-          <p class="mb-8">Subscribe to our newsletter for exclusive offers, new arrivals, and other news. Sent no more than twice monthly.</p>
+          <p class="mb-8">Subscribe to our newsletter for the latest products, promotions, and health tips.</p>
           
           <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
             <input 
