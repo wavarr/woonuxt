@@ -124,5 +124,9 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+
+  css: [
+    '~/assets/css/minimalist.css'
+  ]
 });

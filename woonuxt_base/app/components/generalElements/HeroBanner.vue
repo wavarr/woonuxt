@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-
+<script setup>
 // Slideshow data
 const slides = [
   {
@@ -11,7 +9,7 @@ const slides = [
       text: 'Shop Now',
       link: '/products'
     },
-    image: '/images/banner/slide-1.jpg'
+    image: 'https://via.placeholder.com/1200x600'
   },
   {
     id: 2,
@@ -21,12 +19,12 @@ const slides = [
       text: 'Learn More',
       link: '/about'
     },
-    image: '/images/banner/slide-2.jpg'
+    image: 'https://via.placeholder.com/1200x600'
   }
 ];
 
 const currentSlide = ref(0);
-const slideInterval = ref<number | null>(null);
+const slideInterval = ref(null);
 
 const nextSlide = () => {
   currentSlide.value = (currentSlide.value + 1) % slides.length;
@@ -36,7 +34,7 @@ const prevSlide = () => {
   currentSlide.value = (currentSlide.value - 1 + slides.length) % slides.length;
 };
 
-const goToSlide = (index: number) => {
+const goToSlide = (index) => {
   currentSlide.value = index;
   resetInterval();
 };
