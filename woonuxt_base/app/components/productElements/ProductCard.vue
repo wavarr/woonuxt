@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue';``
 
 // No need to import computed in Nuxt as it's globally available
 
