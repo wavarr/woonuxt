@@ -44,7 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+// Declare auto-imported composables for TypeScript
+declare const ref: any;
+declare const onMounted: any;
+
+// Import our GraphQL composable
 import useGraphQL from '../composables/useGraphQL'
 
 // Get GraphQL utilities
@@ -74,7 +78,7 @@ const loadProducts = async () => {
     } else {
       throw new Error('Invalid product data structure')
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error('Error loading products:', err)
     error.value = err.message || 'Failed to load products'
     
@@ -124,7 +128,7 @@ const loadFromRestApi = async () => {
     const data = await response.json()
     
     // Map WP REST API format to match GraphQL format
-    products.value = data.map(item => ({
+    products.value = data.map((item: any) => ({
       id: `product-${item.id}`,
       databaseId: item.id,
       name: item.name,
