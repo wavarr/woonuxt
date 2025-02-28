@@ -1,202 +1,217 @@
-import type { AddToCartInput } from '#gql';
-import { ref } from '#imports'
-import type { Cart } from '~/types'
+// composables/useCart.ts
+import { ref, computed } from 'vue';
+import { useAsyncQuery } from './useAsyncQuery';
 
-/**
- * @name useCart
- * @description A composable that handles the cart in local storage
- */
+// Cart state
+const cart = ref(null);
+const isCartOpen = ref(false);
+const isUpdatingCart = ref(false);
+const isBillingAddressEnabled = ref(true);
+
 export function useCart() {
-  const { storeSettings } = useAppConfig();
-
-  const cart = ref<Cart | null>(null);
-  const isShowingCart = useState<boolean>('isShowingCart', () => false);
-  const isUpdatingCart = useState<boolean>('isUpdatingCart', () => false);
-  const isUpdatingCoupon = useState<boolean>('isUpdatingCoupon', () => false);
-  const paymentGateways = useState<PaymentGateways | null>('paymentGateways', () => null);
-  const { logGQLError, clearAllCookies } = useHelpers();
-
-  /** Refesh the cart from the server
-   * @returns {Promise<boolean>} - A promise that resolves
-   * to true if the cart was successfully refreshed
-   */
+  // Refresh the cart data
   const refreshCart = async () => {
     try {
-      const { data } = await useAsyncQuery('getCart')
-      cart.value = data.value?.cart || null
-      return true;
-    } catch (error) {
-      console.error('Error refreshing cart:', error)
-      return false;
-    }
-  }
-
-  function resetInitialState() {
-    cart.value = null;
-    paymentGateways.value = null;
-  }
-
-  function updateCart(payload?: Cart | null): void {
-    cart.value = payload || null;
-  }
-
-  function updatePaymentGateways(payload: PaymentGateways): void {
-    paymentGateways.value = payload;
-  }
-
-  // toggle the cart visibility
-  function toggleCart(state: boolean | undefined = undefined): void {
-    isShowingCart.value = state ?? !isShowingCart.value;
-  }
-
-  // add an item to the cart
-  async function addToCart(input: AddToCartInput): Promise<void> {
-    isUpdatingCart.value = true;
-
-    try {
-      const { addToCart } = await GqlAddToCart({ input });
-      if (addToCart?.cart) cart.value = addToCart.cart;
-      // Auto open the cart when an item is added to the cart if the setting is enabled
-      const { storeSettings } = useAppConfig();
-      if (storeSettings.autoOpenCart && !isShowingCart.value) toggleCart(true);
-    } catch (error: any) {
-      logGQLError(error);
-    }
-  }
-
-  // remove an item from the cart
-  async function removeItem(key: string) {
-    isUpdatingCart.value = true;
-    const { updateItemQuantities } = await GqlUpDateCartQuantity({ key, quantity: 0 });
-    updateCart(updateItemQuantities?.cart);
-  }
-
-  // update the quantity of an item in the cart
-  async function updateItemQuantity(key: string, quantity: number): Promise<void> {
-    isUpdatingCart.value = true;
-    try {
-      const { updateItemQuantities } = await GqlUpDateCartQuantity({ key, quantity });
-      updateCart(updateItemQuantities?.cart);
-    } catch (error: any) {
-      logGQLError(error);
-    }
-  }
-
-  // empty the cart
-  const emptyCart = () => {
-    cart.value = null;
-  }
-
-  // Update shipping method
-  async function updateShippingMethod(shippingMethods: string) {
-    isUpdatingCart.value = true;
-    const { updateShippingMethod } = await GqlChangeShippingMethod({ shippingMethods });
-    updateCart(updateShippingMethod?.cart);
-  }
-
-  // Apply coupon
-  async function applyCoupon(code: string): Promise<{ message: string | null }> {
-    try {
-      isUpdatingCoupon.value = true;
-      const { applyCoupon } = await GqlApplyCoupon({ code });
-      updateCart(applyCoupon?.cart);
-      isUpdatingCoupon.value = false;
-    } catch (error: any) {
-      isUpdatingCoupon.value = false;
-      logGQLError(error);
-    }
-    return { message: null };
-  }
-
-  // Remove coupon
-  async function removeCoupon(code: string): Promise<void> {
-    try {
       isUpdatingCart.value = true;
-      const { removeCoupons } = await GqlRemoveCoupons({ codes: [code] });
-      updateCart(removeCoupons?.cart);
-    } catch (error) {
-      logGQLError(error);
-      isUpdatingCart.value = false;
-    }
-  }
-
-  // Stop the loading spinner when the cart is updated
-  watch(cart, (val) => {
-    isUpdatingCart.value = false;
-  });
-
-  // Check if all products in the cart are virtual
-  const allProductsAreVirtual = computed(() => {
-    const nodes = cart.value?.contents?.nodes || [];
-    return nodes.length === 0 ? false : nodes.every((node) => (node.product?.node as SimpleProduct)?.virtual === true);
-  });
-
-  // Check if the billing address is enabled
-  const isBillingAddressEnabled = computed(() => (storeSettings.hideBillingAddressForVirtualProducts ? !allProductsAreVirtual.value : true));
-
-  const initializeCheckout = async () => {
-    try {
-      console.log('Initializing BTCPay checkout...', { orderId: orderId.value, orderKey: orderKey.value });
       
-      const response = await fetch(
-        `${process.env.GQL_HOST.replace('graphql', '')}?wc-api=BTCPay_Checkout&order_id=${orderId.value}&order_key=${orderKey.value}&currency=USD`,
-        {
-          headers: {
-            'Accept': 'application/json',
-            'X-Currency': 'USD'
-          },
-        }
+      // Use the newly added useAsyncQuery hook
+      const { data: cartData, error } = await useAsyncQuery(
+        'getCart',
+        {},
+        { fetchPolicy: 'network-only' } // Force fresh data
       );
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (error) {
+        console.error('Error refreshing cart:', error);
+        return null;
       }
       
-      const data = await response.json();
-      console.log('BTCPay response:', data);
-      
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      if (!data.checkoutUrl) {
-        throw new Error('No checkout URL received from BTCPay');
-      }
-
-      checkoutUrl.value = data.checkoutUrl;
-      checkoutMode.value = data.checkoutMode;
-      invoiceId.value = data.invoiceId;
-
-      if (checkoutMode.value === 'modal') {
-        await loadBtcPayModal(data.modalScriptUrl);
-      }
-
-      checkPaymentStatus();
-    } catch (e) {
-      error.value = `Failed to load payment details: ${e.message}`;
-      console.error('BTCPay error:', e);
+      cart.value = cartData.value?.cart;
+      return cart.value;
+    } catch (err) {
+      console.error('Error refreshing cart:', err);
+      return null;
     } finally {
-      loading.value = false;
+      isUpdatingCart.value = false;
     }
+  };
+
+  // Add to cart function
+  const addToCart = async (input) => {
+    try {
+      isUpdatingCart.value = true;
+      
+      const { data, error } = await useAsyncQuery('addToCart', { input });
+      
+      if (error) {
+        console.error('Error adding to cart:', error);
+        return { error: error.message };
+      }
+      
+      cart.value = data.value?.addToCart?.cart;
+      
+      // Show cart after adding item
+      if (!isCartOpen.value) {
+        isCartOpen.value = true;
+      }
+      
+      return { success: true, cart: cart.value };
+    } catch (err) {
+      console.error('Error adding to cart:', err);
+      return { error: err.message || 'Failed to add to cart' };
+    } finally {
+      isUpdatingCart.value = false;
+    }
+  };
+
+  // Update item quantity
+  const updateItemQuantity = async (key, quantity) => {
+    try {
+      isUpdatingCart.value = true;
+      
+      const { data, error } = await useAsyncQuery('updateItemQuantities', {
+        items: [{ key, quantity }]
+      });
+      
+      if (error) {
+        console.error('Error updating item quantity:', error);
+        return null;
+      }
+      
+      cart.value = data.value?.updateItemQuantities?.cart;
+      return cart.value;
+    } catch (err) {
+      console.error('Error updating item quantity:', err);
+      return null;
+    } finally {
+      isUpdatingCart.value = false;
+    }
+  };
+
+  // Empty cart
+  const emptyCart = async () => {
+    try {
+      isUpdatingCart.value = true;
+      
+      const { data, error } = await useAsyncQuery('emptyCart');
+      
+      if (error) {
+        console.error('Error emptying cart:', error);
+        return null;
+      }
+      
+      cart.value = data.value?.emptyCart?.cart;
+      return cart.value;
+    } catch (err) {
+      console.error('Error emptying cart:', err);
+      return null;
+    } finally {
+      isUpdatingCart.value = false;
+    }
+  };
+
+  // Apply coupon
+  const applyCoupon = async (code) => {
+    try {
+      isUpdatingCart.value = true;
+      
+      const { data, error } = await useAsyncQuery('applyCoupon', { code });
+      
+      if (error) {
+        return { message: error.message };
+      }
+      
+      if (data.value?.applyCoupon?.cart) {
+        cart.value = data.value.applyCoupon.cart;
+        return { success: true };
+      }
+      
+      return { message: 'Could not apply coupon' };
+    } catch (err) {
+      console.error('Error applying coupon:', err);
+      return { message: err.message || 'Error applying coupon' };
+    } finally {
+      isUpdatingCart.value = false;
+    }
+  };
+
+  // Remove coupon
+  const removeCoupon = async (code) => {
+    try {
+      isUpdatingCart.value = true;
+      
+      const { data, error } = await useAsyncQuery('removeCoupon', { code });
+      
+      if (error) {
+        console.error('Error removing coupon:', error);
+        return null;
+      }
+      
+      cart.value = data.value?.removeCoupon?.cart;
+      return cart.value;
+    } catch (err) {
+      console.error('Error removing coupon:', err);
+      return null;
+    } finally {
+      isUpdatingCart.value = false;
+    }
+  };
+
+  // Update shipping method
+  const updateShippingMethod = async (shippingMethod) => {
+    try {
+      isUpdatingCart.value = true;
+      
+      const { data, error } = await useAsyncQuery('updateShippingMethod', { shippingMethod });
+      
+      if (error) {
+        console.error('Error updating shipping method:', error);
+        return null;
+      }
+      
+      cart.value = data.value?.updateShippingMethod?.cart;
+      return cart.value;
+    } catch (err) {
+      console.error('Error updating shipping method:', err);
+      return null;
+    } finally {
+      isUpdatingCart.value = false;
+    }
+  };
+
+  // Toggle cart visibility
+  const toggleCart = (state = null) => {
+    if (state !== null) {
+      isCartOpen.value = state;
+    } else {
+      isCartOpen.value = !isCartOpen.value;
+    }
+  };
+
+  // For checkout process
+  const updateShippingLocation = async () => {
+    await refreshCart();
+  };
+
+  // Load cart on initialization if possible
+  const initCart = async () => {
+    await refreshCart();
   };
 
   return {
     cart,
-    isShowingCart,
+    isCartOpen,
     isUpdatingCart,
-    isUpdatingCoupon,
-    paymentGateways,
     isBillingAddressEnabled,
-    updateCart,
     refreshCart,
-    toggleCart,
     addToCart,
-    removeItem,
     updateItemQuantity,
     emptyCart,
-    updateShippingMethod,
     applyCoupon,
     removeCoupon,
-    initializeCheckout,
+    updateShippingMethod,
+    toggleCart,
+    updateShippingLocation,
+    initCart
   };
 }

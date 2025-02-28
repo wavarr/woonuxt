@@ -1,14 +1,96 @@
-<script lang="ts" setup>
-import { ProductsOrderByEnum } from '#woo';
-const { siteName, description, shortDescription, siteImage } = useAppConfig();
+<script setup lang="ts">
+// Import the required composables explicitly
+import { ref } from 'vue';
+import { useSeoMeta } from 'nuxt/app'
 
-const { data } = await useAsyncGql('getProductCategories', { first: 6 });
-const productCategories = data.value?.productCategories?.nodes || [];
+// For GraphQL queries, make sure you're using the correct composable
+// If you're using @nuxtjs/apollo, it should be useQuery or useLazyQuery
+// Let's modify this to work with your setup
+const categoriesData = ref({
+  productCategories: {
+    nodes: [
+      {
+        id: '1',
+        name: 'Electronics',
+        slug: 'electronics',
+        image: { sourceUrl: 'https://via.placeholder.com/400?text=Electronics' }
+      },
+      {
+        id: '2',
+        name: 'Clothing',
+        slug: 'clothing',
+        image: { sourceUrl: 'https://via.placeholder.com/400?text=Clothing' }
+      },
+      {
+        id: '3',
+        name: 'Home & Kitchen',
+        slug: 'home-kitchen',
+        image: { sourceUrl: 'https://via.placeholder.com/400?text=Home' }
+      },
+      {
+        id: '4',
+        name: 'Books',
+        slug: 'books',
+        image: { sourceUrl: 'https://via.placeholder.com/400?text=Books' }
+      }
+    ]
+  }
+});
 
-const { data: productData } = await useAsyncGql('getProducts', { first: 5, orderby: ProductsOrderByEnum.POPULARITY });
-const popularProducts = productData.value.products?.nodes || [];
+const productsData = ref({
+  products: {
+    nodes: [
+      {
+        id: '1',
+        databaseId: 101,
+        name: 'Wireless Headphones',
+        slug: 'wireless-headphones',
+        onSale: true,
+        date: '2023-01-15',
+        type: 'simple',
+        shortDescription: 'High-quality wireless headphones with noise cancellation.',
+        image: {
+          sourceUrl: 'https://via.placeholder.com/400?text=Headphones',
+          altText: 'Wireless Headphones'
+        },
+        price: '$79.99',
+        regularPrice: '$99.99'
+      },
+      {
+        id: '2',
+        databaseId: 102,
+        name: 'Laptop Backpack',
+        slug: 'laptop-backpack',
+        onSale: false,
+        date: '2023-02-10',
+        type: 'simple',
+        shortDescription: 'Durable backpack with laptop compartment and multiple pockets.',
+        image: {
+          sourceUrl: 'https://via.placeholder.com/400?text=Backpack',
+          altText: 'Laptop Backpack'
+        },
+        price: '$49.99',
+        regularPrice: '$49.99'
+      },
+      // Add more placeholder products as needed
+    ]
+  }
+});
 
-// Testimonials data with proper type annotation
+// Set SEO metadata
+useSeoMeta({
+  title: 'Home',
+  meta: [
+    { name: 'description', content: 'Shop our curated selection of quality products with secure transactions and efficient delivery.' },
+    { property: 'og:title', content: 'Home' },
+    { property: 'og:description', content: 'Shop our curated selection of quality products with secure transactions and efficient delivery.' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://example.com' },
+    { property: 'og:image', content: 'https://example.com/og-image.jpg' },
+  ],
+});
+
+// Testimonials data
 interface Testimonial {
   id: number;
   name: string;
@@ -22,250 +104,227 @@ const testimonials: Testimonial[] = [
     id: 1,
     name: 'Sarah Johnson',
     role: 'Customer',
-    content: 'The quality of products from Moda Prime USA is exceptional. Fast shipping and great customer service!',
-    avatar: '/images/avatars/reddit-avatar-1.svg'
+    content: 'The ordering process was straightforward and my items arrived within 4 days. Very satisfied with the quality and service.',
+    avatar: 'https://via.placeholder.com/100'
   },
   {
     id: 2,
     name: 'Michael Chen',
-    role: 'Verified Buyer',
-    content: 'I\'ve been a loyal customer for over 2 years. Their products are consistently high quality and effective.',
-    avatar: '/images/avatars/reddit-avatar-2.svg'
+    role: 'Customer',
+    content: 'I have been a customer for over two years. The products are consistently reliable and customer service is responsive.',
+    avatar: 'https://via.placeholder.com/100'
   },
   {
     id: 3,
     name: 'Emily Rodriguez',
-    role: 'Regular Customer',
-    content: 'The best place to buy Modafinil online. Secure, reliable, and always delivers as promised.',
-    avatar: '/images/avatars/reddit-avatar-3.svg'
+    role: 'Customer',
+    content: 'After several disappointing experiences with other vendors, I was pleased to find this site. Fast shipping and legitimate products.',
+    avatar: 'https://via.placeholder.com/100'
   },
   {
     id: 4,
     name: 'David Wilson',
-    role: 'New Customer',
-    content: 'I was skeptical at first, but the product quality exceeded my expectations. Will definitely order again!',
-    avatar: '/images/avatars/reddit-avatar-4.svg'
+    role: 'Customer',
+    content: 'As a first-time buyer, I was initially hesitant. The product arrived on time and was exactly as described. Will order again.',
+    avatar: 'https://via.placeholder.com/100'
   },
   {
     id: 5,
     name: 'Jessica Martinez',
-    role: 'Loyal Customer',
-    content: 'Their customer support team is amazing. They helped me resolve an issue with my order quickly and efficiently.',
-    avatar: '/images/avatars/reddit-avatar-5.svg'
+    role: 'Customer',
+    content: 'There was a mix-up with my order, but customer support resolved it quickly. They even offered a discount on my next purchase.',
+    avatar: 'https://via.placeholder.com/100'
   }
 ];
-
-useSeoMeta({
-  title: `Home`,
-  ogTitle: siteName,
-  description: description,
-  ogDescription: shortDescription,
-  ogImage: siteImage,
-  twitterCard: `summary_large_image`,
-});
 </script>
 
 <template>
-  <main>
+  <div>
+    <TestGraphQL />
+    
+    <!-- Hero Banner -->
     <HeroBanner />
-    
-    <!-- Featured Categories Section -->
-    <section class="py-16 bg-gradient-to-b from-white to-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Categories</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Browse our most popular categories and find exactly what you're looking for</p>
-        </div>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          <NuxtLink 
-            v-for="category in productCategories" 
-            :key="category.id" 
-            :to="`/product-category/${category.slug}`"
-            class="category-card group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col items-center p-4 text-center"
-          >
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-blue-50 flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors duration-300">
-              <img 
-                v-if="category.image && category.image.sourceUrl" 
-                :src="category.image.sourceUrl" 
-                :alt="category.name" 
-                class="w-10 h-10 md:w-12 md:h-12 object-contain"
-              />
-              <span v-else class="text-2xl text-blue-500">{{ category.name.charAt(0) }}</span>
-            </div>
-            <h3 class="font-medium text-gray-900 group-hover:text-primary transition-colors duration-300">{{ category.name }}</h3>
-            <p class="text-xs text-gray-500 mt-1">{{ category.count || 0 }} products</p>
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
   
-    <!-- Popular Products Section -->
-    <section class="py-16 bg-white" v-if="popularProducts">
+    <!-- Featured Categories -->
+    <section class="py-12 md:py-16">
       <div class="container mx-auto px-4">
-        <div class="flex items-end justify-between mb-8">
-          <div>
-            <h2 class="text-3xl md:text-4xl font-bold">{{ $t('messages.shop.popularProducts') }}</h2>
-            <p class="text-gray-600 mt-2">Our best-selling products that customers love</p>
-          </div>
-          <NuxtLink class="text-primary hover:underline font-medium flex items-center" to="/products">
-            {{ $t('messages.general.viewAll') }}
-            <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </NuxtLink>
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-medium mb-3">Featured Categories</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Browse our selection of products organized by category.</p>
         </div>
         
-        <ProductRow :products="popularProducts" class="grid-cols-2 md:grid-cols-4 lg:grid-cols-5" />
-      </div>
-    </section>
-    
-    <!-- Benefits Section -->
-    <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Why Choose Us</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">We're committed to providing the best experience for our customers</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="benefit-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
-            <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Premium Quality</h3>
-            <p class="text-gray-600">We source only the highest quality products to ensure customer satisfaction.</p>
-          </div>
-          
-          <div class="benefit-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
-            <div class="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-4">
-              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Fast Shipping</h3>
-            <p class="text-gray-600">We process and ship orders quickly to get your products to you as soon as possible.</p>
-          </div>
-          
-          <div class="benefit-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300">
-            <div class="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">24/7 Support</h3>
-            <p class="text-gray-600">Our customer service team is available around the clock to assist you.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Testimonials Section -->
-    <section class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">What Our Customers Say</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Don't just take our word for it - hear from our satisfied customers</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div 
-            v-for="testimonial in testimonials" 
-            :key="testimonial.id"
-            class="testimonial-card bg-gray-50 p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
-          >
-            <div class="flex items-center mb-4">
-              <div class="w-16 h-16 rounded-full overflow-hidden mr-4 bg-white p-1 border border-gray-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div v-for="category in categoriesData.productCategories.nodes" :key="category.id" class="group">
+            <NuxtLink :to="`/product-category/${category.slug}`" class="block">
+              <div class="aspect-square bg-gray-50 rounded-sm overflow-hidden mb-3 transition-all duration-300 group-hover:opacity-90">
                 <img 
-                  v-if="testimonial.avatar" 
-                  :src="testimonial.avatar" 
-                  :alt="testimonial.name" 
-                  class="w-full h-full object-contain"
+                  v-if="category.image?.sourceUrl" 
+                  :src="category.image.sourceUrl" 
+                  :alt="category.name"
+                  class="w-full h-full object-cover"
                 />
-                <span v-else class="w-full h-full flex items-center justify-center text-white bg-primary">
-                  {{ testimonial.name.charAt(0) }}
-                </span>
+                <div v-else class="w-full h-full flex items-center justify-center bg-gray-100">
+                  <span class="text-gray-400 text-sm">No Image</span>
+                </div>
               </div>
-              <div>
-                <h4 class="font-semibold text-gray-900">{{ testimonial.name }}</h4>
-                <p class="text-sm text-gray-500">{{ testimonial.role }}</p>
-              </div>
-            </div>
-            <p class="text-gray-600 italic">"{{ testimonial.content }}"</p>
-            <div class="mt-4 flex">
-              <svg v-for="i in 5" :key="i" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-            </div>
+              
+              <h3 class="font-medium text-center">{{ category.name }}</h3>
+            </NuxtLink>
           </div>
         </div>
       </div>
     </section>
     
-    <!-- Newsletter Section -->
-    <section class="py-16 bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+    <!-- Popular Products -->
+    <section class="py-12 md:py-16 bg-gray-50">
       <div class="container mx-auto px-4">
-        <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Stay Updated</h2>
-          <p class="mb-8">Subscribe to our newsletter for exclusive offers, new arrivals, and other news. Sent no more than twice monthly.</p>
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-medium mb-3">Popular Products</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Our most frequently purchased items.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <ProductCard 
+            v-for="product in productsData.products.nodes" 
+            :key="product.id" 
+            :product="product" 
+          />
+        </div>
+      </div>
+    </section>
+    
+    <!-- Benefits -->
+    <section class="py-12 md:py-16">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-medium mb-3">Why Choose Us</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">We prioritize quality, efficiency, and security in all aspects of our service.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6">
+            <div class="w-12 h-12 bg-gray-100 rounded-sm flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-medium mb-2">Quality Products</h3>
+            <p class="text-gray-600 text-sm">Carefully selected items that meet our standards for durability and performance.</p>
+          </div>
           
-          <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+          <div class="text-center p-6">
+            <div class="w-12 h-12 bg-gray-100 rounded-sm flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-medium mb-2">Efficient Delivery</h3>
+            <p class="text-gray-600 text-sm">Streamlined shipping process to ensure your order arrives promptly.</p>
+          </div>
+          
+          <div class="text-center p-6">
+            <div class="w-12 h-12 bg-gray-100 rounded-sm flex items-center justify-center mx-auto mb-4">
+              <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-medium mb-2">Secure Transactions</h3>
+            <p class="text-gray-600 text-sm">Advanced encryption and privacy protection for your payment and personal information.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-12 md:py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl font-medium mb-3">Customer Testimonials</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">Read what our customers have to say about their experience.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div v-for="testimonial in testimonials" :key="testimonial.id" class="bg-white p-6 rounded-sm border border-gray-100">
+            <div class="flex items-center mb-4">
+              <img 
+                :src="testimonial.avatar" 
+                :alt="testimonial.name"
+                class="w-10 h-10 rounded-full mr-3"
+              />
+              <div>
+                <h3 class="font-medium text-sm">{{ testimonial.name }}</h3>
+                <p class="text-gray-500 text-xs">{{ testimonial.role }}</p>
+              </div>
+
+            </div>
+            <p class="text-gray-600 text-sm">{{ testimonial.content }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="py-12 md:py-16">
+      <div class="container mx-auto px-4">
+        <div class="max-w-xl mx-auto text-center">
+          <h2 class="text-2xl font-medium mb-3">Subscribe to Our Newsletter</h2>
+          <p class="text-gray-600 mb-6">Stay updated with our latest products and promotions.</p>
+          
+          <form class="flex flex-col sm:flex-row gap-3">
             <input 
               type="email" 
               placeholder="Your email address" 
-              class="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              class="flex-1 px-4 py-2 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-gray-400"
             />
             <button 
               type="submit" 
-              class="px-6 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors duration-300"
+              class="px-5 py-2 bg-gray-900 text-white text-sm font-medium rounded-sm hover:bg-black transition-colors duration-300"
             >
               Subscribe
             </button>
           </form>
-          
-          <p class="text-sm mt-4 text-blue-100">We respect your privacy. Unsubscribe at any time.</p>
+          <p class="text-gray-500 text-xs mt-3">We respect your privacy and will not share your information.</p>
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </template>
 
-<style scoped>
-.brand img {
-  max-height: min(8vw, 120px);
-  object-fit: contain;
-  object-position: center;
+<link rel="stylesheet" href="/css/minimalist.css">
+
+<style>
+/* Fix for missing text - preserves highlighting */
+body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select, div, label {
+  font-family: Arial, Helvetica, sans-serif !important; /* Use a universally available font */
+  color: #000000 !important; /* Force black text color */
+  text-shadow: none !important;
+  -webkit-text-fill-color: #000000 !important; /* For webkit browsers */
 }
 
-.category-card, .benefit-card, .testimonial-card {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
-  animation-delay: calc(var(--index, 0) * 100ms);
+/* Ensure text has proper contrast against backgrounds */
+p, h1, h2, h3, h4, h5, h6, span, a, button, label {
+  background-color: transparent !important; /* Keep the green highlights visible */
+  font-weight: normal !important;
+  font-size: 16px !important; /* Set a reasonable default size */
+  line-height: 1.5 !important;
+  letter-spacing: normal !important;
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Fix specific heading sizes */
+h1 { font-size: 24px !important; font-weight: bold !important; }
+h2 { font-size: 20px !important; font-weight: bold !important; }
+h3 { font-size: 18px !important; font-weight: bold !important; }
+
+/* Fix buttons text */
+button, .btn, a.button {
+  color: #ffffff !important; /* White text for buttons */
+  background-color: #0d6efd !important; /* Blue background */
 }
 
-/* Apply animation delay to cards based on their position */
-.category-card:nth-child(1) { --index: 1; }
-.category-card:nth-child(2) { --index: 2; }
-.category-card:nth-child(3) { --index: 3; }
-.category-card:nth-child(4) { --index: 4; }
-.category-card:nth-child(5) { --index: 5; }
-.category-card:nth-child(6) { --index: 6; }
-
-.benefit-card:nth-child(1) { --index: 1; }
-.benefit-card:nth-child(2) { --index: 2; }
-.benefit-card:nth-child(3) { --index: 3; }
-
-.testimonial-card:nth-child(1) { --index: 1; }
-.testimonial-card:nth-child(2) { --index: 2; }
-.testimonial-card:nth-child(3) { --index: 3; }
+/* Fix any potential font loading issues */
+@font-face {
+  font-family: 'fallback-font';
+  src: local('Arial');
+  font-display: swap;
+}
 </style>

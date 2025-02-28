@@ -10,7 +10,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      link: [{ rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' }],
+      link: [{ rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
+             { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+             { rel: 'apple-touch-icon-precomposed', href: '/apple-touch-icon-precomposed.png' }],
     },
     pageTransition: { name: 'page', mode: 'default' },
   },
@@ -30,13 +32,18 @@ export default defineNuxtConfig({
 
   components: [{ path: resolve('./app/components'), pathPrefix: false }],
 
-  modules: ['woonuxt-settings', 'nuxt-graphql-client', '@nuxtjs/tailwindcss', '@nuxt/icon', '@nuxt/image', '@nuxtjs/i18n'],
+  modules: [
+    'woonuxt-settings',
+    'nuxt-graphql-client',
+    '@nuxtjs/tailwindcss',
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@nuxtjs/i18n'
+  ],
 
-  // Fix GraphQL client configuration
   'graphql-client': {
     codegen: {
       skipTypesGeneration: true,
-      // Add proper codegen configuration
       generates: {
         './types/graphql.ts': {
           plugins: ['typescript', 'typescript-operations']
@@ -45,10 +52,13 @@ export default defineNuxtConfig({
     },
     clients: {
       default: {
-        host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
-        corsOptions: { mode: 'cors', credentials: 'include' },
+        host: process.env.GRAPHQL_URL || 'https://modaprimeusa.com/graphql',
+        corsOptions: { 
+          mode: 'cors', 
+          credentials: 'include' 
+        },
         headers: {
-          'Origin': process.env.APP_HOST || 'https://store.modaprimeusaa.com',
+          'Origin': process.env.FRONT_END_URL || 'https://store.modaprimeusa.com',
           'X-WP-Guest-Access': 'true'
         },
         proxyCookies: false
@@ -124,5 +134,5 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
 });

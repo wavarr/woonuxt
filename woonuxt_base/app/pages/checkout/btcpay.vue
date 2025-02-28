@@ -4,14 +4,19 @@
       <h1 class="text-2xl font-bold mb-4">{{ $t('messages.billing.paymentOptions') }}</h1>
       
       <div v-if="loading" class="text-center">
-        <div class="animate-pulse">
-          <div class="h-4 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
-          <div class="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+        <LoadingIcon size="24" />
+        <div class="mt-4 text-gray-600">
+          Initializing payment...
         </div>
       </div>
 
       <div v-else-if="error" class="text-red-600 text-center p-4 bg-red-50 rounded">
         {{ error }}
+        <div class="mt-4">
+          <button @click="initializeCheckout" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            Try Again
+          </button>
+        </div>
       </div>
 
       <div v-else>
@@ -58,6 +63,8 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useCart } from '~/composables/useCart';
 
 const route = useRoute();
@@ -90,11 +97,25 @@ const statusMessage = computed(() => {
   }
 });
 
+const getApiUrl = () => {
+  // Make sure to get the correct API URL
+  const gqlHost = process.env.GQL_HOST || '';
+  return gqlHost.replace('graphql', '');
+};
+
 const checkPaymentStatus = async () => {
+  if (!orderId.value || !orderKey.value) return;
+  
   try {
     const response = await fetch(
-      `${process.env.GQL_HOST.replace('graphql', '')}?wc-api=BTCPay_Check_Payment&order_id=${orderId.value}&order_key=${orderKey.value}`
+      `${getApiUrl()}?wc-api=BTCPay_Check_Payment&order_id=${orderId.value}&order_key=${orderKey.value}`,
+      { credentials: 'include' }
     );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to check payment status: ${response.status}`);
+    }
+    
     const data = await response.json();
     
     if (data.invoiceId) {
@@ -104,22 +125,31 @@ const checkPaymentStatus = async () => {
     paymentStatus.value = data.status;
 
     if (data.status === 'completed') {
+      // Wait a bit before redirecting to allow user to see success state
       setTimeout(() => {
-        router.push(`/checkout/order-received/${orderId.value}`);
+        router.push(`/checkout/order-received/${orderId.value}?key=${orderKey.value}`);
       }, 2000);
     } else if (data.status === 'expired') {
       error.value = 'Payment time expired. Please try again.';
     } else {
+      // Poll for updates every 5 seconds
       paymentStatusTimeout = setTimeout(checkPaymentStatus, 5000);
     }
   } catch (e) {
     console.error('Error checking payment status:', e);
+    error.value = 'Failed to check payment status. Please refresh the page.';
   }
 };
 
 const reloadCheckout = async () => {
   loading.value = true;
   error.value = null;
+  
+  if (paymentStatusTimeout) {
+    clearTimeout(paymentStatusTimeout);
+    paymentStatusTimeout = null;
+  }
+  
   try {
     await initializeCheckout();
   } finally {
@@ -128,10 +158,21 @@ const reloadCheckout = async () => {
 };
 
 const initializeCheckout = async () => {
+  if (!orderId.value || !orderKey.value) {
+    error.value = 'Invalid order details. Please contact support.';
+    loading.value = false;
+    return;
+  }
+  
   try {
     const response = await fetch(
-      `${process.env.GQL_HOST.replace('graphql', '')}?wc-api=BTCPay_Checkout&order_id=${orderId.value}&key=${orderKey.value}`
+      `${getApiUrl()}?wc-api=BTCPay_Checkout&order_id=${orderId.value}&key=${orderKey.value}`,
+      { credentials: 'include' }
     );
+    
+    if (!response.ok) {
+      throw new Error(`Failed to initialize checkout: ${response.status}`);
+    }
     
     const data = await response.json();
     
@@ -144,37 +185,36 @@ const initializeCheckout = async () => {
     invoiceId.value = data.invoiceId;
 
     if (checkoutMode.value === 'modal') {
+      // Load modal script
       const script = document.createElement('script');
       script.src = data.modalScriptUrl;
       document.head.appendChild(script);
+      
       script.onload = () => {
-          if (window.btcpay) {
-              window.btcpay.modal(invoiceId.value);
-          }
-      }
+        if (window.btcpay && invoiceId.value) {
+          window.btcpay.modal(invoiceId.value);
+        }
+      };
     }
 
+    // Start polling for payment status
     checkPaymentStatus();
   } catch (e) {
-    error.value = 'Failed to load payment details. Please try again.';
-    console.error('BTCPay error:', e);
+    error.value = typeof e === 'string' ? e : e.message || 'Failed to load payment details.';
+    console.error('BTCPay initialization error:', e);
   } finally {
     loading.value = false;
   }
 };
 
 onMounted(() => {
-  if (!orderId.value || !orderKey.value) {
-    error.value = 'Invalid order details. Please contact support.';
-    loading.value = false;
-    return;
-  }
   initializeCheckout();
 });
 
 onUnmounted(() => {
   if (paymentStatusTimeout) {
     clearTimeout(paymentStatusTimeout);
+    paymentStatusTimeout = null;
   }
 });
 </script>
@@ -186,5 +226,18 @@ onUnmounted(() => {
 
 .btcpay-checkout-container:hover {
   @apply transform scale-[1.01];
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>

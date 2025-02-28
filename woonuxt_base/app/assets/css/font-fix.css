@@ -1,0 +1,22 @@
+/* Font fix for the site */
+body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+} 
+
+/* Font fixes */
+body {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Notable', Arial, Helvetica, sans-serif !important;
+}
+
+/* Fallback font */
+@font-face {
+  font-family: 'Notable';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Arial Bold'), local('Arial-Bold'), local('ArialBold');
+  font-display: swap;
+} 
