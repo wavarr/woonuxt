@@ -1,65 +1,51 @@
-import { ref } from 'vue';
-import { useRuntimeConfig } from '#app';
+import { ref, watch } from 'vue';
+import { useAsyncQuery } from './useAsyncQuery';
 
-export const useCart = () => {
-  const config = useRuntimeConfig();
+const CART_QUERY = `
+  query GetCart {
+    cart {
+      contents {
+        nodes {
+          key
+          product {
+            node {
+              id
+              name
+              price
+            }
+          }
+          quantity
+          total
+        }
+      }
+      total
+    }
+  }
+`;
+
+export function useCart() {
   const cart = ref(null);
-  const loading = ref(false);
+  const isUpdatingCart = ref(false);
   const error = ref(null);
 
-  const CART_QUERY = `
-    query GetCart {
-      cart {
-        contents {
-          nodes {
-            key
-            product {
-              node {
-                id
-                name
-                price
-              }
-            }
-            quantity
-            total
-          }
-        }
-        total
-      }
-    }
-  `;
+  const { result, loading, refetch } = useAsyncQuery(CART_QUERY);
 
-  const fetchCart = async () => {
-    loading.value = true;
-    error.value = null;
-
+  const refreshCart = async () => {
     try {
-      const response = await fetch(config.public.GRAPHQL_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-WP-Guest-Access': 'true'
-        },
-        body: JSON.stringify({
-          query: CART_QUERY
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.errors) {
-        throw new Error(result.errors[0].message);
-      }
-
-      cart.value = result.data.cart;
+      await refetch();
+      cart.value = result.value?.cart;
     } catch (e) {
       error.value = e.message;
-      console.error('Cart error:', e);
-    } finally {
-      loading.value = false;
+      console.error('Error refreshing cart:', e);
     }
   };
+
+  // Watch for result changes
+  watch(() => result.value, (newResult) => {
+    if (newResult?.cart) {
+      cart.value = newResult.cart;
+    }
+  });
 
   const updateQuantity = async (key, quantity) => {
     // Implementation for updating quantity
@@ -77,9 +63,10 @@ export const useCart = () => {
     cart,
     loading,
     error,
-    fetchCart,
+    isUpdatingCart,
+    refreshCart,
     updateQuantity,
     removeItem,
     clearCart
   };
-}; 
+} 

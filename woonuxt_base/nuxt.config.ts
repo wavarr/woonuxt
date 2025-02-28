@@ -72,7 +72,7 @@ export default defineNuxtConfig({
   },
 
   hooks: {
-    'pages:extend'(pages) {
+    'pages:extend'(pages: any) {
       const addPage = (name: string, path: string, file: string) => {
         pages.push({ name, path, file: resolve(`./app/pages/${file}`) });
       };
@@ -134,5 +134,13 @@ export default defineNuxtConfig({
         }
       }
     }
+  },
+
+  build: {
+    transpile: [
+      '@apollo/client',
+      '@vue/apollo-composable',
+      'ts-invariant/process'
+    ]
   },
 });
