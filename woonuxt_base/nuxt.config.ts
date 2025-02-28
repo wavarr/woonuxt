@@ -118,7 +118,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      GRAPHQL_URL: 'https://modaprimeusa.com/graphql',
+      GRAPHQL_URL: process.env.GRAPHQL_URL || 'https://your-wordpress-site.com/graphql',
       FRONT_END_URL: 'https://store.modaprimeusa.com',
       PRODUCTS_PER_PAGE: 15,
       "graphql-client": {

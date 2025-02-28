@@ -7,10 +7,17 @@ const cart = ref(null);
 const isCartOpen = ref(false);
 const isUpdatingCart = ref(false);
 const isBillingAddressEnabled = ref(true);
+const loading = ref(false);
+const error = ref(null);
 
 export function useCart() {
   // Refresh the cart data
   const refreshCart = async () => {
+    if (!cart.value) {
+      console.warn('Cart is not initialized');
+      return;
+    }
+    
     try {
       isUpdatingCart.value = true;
       
@@ -28,8 +35,8 @@ export function useCart() {
       
       cart.value = cartData.value?.cart;
       return cart.value;
-    } catch (err) {
-      console.error('Error refreshing cart:', err);
+    } catch (e) {
+      console.error('Error refreshing cart:', e);
       return null;
     } finally {
       isUpdatingCart.value = false;
@@ -203,6 +210,8 @@ export function useCart() {
     isCartOpen,
     isUpdatingCart,
     isBillingAddressEnabled,
+    loading,
+    error,
     refreshCart,
     addToCart,
     updateItemQuantity,
