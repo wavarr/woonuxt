@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from 'vue';
+import { ref, computed, onBeforeMount, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useCart } from '~/composables/useCart';
@@ -9,18 +9,22 @@ import { useRuntimeConfig, useSeoMeta } from '#imports';
 
 const { t } = useI18n();
 const { query } = useRoute();
-const { cart, isUpdatingCart, paymentGateways } = useCart();
+const { cart, loading, error, fetchCart } = useCart();
 const { customer, viewer } = useAuth();
 const { orderInput, isProcessingOrder, proccessCheckout } = useCheckout();
 
 const buttonText = ref<string>(isProcessingOrder.value ? t('messages.general.processing') : t('messages.shop.checkoutButton'));
-const isCheckoutDisabled = computed<boolean>(() => isProcessingOrder.value || isUpdatingCart.value || !orderInput.value.paymentMethod);
+const isCheckoutDisabled = computed<boolean>(() => isProcessingOrder.value || loading.value || !orderInput.value.paymentMethod);
 
 const isInvalidEmail = ref<boolean>(false);
 const isPaid = ref<boolean>(false);
 
 onBeforeMount(async () => {
   if (query.cancel_order) window.close();
+});
+
+onMounted(() => {
+  fetchCart();
 });
 
 const payNow = async () => {
@@ -62,9 +66,12 @@ const hasBillingAddress = computed(() => {
 
 <template>
   <div class="flex flex-col min-h-[600px]">
-    <LoadingIcon v-if="!cart" class="m-auto" />
+    <LoadingIcon v-if="loading" class="m-auto" />
     <template v-else>
-      <div v-if="cart.isEmpty" class="flex flex-col items-center justify-center flex-1 mb-12">
+      <div v-if="error" class="text-red-600 bg-red-50 p-4 rounded">
+        {{ error }}
+      </div>
+      <div v-else-if="cart.isEmpty" class="flex flex-col items-center justify-center flex-1 mb-12">
         <div class="mb-20 text-xl text-gray-300">{{ $t('messages.shop.cartEmpty') }}</div>
       </div>
 
