@@ -1,4 +1,5 @@
 // composables/useAsyncQuery.js
+import { ref } from 'vue';
 import { useQuery } from '@vue/apollo-composable';
 
 export function useAsyncQuery(document, variables = {}, options = {}) {
@@ -8,4 +9,3 @@ export function useAsyncQuery(document, variables = {}, options = {}) {
     ...options
   });
 }
-thoughts?
