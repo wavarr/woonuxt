@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeMount, onMounted } from 'vue';
+import { ref, computed, onBeforeMount, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useCart } from '~/composables/useCart';
@@ -9,12 +9,21 @@ import { useRuntimeConfig, useSeoMeta } from '#imports';
 
 const { t } = useI18n();
 const { query } = useRoute();
-const { cart, loading, error, fetchCart } = useCart();
+const { cart, loading: cartLoading, error: cartError, fetchCart } = useCart();
 const { customer, viewer } = useAuth();
-const { orderInput, isProcessingOrder, proccessCheckout } = useCheckout();
+const { 
+  currentStep, 
+  checkoutData, 
+  loading: checkoutLoading, 
+  error: checkoutError,
+  nextStep,
+  prevStep,
+  validateStep,
+  placeOrder
+} = useCheckout();
 
-const buttonText = ref<string>(isProcessingOrder.value ? t('messages.general.processing') : t('messages.shop.checkoutButton'));
-const isCheckoutDisabled = computed<boolean>(() => isProcessingOrder.value || loading.value || !orderInput.value.paymentMethod);
+const buttonText = ref<string>(checkoutLoading.value ? t('messages.general.processing') : t('messages.shop.checkoutButton'));
+const isCheckoutDisabled = computed<boolean>(() => checkoutLoading.value || cartLoading.value || !checkoutData.payment.method);
 
 const isInvalidEmail = ref<boolean>(false);
 const isPaid = ref<boolean>(false);
@@ -29,7 +38,7 @@ onMounted(() => {
 
 const payNow = async () => {
   buttonText.value = t('messages.general.processing');
-  proccessCheckout(isPaid.value);
+  placeOrder();
 };
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -62,27 +71,74 @@ const hasBillingAddress = computed(() => {
     customer.value?.billing?.country
   );
 });
+
+// Update shipping address when sameAsBilling changes
+watch(() => checkoutData.shipping.sameAsBilling, (newValue) => {
+  if (newValue) {
+    Object.keys(checkoutData.shipping).forEach(key => {
+      if (key !== 'sameAsBilling') {
+        checkoutData.shipping[key] = checkoutData.billing[key];
+      }
+    });
+  }
+});
 </script>
 
 <template>
-  <div class="flex flex-col min-h-[600px]">
-    <LoadingIcon v-if="loading" class="m-auto" />
-    <template v-else>
-      <div v-if="error" class="text-red-600 bg-red-50 p-4 rounded">
-        {{ error }}
+  <div class="container mx-auto px-4 py-8">
+    <!-- Checkout Progress -->
+    <div class="mb-8">
+      <div class="flex justify-between items-center">
+        <div v-for="step in 3" :key="step" 
+             class="flex items-center"
+             :class="{ 'text-green-600': currentStep >= step }">
+          <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center"
+               :class="{ 'border-green-600 bg-green-600 text-white': currentStep >= step }">
+            {{ step }}
+          </div>
+          <div class="ml-2">
+            {{ step === 1 ? 'Billing' : step === 2 ? 'Shipping' : 'Payment' }}
+          </div>
+          <div v-if="step < 3" class="w-24 h-1 mx-4"
+               :class="{ 'bg-green-600': currentStep > step, 'bg-gray-200': currentStep <= step }">
+          </div>
+        </div>
       </div>
-      <div v-else-if="cart.isEmpty" class="flex flex-col items-center justify-center flex-1 mb-12">
-        <div class="mb-20 text-xl text-gray-300">{{ $t('messages.shop.cartEmpty') }}</div>
-      </div>
+    </div>
 
-      <form v-else class="container flex flex-wrap items-start gap-8 my-16 justify-evenly lg:gap-20" @submit.prevent="payNow">
-        <div class="grid w-full max-w-2xl gap-8 checkout-form md:flex-1">
-          <!-- Customer details -->
-          <div v-if="!viewer">
-            <h2 class="w-full mb-2 text-2xl font-semibold leading-none">Contact Information</h2>
-            <p class="mt-1 text-sm text-gray-500">Already have an account? <a href="/my-account" class="text-primary text-semibold">Log in</a>.</p>
-            <div class="w-full mt-4">
-              <label for="billing_email">{{ $t('messages.billing.email') }}</label>
+    <!-- Error Messages -->
+    <div v-if="cartError || checkoutError" 
+         class="mb-6 p-4 bg-red-50 text-red-600 rounded">
+      {{ cartError || checkoutError }}
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="cartLoading || checkoutLoading" 
+         class="flex justify-center items-center h-64">
+      <div class="animate-spin rounded-full h-12 w-12 border-4 border-green-600 border-t-transparent"></div>
+    </div>
+
+    <div v-else class="flex flex-wrap -mx-4">
+      <!-- Checkout Forms -->
+      <div class="w-full lg:w-2/3 px-4">
+        <!-- Step 1: Billing -->
+        <div v-show="currentStep === 1" class="bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-2xl font-bold mb-6">Billing Information</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">First Name</label>
+              <input v-model="checkoutData.billing.firstName" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Last Name</label>
+              <input v-model="checkoutData.billing.lastName" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Email</label>
               <input
                 v-model="customer.billing.email"
                 placeholder="johndoe@email.com"
@@ -97,109 +153,206 @@ const hasBillingAddress = computed(() => {
                 <div v-if="isInvalidEmail" class="mt-1 text-sm text-red-500">Invalid email address</div>
               </Transition>
             </div>
-            <template v-if="orderInput.createAccount">
-              <div class="w-full mt-4">
-                <label for="username">{{ $t('messages.account.username') }}</label>
-                <input 
-                  v-model="orderInput.username" 
-                  placeholder="Username" 
-                  type="text" 
-                  id="username"
-                  name="username" 
-                  required 
-                />
-              </div>
-              <div class="w-full my-2">
-                <label for="password">{{ $t('messages.account.password') }}</label>
-                <PasswordInput 
-                  id="password"
-                  name="password" 
-                  class="my-2" 
-                  v-model="orderInput.password" 
-                  placeholder="Password" 
-                  :required="true" 
-                />
-              </div>
-            </template>
-            <div v-if="!viewer" class="flex items-center gap-2 my-2">
-              <label for="creat-account">Create an account?</label>
-              <input id="creat-account" v-model="orderInput.createAccount" type="checkbox" name="creat-account" />
+            <div>
+              <label class="block text-sm font-medium mb-1">Phone</label>
+              <input v-model="customer.billing.phone" 
+                     type="tel" 
+                     class="w-full p-2 border rounded">
             </div>
-          </div>
-
-          <div v-if="!cart?.isEmpty" class="mb-6">
-            <h2 class="text-xl font-bold mb-4">Your Information</h2>
-            
-            <!-- Show current addresses if they exist -->
-            <div v-if="hasBillingAddress" class="mb-4 p-4 bg-gray-50 rounded">
-              <h3 class="font-medium mb-2">Current Billing Address:</h3>
-              <p>{{ customer.billing.address1 }}</p>
-              <p>{{ customer.billing.city }}, {{ customer.billing.state }} {{ customer.billing.postcode }}</p>
-              <p>{{ customer.billing.country }}</p>
+            <div>
+              <label class="block text-sm font-medium mb-1">Address</label>
+              <input v-model="customer.billing.address1" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
             </div>
-
-            <!-- Always show the "Ship to different address" option -->
-            <div class="mb-4">
-              <label class="flex items-center gap-2">
-                <input 
-                  type="checkbox" 
-                  v-model="orderInput.shipToDifferentAddress"
-                  class="form-checkbox"
-                />
-                <span>Ship to a different address?</span>
-              </label>
+            <div>
+              <label class="block text-sm font-medium mb-1">City</label>
+              <input v-model="customer.billing.city" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
             </div>
-
-            <!-- Show shipping form if checked -->
-            <div v-if="orderInput.shipToDifferentAddress">
-              <h3 class="font-medium mb-2">Shipping Address:</h3>
-              <ShippingDetails 
-                v-model="customer.shipping"
-                :is-visible="true"
-              />
+            <div>
+              <label class="block text-sm font-medium mb-1">State</label>
+              <input v-model="customer.billing.state" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
             </div>
-          </div>
-
-          <!-- Shipping methods -->
-          <div v-if="cart.availableShippingMethods.length">
-            <h3 class="mb-4 text-xl font-semibold">{{ $t('messages.general.shippingSelect') }}</h3>
-            <ShippingOptions :options="cart.availableShippingMethods[0].rates" :active-option="cart.chosenShippingMethods[0]" />
-          </div>
-
-          <!-- Pay methods -->
-          <div v-if="paymentGateways.nodes.length" class="mt-2 col-span-full">
-            <h2 class="mb-4 text-xl font-semibold">{{ $t('messages.billing.paymentOptions') }}</h2>
-            <PaymentOptions 
-              v-model="orderInput.paymentMethod" 
-              class="mb-4" 
-              :payment-gateways="paymentGateways" 
-            />
-          </div>
-
-          <!-- Order note -->
-          <div>
-            <h2 class="mb-4 text-xl font-semibold">{{ $t('messages.shop.orderNote') }} ({{ $t('messages.general.optional') }})</h2>
-            <textarea
-              id="order-note"
-              v-model="orderInput.customerNote"
-              name="order-note"
-              class="w-full"
-              rows="4"
-              :placeholder="$t('messages.shop.orderNotePlaceholder')"></textarea>
+            <div>
+              <label class="block text-sm font-medium mb-1">Postcode</label>
+              <input v-model="customer.billing.postcode" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Country</label>
+              <input v-model="customer.billing.country" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
           </div>
         </div>
 
-        <OrderSummary>
-          <button
-            class="flex items-center justify-center w-full gap-3 p-3 mt-4 font-semibold text-center text-white rounded-lg shadow-md bg-primary hover:bg-primary-dark disabled:cursor-not-allowed disabled:bg-gray-400"
-            :disabled="isCheckoutDisabled">
-            {{ buttonText }}<LoadingIcon v-if="isProcessingOrder" color="#fff" size="18" />
+        <!-- Step 2: Shipping -->
+        <div v-show="currentStep === 2" class="bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-2xl font-bold mb-6">Shipping Information</h2>
+          <div class="mb-4">
+            <label class="flex items-center">
+              <input type="checkbox" 
+                     v-model="checkoutData.shipping.sameAsBilling"
+                     class="mr-2">
+              Same as billing address
+            </label>
+          </div>
+          <div v-if="!checkoutData.shipping.sameAsBilling" 
+               class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">First Name</label>
+              <input v-model="checkoutData.shipping.firstName" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Last Name</label>
+              <input v-model="checkoutData.shipping.lastName" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Address</label>
+              <input v-model="checkoutData.shipping.address1" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">City</label>
+              <input v-model="checkoutData.shipping.city" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">State</label>
+              <input v-model="checkoutData.shipping.state" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Postcode</label>
+              <input v-model="checkoutData.shipping.postcode" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">Country</label>
+              <input v-model="checkoutData.shipping.country" 
+                     type="text" 
+                     class="w-full p-2 border rounded">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment -->
+        <div v-show="currentStep === 3" class="bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-2xl font-bold mb-6">Payment Information</h2>
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">Payment Method</label>
+              <select v-model="checkoutData.payment.method" 
+                      class="w-full p-2 border rounded">
+                <option value="card">Credit Card</option>
+                <option value="cod">Cash on Delivery</option>
+              </select>
+            </div>
+            <div v-if="checkoutData.payment.method === 'card'" 
+                 class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-1">Card Number</label>
+                <input v-model="checkoutData.payment.cardNumber" 
+                       type="text" 
+                       class="w-full p-2 border rounded">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">Expiry Date</label>
+                <input v-model="checkoutData.payment.expiryDate" 
+                       type="text" 
+                       class="w-full p-2 border rounded">
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">CVV</label>
+                <input v-model="checkoutData.payment.cvv" 
+                       type="text" 
+                       class="w-full p-2 border rounded">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="mt-6 flex justify-between">
+          <button v-if="currentStep > 1" 
+                  @click="prevStep"
+                  class="px-6 py-2 bg-gray-200 rounded hover:bg-gray-300">
+            Back
           </button>
-        </OrderSummary>
-      </form>
-    </template>
+          <button v-if="currentStep < 3" 
+                  @click="nextStep"
+                  :disabled="!validateStep(currentStep)"
+                  class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">
+            Continue
+          </button>
+          <button v-else 
+                  @click="placeOrder"
+                  :disabled="!validateStep(currentStep)"
+                  class="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50">
+            Place Order
+          </button>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="w-full lg:w-1/3 px-4 mt-8 lg:mt-0">
+        <div class="bg-white p-6 rounded-lg shadow-sm sticky top-4">
+          <h3 class="text-xl font-bold mb-4">Order Summary</h3>
+          <div v-if="cart?.contents?.nodes?.length" class="space-y-4">
+            <div v-for="item in cart.contents.nodes" 
+                 :key="item.key" 
+                 class="flex items-center space-x-4">
+              <img v-if="item.product.node.image?.sourceUrl" 
+                   :src="item.product.node.image.sourceUrl"
+                   :alt="item.product.node.image.altText"
+                   class="w-16 h-16 object-cover rounded">
+              <div>
+                <h4 class="font-medium">{{ item.product.node.name }}</h4>
+                <p class="text-sm text-gray-600">
+                  Qty: {{ item.quantity }} × {{ item.product.node.price }}
+                </p>
+              </div>
+            </div>
+
+            <div class="border-t pt-4 space-y-2">
+              <div class="flex justify-between">
+                <span>Subtotal</span>
+                <span>{{ cart.subtotal }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Shipping</span>
+                <span>{{ cart.shippingTotal }}</span>
+              </div>
+              <div v-if="cart.appliedCoupons?.length" class="flex justify-between text-green-600">
+                <span>Discount</span>
+                <span>-{{ cart.discountTotal }}</span>
+              </div>
+              <div class="flex justify-between font-bold text-lg">
+                <span>Total</span>
+                <span>{{ cart.total }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
 <style lang="postcss">
 .checkout-form input[type='text'],
 .checkout-form input[type='email'],
@@ -217,5 +370,28 @@ const hasBillingAddress = computed(() => {
 
 .checkout-form label {
   @apply my-1.5 text-xs text-gray-600 uppercase;
+}
+
+.sticky {
+  position: sticky;
+  top: 1rem;
+}
+
+input:focus, select:focus {
+  outline: 2px solid #059669;
+  outline-offset: -2px;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
