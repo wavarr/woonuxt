@@ -36,6 +36,10 @@ onMounted(() => {
   fetchCart();
 });
 
+onMounted(() => {
+  fetchCart();
+});
+
 const payNow = async () => {
   buttonText.value = t('messages.general.processing');
   placeOrder();
