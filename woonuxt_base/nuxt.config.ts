@@ -44,7 +44,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n'
   ],
 
-  'graphql-client': {
+  graphqlClient: {
     codegen: {
       skipTypesGeneration: true,
       generates: {
