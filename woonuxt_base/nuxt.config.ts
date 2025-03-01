@@ -1,4 +1,5 @@
 import { createResolver } from '@nuxt/kit';
+import { defineNuxtConfig } from 'nuxt/config';
 const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
@@ -10,14 +11,16 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-                     link: [{ rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
-             { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
-             { rel: 'apple-touch-icon-precomposed', href: '/apple-touch-icon-precomposed.png' }],
+      link: [
+        { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'apple-touch-icon-precomposed', href: '/apple-touch-icon-precomposed.png' }
+      ],
     },
     pageTransition: { name: 'page', mode: 'default' },
   },
 
-  experimental: { v                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+  experimental: {
     sharedPrerenderData: true,
     buildCache: true,
     defaults: {
