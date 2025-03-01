@@ -9,8 +9,8 @@
   },
   "scripts": {
     "dev": "nuxt dev",
-    "build": "nuxt build",
-    "generate": "nuxt generate",
+    "build": "mkdir -p .vercel/output/static && cp -r public/* .vercel/output/static/",
+    "generate": "nuxt generate --standalone",
     "preview": "nuxt preview"
   }
 }

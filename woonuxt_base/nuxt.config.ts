@@ -1,6 +1,4 @@
-import { createResolver } from '@nuxt/kit';
 import { defineNuxtConfig } from 'nuxt/config';
-const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
   app: {
@@ -11,8 +9,6 @@ export default defineNuxtConfig({
       ],
     }
   },
-
-  components: [{ path: resolve('./app/components'), pathPrefix: false }],
 
   modules: [
     'nuxt-graphql-client'
@@ -31,7 +27,8 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'node-server'
+    preset: 'vercel',
+    serveStatic: true
   },
 
   runtimeConfig: {

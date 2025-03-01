@@ -12,19 +12,20 @@ node_modules
 # Logs
 logs
 *.log
-.vercel
+.vercel/**
 # Misc
 .DS_Store
 .fleet
 .idea
-
+output
 # Local env files
 .env
 .env.*
 !.env.example
-
+woonuxt_base/.vercel
 # Local Netlify folder
 .netlify
 
 *.pem
 woonuxt_base/app/components/TestGraphQL/TestGraphQL.vue
+**/woonuxt_base/.vercel/**
