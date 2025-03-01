@@ -26,17 +26,10 @@ export default defineNuxtConfig({
     }
   },
 
-  nitro: {
-    preset: 'static',
-    serveStatic: true
-  },
-
   runtimeConfig: {
     public: {
       GRAPHQL_URL: process.env.GRAPHQL_URL || 'https://modaprimeusa.com/graphql',
       FRONT_END_URL: 'https://store.modaprimeusa.com'
     }
-  },
-
-  ssr: false
+  }
 });
