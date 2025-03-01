@@ -36,7 +36,13 @@ const mergeLiveStockStatus = (payload: Product): void => {
   });
 };
 
+// Use a ref to track if we're on the client side
+const isClient = ref(false);
+
 onMounted(async () => {
+  // Set isClient to true when component is mounted (client-side only)
+  isClient.value = true;
+  
   try {
     const { product } = await GqlGetStockStatus({ slug });
     if (product) mergeLiveStockStatus(product as Product);
@@ -108,7 +114,13 @@ const disabledAddToCart = computed(() => {
           <div class="grid gap-2 my-8 text-sm empty:hidden">
             <div v-if="!isExternalProduct" class="flex items-center gap-2">
               <span class="text-gray-400">{{ $t('messages.shop.availability') }}: </span>
-              <StockStatus :stockStatus @updated="mergeLiveStockStatus" />
+              <!-- Use client-only for stock status to prevent hydration mismatch -->
+              <ClientOnly>
+                <StockStatus :stockStatus @updated="mergeLiveStockStatus" />
+                <template #fallback>
+                  <span>{{ $t('messages.shop.loading') }}</span>
+                </template>
+              </ClientOnly>
             </div>
             <div class="flex items-center gap-2" v-if="storeSettings.showSKU && product.sku">
               <span class="text-gray-400">{{ $t('messages.shop.sku') }}: </span>
@@ -120,33 +132,41 @@ const disabledAddToCart = computed(() => {
 
           <hr />
 
-          <form @submit.prevent="addToCart(selectProductInput)">
-            <AttributeSelections
-              v-if="isVariableProduct && product.attributes && product.variations"
-              class="mt-4 mb-8"
-              :attributes="product.attributes.nodes"
-              :defaultAttributes="product.defaultAttributes"
-              :variations="product.variations.nodes"
-              @attrs-changed="updateSelectedVariations" />
-            <div
-              v-if="isVariableProduct || isSimpleProduct"
-              class="fixed bottom-0 left-0 z-10 flex items-center w-full gap-4 p-4 mt-12 bg-white md:static md:bg-transparent bg-opacity-90 md:p-0">
-              <input
-                v-model="quantity"
-                type="number"
-                min="1"
-                aria-label="Quantity"
-                class="bg-white border rounded-lg flex text-left p-2.5 w-20 gap-4 items-center justify-center focus:outline-none" />
-              <AddToCartButton class="flex-1 w-full md:max-w-xs" :disabled="disabledAddToCart" :class="{ loading: isUpdatingCart }" />
-            </div>
-            <a
-              v-if="isExternalProduct && product.externalUrl"
-              :href="product.externalUrl"
-              target="_blank"
-              class="rounded-lg flex font-bold bg-gray-800 text-white text-center min-w-[150px] p-2.5 gap-4 items-center justify-center focus:outline-none">
-              {{ product?.buttonText || 'View product' }}
-            </a>
-          </form>
+          <!-- Wrap the form in ClientOnly to prevent hydration mismatch -->
+          <ClientOnly>
+            <form @submit.prevent="addToCart(selectProductInput)">
+              <AttributeSelections
+                v-if="isVariableProduct && product.attributes && product.variations"
+                class="mt-4 mb-8"
+                :attributes="product.attributes.nodes"
+                :defaultAttributes="product.defaultAttributes"
+                :variations="product.variations.nodes"
+                @attrs-changed="updateSelectedVariations" />
+              <div
+                v-if="isVariableProduct || isSimpleProduct"
+                class="fixed bottom-0 left-0 z-10 flex items-center w-full gap-4 p-4 mt-12 bg-white md:static md:bg-transparent bg-opacity-90 md:p-0">
+                <input
+                  v-model="quantity"
+                  type="number"
+                  min="1"
+                  aria-label="Quantity"
+                  class="bg-white border rounded-lg flex text-left p-2.5 w-20 gap-4 items-center justify-center focus:outline-none" />
+                <AddToCartButton class="flex-1 w-full md:max-w-xs" :disabled="disabledAddToCart" :class="{ loading: isUpdatingCart }" />
+              </div>
+              <a
+                v-if="isExternalProduct && product.externalUrl"
+                :href="product.externalUrl"
+                target="_blank"
+                class="rounded-lg flex font-bold bg-gray-800 text-white text-center min-w-[150px] p-2.5 gap-4 items-center justify-center focus:outline-none">
+                {{ product?.buttonText || 'View product' }}
+              </a>
+            </form>
+            <template #fallback>
+              <div class="mt-4 p-4 bg-gray-100 rounded-lg">
+                <p>{{ $t('messages.shop.loading') }}</p>
+              </div>
+            </template>
+          </ClientOnly>
 
           <div v-if="storeSettings.showProductCategoriesOnSingleProduct && product.productCategories">
             <div class="grid gap-2 my-8 text-sm">

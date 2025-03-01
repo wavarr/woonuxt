@@ -59,19 +59,7 @@ export default defineNuxtConfig({
           'Origin': process.env.APP_HOST || 'https://store.modaprimeusaa.com',
           'X-WP-Guest-Access': 'true'
         },
-        proxyCookies: false,
-        clientOptions: {
-          defaultOptions: {
-            watchQuery: {
-              fetchPolicy: 'no-cache',
-              errorPolicy: 'all',
-            },
-            query: {
-              fetchPolicy: 'no-cache',
-              errorPolicy: 'all',
-            },
-          },
-        },
+        proxyCookies: false
       },
     },
   },

@@ -13,11 +13,6 @@ const error = ref(null);
 export function useCart() {
   // Refresh the cart data
   const refreshCart = async () => {
-    if (!cart.value) {
-      console.warn('Cart is not initialized');
-      return;
-    }
-    
     try {
       isUpdatingCart.value = true;
       
@@ -30,14 +25,14 @@ export function useCart() {
       
       if (error) {
         console.error('Error refreshing cart:', error);
-        return null;
+        return false;
       }
       
       cart.value = cartData.value?.cart;
-      return cart.value;
+      return true;
     } catch (e) {
       console.error('Error refreshing cart:', e);
-      return null;
+      return false;
     } finally {
       isUpdatingCart.value = false;
     }
@@ -46,6 +41,16 @@ export function useCart() {
   // Add to cart function
   const addToCart = async (input) => {
     try {
+      // Check if cart is initialized, if not, initialize it first
+      if (!cart.value) {
+        console.log('Cart is not initialized, initializing now...');
+        const success = await refreshCart();
+        if (!success) {
+          console.error('Failed to initialize cart');
+          return { error: 'Failed to initialize cart' };
+        }
+      }
+      
       isUpdatingCart.value = true;
       
       const { data, error } = await useAsyncQuery('addToCart', { input });

@@ -21,7 +21,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       initialised = true;
 
       const { refreshCart } = useCart();
-      const success: boolean = await refreshCart();
+      console.log('Initializing cart...');
+      const success = await refreshCart();
+      console.log('Cart initialization result:', success ? 'success' : 'failed');
 
       useGqlError((err: any) => {
         const serverErrors = ['The iss do not match with this server', 'Invalid session token'];
@@ -56,13 +58,15 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     const isDev = process.env.NODE_ENV === 'development';
 
     // Check if the current route path is one of the pages that need immediate initialization
-    const pagesToInitializeRightAway = ['/checkout', '/my-account', '/order-summary'];
-    const isPathThatRequiresInit = pagesToInitializeRightAway.some((page) => useRoute().path.includes(page));
+    const pagesToInitializeRightAway = ['/checkout', '/my-account', '/order-summary', '/product/'];
+    const route = useRoute();
+    const isPathThatRequiresInit = pagesToInitializeRightAway.some((page) => route.path.includes(page));
 
     const shouldInit = isDev || isPathThatRequiresInit || !storeSettings.initStoreOnUserActionToReduceServerLoad;
 
     if (shouldInit) {
-      initStore();
+      // Initialize immediately but don't block the page load
+      setTimeout(initStore, 0);
     } else {
       eventsToFireOn.forEach((event) => {
         window.addEventListener(event, initStore, { once: true });
