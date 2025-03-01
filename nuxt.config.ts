@@ -34,7 +34,36 @@ export default defineNuxtConfig({
     transpile: [
       '@apollo/client',
       '@vue/apollo-composable',
-      'ts-invariant/process'
+      'ts-invariant/process',
+      'woonuxt-settings',
+      'graphql'
     ]
+  },
+
+  // Fix server-only imports in client bundle
+  vite: {
+    build: {
+      rollupOptions: {
+        external: ['@nuxt/kit'],
+        // Prevent graphql from being included in manualChunks and treated as external
+        onwarn(warning, warn) {
+          if (warning.code === 'EXTERNAL_PACKAGE' && warning.id && warning.id.includes('graphql')) {
+            return;
+          }
+          warn(warning);
+        }
+      }
+    },
+    ssr: {
+      noExternal: ['woonuxt-settings', 'graphql']
+    },
+    optimizeDeps: {
+      include: ['graphql'],
+      exclude: []
+    },
+    // Ensure graphql is properly handled
+    resolve: {
+      dedupe: ['graphql']
+    }
   }
 });
