@@ -89,13 +89,14 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    preset: 'vercel',
     routeRules: {
       '/': { prerender: true },
       '/products/**': { swr: 3600 },
-      '/checkout/order-received/**': { ssr: false },
-      '/order-summary/**': { ssr: false },
+      '/checkout/order-received/**': { static: false },
+      '/order-summary/**': { static: false },
       '/api/**': { cors: true }
-    },
+    }
   },
 
   // Handle 404 and other errors gracefully
@@ -133,6 +134,35 @@ export default defineNuxtConfig({
               "X-WP-Guest-Access": "true"
             },
             proxyCookies: false
+          }
+        }
+      }
+    }
+  },
+
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor': [
+              '@apollo/client',
+              '@vue/apollo-composable',
+              'graphql'
+            ],
+            'woo': [
+              'woonuxt-settings'
+            ],
+            'ui': [
+              '@nuxtjs/tailwindcss',
+              '@nuxt/icon',
+              '@nuxt/image'
+            ],
+            'shop': [
+              './composables/useCart',
+              './composables/useCheckout',
+              './composables/useProducts'
+            ]
           }
         }
       }
