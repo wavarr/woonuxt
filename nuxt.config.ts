@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
 
   // Get all the pages, components, composables and plugins from the parent theme
-  extends: ['./woonuxt_base'],
+  extends: ['./woonuxt_base/'],
 
   components: [{ path: './components', pathPrefix: false }],
 
@@ -15,17 +15,17 @@ export default defineNuxtConfig({
    */
   nitro: {
     prerender: {
-      concurrency: 10,
-      interval: 1000,
+      concurrency: 1,
+      interval: 0,
       failOnError: false,
     },
   },
 
   runtimeConfig: {
     public: {
-      GRAPHQL_URL: process.env.GRAPHQL_URL,
+      GRAPHQL_URL: process.env.GQL_HOST,
       APOLLO_HTTP_OPTIONS: {
-        credentials: 'include'
+        method: "post"
       }
     }
   },
@@ -44,26 +44,42 @@ export default defineNuxtConfig({
   vite: {
     build: {
       rollupOptions: {
-        external: ['@nuxt/kit'],
-        // Prevent graphql from being included in manualChunks and treated as external
+        external: [],
         onwarn(warning, warn) {
           if (warning.code === 'EXTERNAL_PACKAGE' && warning.id && warning.id.includes('graphql')) {
             return;
           }
           warn(warning);
-        }
-      }
-    },
-    ssr: {
-      noExternal: ['woonuxt-settings', 'graphql']
+        },
+      },
     },
     optimizeDeps: {
       include: ['graphql'],
-      exclude: []
     },
-    // Ensure graphql is properly handled
+    // Fix issues with server-only imports in client bundle
+    ssr: {
+      noExternal: ['woonuxt-settings', 'graphql']
+    },
+    // Prevent bundling issues with @nuxt/kit in client
     resolve: {
-      dedupe: ['graphql']
-    }
+      alias: {
+        '@nuxt/kit': '@nuxt/kit/dist/index.mjs',
+      }
+    },
+    plugins: [
+      {
+        name: 'fix-woonuxt-settings',
+        enforce: 'pre',
+        transform(code, id) {
+          // Handle the woonuxt-settings module imports
+          if (id.includes('woonuxt-settings') && code.includes('@nuxt/kit')) {
+            return {
+              code: code.replace(/from\s+['"]@nuxt\/kit['"]/g, "from '@nuxt/kit/dist/index.mjs'"),
+              map: null
+            };
+          }
+        }
+      }
+    ]
   }
 });

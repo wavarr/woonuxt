@@ -1,5 +1,4 @@
 import { createResolver } from '@nuxt/kit';
-import { defineNuxtConfig } from 'nuxt/config';
 const { resolve } = createResolver(import.meta.url);
 
 export default defineNuxtConfig({
@@ -11,11 +10,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      link: [
-        { rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
-        { rel: 'apple-touch-icon-precomposed', href: '/apple-touch-icon-precomposed.png' }
-      ],
+      link: [{ rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' }],
     },
     pageTransition: { name: 'page', mode: 'default' },
   },
@@ -33,49 +28,65 @@ export default defineNuxtConfig({
 
   plugins: [resolve('./app/plugins/init.ts')],
 
-  components: [{ path: resolve('./app/components'), pathPrefix: false }],
+  components: {
+    dirs: [
+      {
+        path: '~/components',
+        pathPrefix: false,
+        global: true
+      }
+    ]
+  },
 
   modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxt/image',
     'woonuxt-settings',
     'nuxt-graphql-client',
-    '@nuxtjs/tailwindcss',
     '@nuxt/icon',
-    '@nuxt/image',
     '@nuxtjs/i18n'
   ],
 
-  graphqlClient: {
-    codegen: {
-      skipTypesGeneration: true,
-      generates: {
-        './types/graphql.ts': {
-          plugins: ['typescript', 'typescript-operations']
-        }
-      }
-    },
+  'graphql-client': {
     clients: {
       default: {
-        host: process.env.GRAPHQL_URL || 'https://modaprimeusa.com/graphql',
+        host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
         corsOptions: { 
           mode: 'cors', 
           credentials: 'include' 
         },
         headers: {
-          'Origin': process.env.FRONT_END_URL || 'https://store.modaprimeusa.com',
+          'Origin': process.env.APP_HOST || 'https://store.modaprimeusaa.com',
           'X-WP-Guest-Access': 'true'
         },
-        proxyCookies: false
+        proxyCookies: false,
+        clientOptions: {
+          defaultOptions: {
+            watchQuery: {
+              fetchPolicy: 'no-cache',
+              errorPolicy: 'all',
+            },
+            query: {
+              fetchPolicy: 'no-cache',
+              errorPolicy: 'all',
+            },
+          },
+        },
       },
     },
   },
 
   alias: {
+    '#imports': './.nuxt/imports',
+    '#app': './.nuxt/app',
+    '~': './app',
+    '@': './app',
     '#constants': resolve('./app/constants'),
     '#woo': '../.nuxt/gql/default',
   },
 
   hooks: {
-    'pages:extend'(pages: any) {
+    'pages:extend'(pages) {
       const addPage = (name: string, path: string, file: string) => {
         pages.push({ name, path, file: resolve(`./app/pages/${file}`) });
       };
@@ -89,20 +100,12 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: 'vercel',
     routeRules: {
       '/': { prerender: true },
       '/products/**': { swr: 3600 },
-      '/checkout/order-received/**': { static: false },
-      '/order-summary/**': { static: false },
-      '/api/**': { cors: true }
-    }
-  },
-
-  // Handle 404 and other errors gracefully
-  routeRules: {
-    '/products': { static: false },
-    '/products/**': { static: false }
+      '/checkout/order-received/**': { ssr: false },
+      '/order-summary/**': { ssr: false },
+    },
   },
 
   // Multilingual support
@@ -122,9 +125,6 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      GRAPHQL_URL: process.env.GRAPHQL_URL || 'https://your-wordpress-site.com/graphql',
-      FRONT_END_URL: 'https://store.modaprimeusa.com',
-      PRODUCTS_PER_PAGE: 15,
       "graphql-client": {
         clients: {
           default: {
@@ -140,35 +140,43 @@ export default defineNuxtConfig({
     }
   },
 
+  typescript: {
+    strict: true,
+    typeCheck: false,
+    shim: false
+  },
+
+  build: {
+    transpile: ['vue-i18n']
+  },
+
   vite: {
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'vendor': [
-              '@apollo/client',
-              '@vue/apollo-composable',
-              'graphql'
-            ],
-            'woo': [
-              'woonuxt-settings'
-            ],
-            'ui': [
-              '@nuxtjs/tailwindcss',
-              '@nuxt/icon',
-              '@nuxt/image'
-            ]
-          }
-        }
+    vue: {
+      script: {
+        defineModel: true,
+        propsDestructure: true
       }
     }
   },
 
-  build: {
-    transpile: [
-      '@apollo/client',
-      '@vue/apollo-composable',
-      'ts-invariant/process'
+  imports: {
+    autoImport: true,
+    dirs: [
+      'composables/**',
+      'components/**'
     ]
+  },
+
+  routeRules: {
+    '/': { prerender: true },
+    '/products/**': { 
+      swr: 3600,
+      cache: {
+        maxAge: 3600,
+        staleMaxAge: 86400
+      }
+    },
+    '/checkout/order-received/**': { ssr: false },
+    '/order-summary/**': { ssr: false },
   },
 });
