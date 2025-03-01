@@ -87,14 +87,14 @@ const disabledAddToCart = computed(() => {
   <main class="container relative py-6 xl:max-w-7xl">
     <div v-if="product">
       <SEOHead :info="product" />
-      <Breadcrumb :product class="mb-6" v-if="storeSettings.showBreadcrumbOnSingleProduct" />
+      <Breadcrumb v-if="storeSettings.showBreadcrumbOnSingleProduct" :product="product" class="mb-6" />
 
       <div class="flex flex-col gap-10 md:flex-row md:justify-between lg:gap-24">
         <ProductImageGallery
           v-if="product.image"
           class="relative flex-1"
           :main-image="product.image"
-          :gallery="product.galleryImages!"
+          :gallery="product.galleryImages"
           :node="type"
           :activeVariation="activeVariation || {}" />
         <NuxtImg v-else class="relative flex-1 skeleton" src="/images/placeholder.jpg" :alt="product?.name || 'Product'" />
@@ -116,7 +116,7 @@ const disabledAddToCart = computed(() => {
               <span class="text-gray-400">{{ $t('messages.shop.availability') }}: </span>
               <!-- Use client-only for stock status to prevent hydration mismatch -->
               <ClientOnly>
-                <StockStatus :stockStatus @updated="mergeLiveStockStatus" />
+                <StockStatus :stockStatus="stockStatus" @updated="mergeLiveStockStatus" />
                 <template #fallback>
                   <span>{{ $t('messages.shop.loading') }}</span>
                 </template>
@@ -188,13 +188,13 @@ const disabledAddToCart = computed(() => {
           </div>
 
           <div class="flex flex-wrap gap-4">
-            <WishlistButton :product />
-            <ShareButton :product />
+            <WishlistButton :product="product" />
+            <ShareButton :product="product" />
           </div>
         </div>
       </div>
       <div v-if="product.description || product.reviews" class="my-32">
-        <ProductTabs :product />
+        <ProductTabs :product="product" />
       </div>
       <div class="my-32" v-if="product.related && storeSettings.showRelatedProducts">
         <div class="mb-4 text-xl font-semibold">{{ $t('messages.shop.youMayLike') }}</div>

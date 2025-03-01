@@ -1,6 +1,10 @@
 import { createResolver } from '@nuxt/kit';
 const { resolve } = createResolver(import.meta.url);
 
+// Define the GraphQL endpoint once to ensure consistency
+const GQL_HOST = process.env.GQL_HOST || 'https://modaprimeusa.com/graphql';
+const APP_HOST = process.env.APP_HOST || 'https://store.modaprimeusa.com';
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-12-26',
   future: {
@@ -50,16 +54,17 @@ export default defineNuxtConfig({
   'graphql-client': {
     clients: {
       default: {
-        host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
+        host: GQL_HOST,
         corsOptions: { 
           mode: 'cors', 
           credentials: 'include' 
         },
         headers: {
-          'Origin': process.env.APP_HOST || 'https://store.modaprimeusaa.com',
-          'X-WP-Guest-Access': 'true'
+          'Origin': APP_HOST,
+          'X-WP-Guest-Access': 'true',
+          'Content-Type': 'application/json'
         },
-        proxyCookies: false
+        proxyCookies: true // Enable cookie proxying to ensure session persistence
       },
     },
   },
@@ -116,12 +121,13 @@ export default defineNuxtConfig({
       "graphql-client": {
         clients: {
           default: {
-            host: "https://modaprimeusa.com/graphql",
+            host: GQL_HOST,
             headers: {
-              Origin: "https://store.modaprimeusa.com",
-              "X-WP-Guest-Access": "true"
+              Origin: APP_HOST,
+              "X-WP-Guest-Access": "true",
+              "Content-Type": "application/json"
             },
-            proxyCookies: false
+            proxyCookies: true // Enable cookie proxying to ensure session persistence
           }
         }
       }

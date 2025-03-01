@@ -20,10 +20,32 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
       initialised = true;
 
+      // Initialize cart with retry logic
       const { refreshCart } = useCart();
       console.log('Initializing cart...');
-      const success = await refreshCart();
-      console.log('Cart initialization result:', success ? 'success' : 'failed');
+      
+      // Try to initialize the cart up to 3 times
+      let success = false;
+      let retryCount = 0;
+      const maxRetries = 3;
+      
+      while (!success && retryCount < maxRetries) {
+        try {
+          success = await refreshCart();
+          console.log(`Cart initialization attempt ${retryCount + 1}: ${success ? 'success' : 'failed'}`);
+          
+          if (!success) {
+            retryCount++;
+            // Wait a bit before retrying
+            await new Promise(resolve => setTimeout(resolve, 500));
+          }
+        } catch (error) {
+          console.error('Error initializing cart:', error);
+          retryCount++;
+          // Wait a bit before retrying
+          await new Promise(resolve => setTimeout(resolve, 500));
+        }
+      }
 
       useGqlError((err: any) => {
         const serverErrors = ['The iss do not match with this server', 'Invalid session token'];
@@ -35,6 +57,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       });
 
       if (!success) {
+        console.warn('Failed to initialize cart after multiple attempts');
         clearAllCookies();
         clearAllLocalStorage();
 
@@ -66,7 +89,9 @@ export default defineNuxtPlugin(async (nuxtApp) => {
 
     if (shouldInit) {
       // Initialize immediately but don't block the page load
-      setTimeout(initStore, 0);
+      // Use a shorter timeout for product pages to ensure cart is initialized before user interaction
+      const timeout = route.path.includes('/product/') ? 0 : 100;
+      setTimeout(initStore, timeout);
     } else {
       eventsToFireOn.forEach((event) => {
         window.addEventListener(event, initStore, { once: true });
