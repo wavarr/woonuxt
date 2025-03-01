@@ -44,7 +44,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n'
   ],
 
-  'graphql-client': {
+  graphqlClient: {
     codegen: {
       skipTypesGeneration: true,
       generates: {
@@ -157,11 +157,6 @@ export default defineNuxtConfig({
               '@nuxtjs/tailwindcss',
               '@nuxt/icon',
               '@nuxt/image'
-            ],
-            'shop': [
-              './composables/useCart',
-              './composables/useCheckout',
-              './composables/useProducts'
             ]
           }
         }
