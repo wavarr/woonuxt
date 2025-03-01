@@ -10,14 +10,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
-      link: [{ rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
+                     link: [{ rel: 'icon', href: '/logo.svg', type: 'image/svg+xml' },
              { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
              { rel: 'apple-touch-icon-precomposed', href: '/apple-touch-icon-precomposed.png' }],
     },
     pageTransition: { name: 'page', mode: 'default' },
   },
 
-  experimental: {
+  experimental: { v                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
     sharedPrerenderData: true,
     buildCache: true,
     defaults: {

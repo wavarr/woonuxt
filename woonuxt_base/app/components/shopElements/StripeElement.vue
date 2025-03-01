@@ -99,4 +99,3 @@ onMounted(async () => {
     <!-- BTCPay invoice will be displayed here -->
   </div>
 </template>
-b
