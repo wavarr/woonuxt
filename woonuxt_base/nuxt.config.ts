@@ -60,18 +60,10 @@ export default defineNuxtConfig({
           'X-WP-Guest-Access': 'true'
         },
         proxyCookies: false,
-        clientOptions: {
-          defaultOptions: {
-            watchQuery: {
-              fetchPolicy: 'no-cache',
-              errorPolicy: 'all',
-            },
-            query: {
-              fetchPolicy: 'no-cache',
-              errorPolicy: 'all',
-            },
-          },
-        },
+        fetchOptions: {
+          fetchPolicy: 'no-cache',
+          errorPolicy: 'all',
+        }
       },
     },
   },
