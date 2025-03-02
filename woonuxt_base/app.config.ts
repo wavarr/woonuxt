@@ -21,7 +21,7 @@ export default defineAppConfig({
     showProductCategoriesOnSingleProduct: false,
     showBreadcrumbOnSingleProduct: true,
     showMoveToWishlist: false,
-    hideBillingAddressForVirtualProducts: true,
+    hideBillingAddressForVirtualProducts:false,
     initStoreOnUserActionToReduceServerLoad: true,
     saleBadge: 'percent',
     socialLoginsDisplay: 'buttons',
