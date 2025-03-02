@@ -1,6 +1,8 @@
 import type { AddToCartInput } from '#gql';
-import { ref, useAsyncQuery } from '#imports'
+import { ref } from '#imports'
+import { useNuxtApp } from '#app';
 import type { Cart } from '~/types'
+import { useAsyncQuery } from './useAsyncQuery';
 
 /**
  * @name useCart
@@ -8,6 +10,7 @@ import type { Cart } from '~/types'
  */
 export function useCart() {
   const { storeSettings } = useAppConfig();
+  const { $useAsyncQuery } = useNuxtApp();
 
   const cart = ref<Cart | null>(null);
   const isShowingCart = useState<boolean>('isShowingCart', () => false);
@@ -22,7 +25,7 @@ export function useCart() {
    */
   const refreshCart = async () => {
     try {
-      const { data } = await useAsyncQuery('getCart')
+      const { data } = useAsyncQuery('getCart')
       cart.value = data.value?.cart || null
       return true;
     } catch (error) {
