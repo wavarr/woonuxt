@@ -7,10 +7,10 @@
       <div class="relative z-10 h-full flex flex-col justify-center items-start px-4">
         <!-- Hero Text Section -->
         <div class="flex flex-col items-start w-full">
-          <div class="overflow-hidden">
+          <div class="overflow-visible">
             <h1 
-              class="text-[15vw] sm:text-[18vw] md:text-[20vw] font-black tracking-tighter leading-[0.85] motion-safe:animate-float notable-regular text-indigo-800"
-              style="font-family: 'Notable', sans-serif; text-transform: uppercase; letter-spacing: -0.08em; word-wrap: break-word;"
+              class="text-[12vw] sm:text-[14vw] md:text-[16vw] font-black tracking-tighter leading-[0.9] motion-safe:animate-float notable-regular text-indigo-800"
+              style="font-family: 'Notable', sans-serif; text-transform: uppercase; letter-spacing: -0.05em; word-wrap: break-word;"
             >
               <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 0ms;">Moda</span>
               <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 200ms;">Prime</span>
@@ -19,7 +19,7 @@
           </div>
           
           <p 
-            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-700 mt-4 mb-10 leading-relaxed max-w-3xl hero-text-animate"
+            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-700 mt-8 mb-12 leading-relaxed max-w-3xl hero-text-animate"
             style="animation-delay: 600ms; font-family: 'Poppins', sans-serif;"
           >
             <span class="font-semibold text-blue-600">Modafinil</span>
