@@ -29,7 +29,7 @@ const testimonials: Testimonial[] = [
     id: 2,
     name: 'Michael Chen',
     role: 'Verified Buyer',
-    content: 'I've been a loyal customer for over 2 years. Their products are consistently high quality and effective.',
+    content: "I've been a loyal customer for over 2 years. Their products are consistently high quality and effective.",
     avatar: '/images/avatar-2.jpg'
   },
   {
