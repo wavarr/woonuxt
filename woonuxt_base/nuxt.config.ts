@@ -28,40 +28,15 @@ export default defineNuxtConfig({
 
   plugins: [resolve('./app/plugins/init.ts')],
 
-  components: {
-    dirs: [
-      {
-        path: '~/components',
-        pathPrefix: false,
-        global: true
-      }
-    ]
-  },
+  components: [{ path: resolve('./app/components'), pathPrefix: false }],
 
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@nuxt/image',
-    'woonuxt-settings',
-    'nuxt-graphql-client',
-    '@nuxt/icon',
-    '@nuxtjs/i18n'
-  ],
+  modules: ['woonuxt-settings', 'nuxt-graphql-client', '@nuxtjs/tailwindcss', '@nuxt/icon', '@nuxt/image', '@nuxtjs/i18n'],
 
   'graphql-client': {
-    codegen: {
-      generates: {
-        './types/graphql.ts': {
-          plugins: ['typescript', 'typescript-operations']
-        }
-      }
-    },
     clients: {
       default: {
         host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
-        corsOptions: { 
-          mode: 'cors', 
-          credentials: 'include' 
-        },
+        corsOptions: { mode: 'cors', credentials: 'include' },
         headers: {
           'Origin': process.env.APP_HOST || 'https://store.modaprimeusaa.com',
           'X-WP-Guest-Access': 'true'
@@ -76,10 +51,6 @@ export default defineNuxtConfig({
   },
 
   alias: {
-    '#imports': './.nuxt/imports',
-    '#app': './.nuxt/app',
-    '~': './app',
-    '@': './app',
     '#constants': resolve('./app/constants'),
     '#woo': '../.nuxt/gql/default',
   },
@@ -108,7 +79,11 @@ export default defineNuxtConfig({
     },
   },
 
-  // Multilingual support
+  routeRules: {
+    '/products': { static: false },
+    '/products/**': { static: false }
+  },
+
   i18n: {
     locales: [
       { code: 'en_US', file: 'en-US.json', name: 'English 🇺🇸' },
@@ -169,9 +144,5 @@ export default defineNuxtConfig({
       'components/**'
     ]
   },
-
-  routeRules: {
-    '/products': { static: false },
-    '/products/**': { static: false }
-  },
 });
+
