@@ -62,11 +62,17 @@ export default defineNuxtConfig({
         headers: {
           'Origin': APP_HOST,
           'X-WP-Guest-Access': 'true',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Referer': APP_HOST
         },
-        proxyCookies: true // Enable cookie proxying to ensure session persistence
+        proxyCookies: true, // Enable cookie proxying to ensure session persistence
+        retainToken: true // Ensure tokens are retained client-side
       },
     },
+    watch: true,
+    autoImport: true,
+    preferGETQueries: false
   },
 
   alias: {
@@ -125,9 +131,12 @@ export default defineNuxtConfig({
             headers: {
               Origin: APP_HOST,
               "X-WP-Guest-Access": "true",
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Referer": APP_HOST
             },
-            proxyCookies: true // Enable cookie proxying to ensure session persistence
+            proxyCookies: true, // Enable cookie proxying to ensure session persistence
+            retainToken: true // Ensure tokens are retained client-side
           }
         }
       }

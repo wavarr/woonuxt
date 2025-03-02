@@ -15,23 +15,32 @@ export function useCart() {
   const refreshCart = async () => {
     try {
       isUpdatingCart.value = true;
+      console.log('Refreshing cart...');
       
       // Use the newly added useAsyncQuery hook
-      const { data: cartData, error } = await useAsyncQuery(
+      const { data: cartData, error: queryError } = await useAsyncQuery(
         'getCart',
         {},
         { fetchPolicy: 'network-only' } // Force fresh data
       );
       
-      if (error) {
-        console.error('Error refreshing cart:', error);
+      if (queryError) {
+        console.error('Error refreshing cart:', queryError);
+        error.value = queryError;
         return false;
       }
       
-      cart.value = cartData.value?.cart;
+      if (!cartData.value?.cart) {
+        console.warn('Cart data is empty or invalid:', cartData.value);
+        return false;
+      }
+      
+      cart.value = cartData.value.cart;
+      console.log('Cart refreshed successfully:', cart.value);
       return true;
     } catch (e) {
-      console.error('Error refreshing cart:', e);
+      console.error('Exception refreshing cart:', e);
+      error.value = e;
       return false;
     } finally {
       isUpdatingCart.value = false;
@@ -52,15 +61,23 @@ export function useCart() {
       }
       
       isUpdatingCart.value = true;
+      console.log('Adding to cart with input:', input);
       
-      const { data, error } = await useAsyncQuery('addToCart', { input });
+      const { data, error: queryError } = await useAsyncQuery('addToCart', { input });
       
-      if (error) {
-        console.error('Error adding to cart:', error);
-        return { error: error.message };
+      if (queryError) {
+        console.error('Error adding to cart:', queryError);
+        error.value = queryError;
+        return { error: queryError.message || 'Error adding to cart' };
       }
       
-      cart.value = data.value?.addToCart?.cart;
+      if (!data.value?.addToCart?.cart) {
+        console.warn('Add to cart response is empty or invalid:', data.value);
+        return { error: 'Invalid response from server' };
+      }
+      
+      cart.value = data.value.addToCart.cart;
+      console.log('Item added to cart successfully:', cart.value);
       
       // Show cart after adding item
       if (!isCartOpen.value) {
@@ -69,7 +86,8 @@ export function useCart() {
       
       return { success: true, cart: cart.value };
     } catch (err) {
-      console.error('Error adding to cart:', err);
+      console.error('Exception adding to cart:', err);
+      error.value = err;
       return { error: err.message || 'Failed to add to cart' };
     } finally {
       isUpdatingCart.value = false;
@@ -80,20 +98,29 @@ export function useCart() {
   const updateItemQuantity = async (key, quantity) => {
     try {
       isUpdatingCart.value = true;
+      console.log(`Updating item quantity: key=${key}, quantity=${quantity}`);
       
-      const { data, error } = await useAsyncQuery('updateItemQuantities', {
+      const { data, error: queryError } = await useAsyncQuery('updateItemQuantities', {
         items: [{ key, quantity }]
       });
       
-      if (error) {
-        console.error('Error updating item quantity:', error);
+      if (queryError) {
+        console.error('Error updating item quantity:', queryError);
+        error.value = queryError;
         return null;
       }
       
-      cart.value = data.value?.updateItemQuantities?.cart;
+      if (!data.value?.updateItemQuantities?.cart) {
+        console.warn('Update item quantity response is empty or invalid:', data.value);
+        return null;
+      }
+      
+      cart.value = data.value.updateItemQuantities.cart;
+      console.log('Item quantity updated successfully:', cart.value);
       return cart.value;
     } catch (err) {
-      console.error('Error updating item quantity:', err);
+      console.error('Exception updating item quantity:', err);
+      error.value = err;
       return null;
     } finally {
       isUpdatingCart.value = false;
@@ -104,18 +131,27 @@ export function useCart() {
   const emptyCart = async () => {
     try {
       isUpdatingCart.value = true;
+      console.log('Emptying cart...');
       
-      const { data, error } = await useAsyncQuery('emptyCart');
+      const { data, error: queryError } = await useAsyncQuery('emptyCart');
       
-      if (error) {
-        console.error('Error emptying cart:', error);
+      if (queryError) {
+        console.error('Error emptying cart:', queryError);
+        error.value = queryError;
         return null;
       }
       
-      cart.value = data.value?.emptyCart?.cart;
+      if (!data.value?.emptyCart?.cart) {
+        console.warn('Empty cart response is empty or invalid:', data.value);
+        return null;
+      }
+      
+      cart.value = data.value.emptyCart.cart;
+      console.log('Cart emptied successfully:', cart.value);
       return cart.value;
     } catch (err) {
-      console.error('Error emptying cart:', err);
+      console.error('Exception emptying cart:', err);
+      error.value = err;
       return null;
     } finally {
       isUpdatingCart.value = false;
@@ -126,21 +162,27 @@ export function useCart() {
   const applyCoupon = async (code) => {
     try {
       isUpdatingCart.value = true;
+      console.log(`Applying coupon: ${code}`);
       
-      const { data, error } = await useAsyncQuery('applyCoupon', { code });
+      const { data, error: queryError } = await useAsyncQuery('applyCoupon', { code });
       
-      if (error) {
-        return { message: error.message };
+      if (queryError) {
+        console.error('Error applying coupon:', queryError);
+        error.value = queryError;
+        return { message: queryError.message || 'Error applying coupon' };
       }
       
-      if (data.value?.applyCoupon?.cart) {
-        cart.value = data.value.applyCoupon.cart;
-        return { success: true };
+      if (!data.value?.applyCoupon?.cart) {
+        console.warn('Apply coupon response is empty or invalid:', data.value);
+        return { message: 'Could not apply coupon' };
       }
       
-      return { message: 'Could not apply coupon' };
+      cart.value = data.value.applyCoupon.cart;
+      console.log('Coupon applied successfully:', cart.value);
+      return { success: true };
     } catch (err) {
-      console.error('Error applying coupon:', err);
+      console.error('Exception applying coupon:', err);
+      error.value = err;
       return { message: err.message || 'Error applying coupon' };
     } finally {
       isUpdatingCart.value = false;
@@ -151,18 +193,27 @@ export function useCart() {
   const removeCoupon = async (code) => {
     try {
       isUpdatingCart.value = true;
+      console.log(`Removing coupon: ${code}`);
       
-      const { data, error } = await useAsyncQuery('removeCoupon', { code });
+      const { data, error: queryError } = await useAsyncQuery('removeCoupon', { code });
       
-      if (error) {
-        console.error('Error removing coupon:', error);
+      if (queryError) {
+        console.error('Error removing coupon:', queryError);
+        error.value = queryError;
         return null;
       }
       
-      cart.value = data.value?.removeCoupon?.cart;
+      if (!data.value?.removeCoupon?.cart) {
+        console.warn('Remove coupon response is empty or invalid:', data.value);
+        return null;
+      }
+      
+      cart.value = data.value.removeCoupon.cart;
+      console.log('Coupon removed successfully:', cart.value);
       return cart.value;
     } catch (err) {
-      console.error('Error removing coupon:', err);
+      console.error('Exception removing coupon:', err);
+      error.value = err;
       return null;
     } finally {
       isUpdatingCart.value = false;
@@ -173,18 +224,27 @@ export function useCart() {
   const updateShippingMethod = async (shippingMethod) => {
     try {
       isUpdatingCart.value = true;
+      console.log(`Updating shipping method: ${shippingMethod}`);
       
-      const { data, error } = await useAsyncQuery('updateShippingMethod', { shippingMethod });
+      const { data, error: queryError } = await useAsyncQuery('updateShippingMethod', { shippingMethod });
       
-      if (error) {
-        console.error('Error updating shipping method:', error);
+      if (queryError) {
+        console.error('Error updating shipping method:', queryError);
+        error.value = queryError;
         return null;
       }
       
-      cart.value = data.value?.updateShippingMethod?.cart;
+      if (!data.value?.updateShippingMethod?.cart) {
+        console.warn('Update shipping method response is empty or invalid:', data.value);
+        return null;
+      }
+      
+      cart.value = data.value.updateShippingMethod.cart;
+      console.log('Shipping method updated successfully:', cart.value);
       return cart.value;
     } catch (err) {
-      console.error('Error updating shipping method:', err);
+      console.error('Exception updating shipping method:', err);
+      error.value = err;
       return null;
     } finally {
       isUpdatingCart.value = false;
@@ -198,16 +258,19 @@ export function useCart() {
     } else {
       isCartOpen.value = !isCartOpen.value;
     }
+    console.log(`Cart visibility toggled: ${isCartOpen.value ? 'open' : 'closed'}`);
   };
 
   // For checkout process
   const updateShippingLocation = async () => {
+    console.log('Updating shipping location...');
     await refreshCart();
   };
 
   // Load cart on initialization if possible
   const initCart = async () => {
-    await refreshCart();
+    console.log('Initializing cart...');
+    return await refreshCart();
   };
 
   return {
