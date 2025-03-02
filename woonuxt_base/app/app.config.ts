@@ -20,7 +20,7 @@ export default defineAppConfig({
     showBreadcrumbOnSingleProduct: true,
     showMoveToWishlist: false,
     hideBillingAddressForVirtualProducts: false,
-    initStoreOnUserActionToReduceServerLoad: true,
+    initStoreOnUserActionToReduceServerLoad: false,
     saleBadge: 'percent', // 'percent', 'onSale' or 'hidden'
     socialLoginsDisplay: 'buttons', // 'buttons' or 'icons'
   },

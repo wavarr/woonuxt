@@ -41,7 +41,7 @@ export default defineNuxtConfig({
       default: {
         host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
         corsOptions: { mode: 'cors', credentials: 'include' },
-        headers: { 'Origin': 'https://modaprimeusa.com' },
+        headers: { 'Origin': 'https://store.modaprimeusa.com' },
       },
     },
   },
@@ -68,7 +68,6 @@ export default defineNuxtConfig({
   nitro: {
     routeRules: {
       '/': { prerender: true },
-      '/products/**': { swr: 3600 },
       '/checkout/order-received/**': { ssr: false },
       '/order-summary/**': { ssr: false },
     },

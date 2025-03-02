@@ -8,8 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "serve": "nuxi generate && npx serve .output/public -l 8080",
-    "nodev": "NUXT_GRAPHQL_CODEGEN=false nuxt dev --host"
+    "serve": "nuxi generate && npx serve .output/public -l 8080"
   },
   "dependencies": {
     "@stripe/stripe-js": "^4.10.0",
