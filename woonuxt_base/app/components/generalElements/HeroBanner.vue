@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-full bg-gradient-to-r from-blue-50 to-indigo-50 h-[100vh] overflow-hidden">
+  <div class="relative w-full bg-gradient-to-r from-blue-50 to-indigo-50 h-[100vh] overflow-hidden opacity-90">
     <!-- Removed animated background elements and pattern -->
 
     <div class="container relative h-full mx-auto">
