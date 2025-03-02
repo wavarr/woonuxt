@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     prerender: {
       concurrency: 10,
       interval: 1000,
-      failOnError: false,
+      failOnError: true,
     },
   },
 });
