@@ -1,9 +1,9 @@
-import { ref } from 'vue';
-import { useAsyncGql } from '#imports';
+import { ref } from '#imports';
+import { useAsyncQuery } from '~/composables/useAsyncQuery';
 import { useHelpers } from '~/composables/useHelpers';
 import { useSorting } from '~/composables/useSorting';
 import { useFiltering } from '~/composables/useFiltering';
-import { useSearching } from '~/composables/useSearch';
+import { useSearching } from '~/composables/useSearching';
 
 // Define a basic Product interface if you don't have access to the types file
 interface Product {
@@ -25,7 +25,7 @@ export function useProducts() {
     try {
       console.log('Fetching products with variables:', variables);
       
-      const { data, error } = await useAsyncGql('getProducts', variables);
+      const { data, error } = await useAsyncQuery('getProducts', variables);
       
       console.log('GraphQL response:', data.value, error.value);
       

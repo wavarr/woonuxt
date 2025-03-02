@@ -35,13 +35,8 @@ export default defineNuxtConfig({
   // Fix GraphQL client configuration
   'graphql-client': {
     codegen: {
-      skipTypesGeneration: true,
-      // Add proper codegen configuration
-      generates: {
-        './types/graphql.ts': {
-          plugins: ['typescript', 'typescript-operations']
-        }
-      }
+      silent: true,
+      disableOnBuild: false // Enable codegen but with silent errors
     },
     clients: {
       default: {

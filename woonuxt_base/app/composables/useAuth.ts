@@ -6,6 +6,7 @@ import type {
   LoginInput,
   LoginClientFragment,
 } from '#gql';
+import { useAsyncQuery } from '~/composables/useAsyncQuery';
 
 export const useAuth = () => {
   const { refreshCart } = useCart();
