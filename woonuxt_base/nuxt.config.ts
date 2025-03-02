@@ -36,7 +36,7 @@ export default defineNuxtConfig({
   'graphql-client': {
     codegen: {
       silent: true,
-      disableOnBuild: false
+      disableOnBuild: false // Enable codegen but with silent errors
     },
     clients: {
       default: {
