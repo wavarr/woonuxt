@@ -30,7 +30,10 @@ export default defineNuxtConfig({
     },
   },
 
-  plugins: [resolve('./app/plugins/init.ts')],
+  plugins: [
+    resolve('./app/plugins/init.ts'),
+    resolve('./app/plugins/graphql-error-handler.ts')
+  ],
 
   components: {
     dirs: [
@@ -69,7 +72,11 @@ export default defineNuxtConfig({
         },
         proxyCookies: true, // Enable cookie proxying to ensure session persistence
         retainToken: true, // Ensure tokens are retained client-side
-        tokenStorage: { mode: 'cookie' } // Use cookies for token storage
+        tokenStorage: { mode: 'cookie' }, // Use cookies for token storage
+        fetchOptions: {
+          credentials: 'include', // Always include credentials
+          cache: 'no-cache' // Disable caching to prevent stale data
+        }
       },
     },
     watch: true,
@@ -140,7 +147,11 @@ export default defineNuxtConfig({
             },
             proxyCookies: true, // Enable cookie proxying to ensure session persistence
             retainToken: true, // Ensure tokens are retained client-side
-            tokenStorage: { mode: 'cookie' } // Use cookies for token storage
+            tokenStorage: { mode: 'cookie' }, // Use cookies for token storage
+            fetchOptions: {
+              credentials: 'include', // Always include credentials
+              cache: 'no-cache' // Disable caching to prevent stale data
+            }
           }
         }
       }
@@ -162,6 +173,12 @@ export default defineNuxtConfig({
       script: {
         defineModel: true,
         propsDestructure: true
+      }
+    },
+    server: {
+      cors: true, // Enable CORS for development
+      hmr: {
+        protocol: 'ws'
       }
     }
   },

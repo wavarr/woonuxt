@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
-
   // Get all the pages, components, composables and plugins from the parent theme
   extends: ['./woonuxt_base/'],
 
@@ -29,7 +28,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  
+
   build: {
     transpile: [
       '@apollo/client',
@@ -81,5 +80,7 @@ export default defineNuxtConfig({
         }
       }
     ]
-  }
+  },
+
+  compatibilityDate: '2025-03-01'
 });
