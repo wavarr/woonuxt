@@ -1,5 +1,4 @@
-import { ref } from '#imports';
-import { useAsyncQuery } from '~/composables/useAsyncQuery';
+import { ref, useAsyncQuery } from '#imports';
 import { useHelpers } from '~/composables/useHelpers';
 import { useSorting } from '~/composables/useSorting';
 import { useFiltering } from '~/composables/useFiltering';

@@ -1,7 +1,6 @@
 import type { AddToCartInput } from '#gql';
-import { ref } from '#imports'
+import { ref, useAsyncQuery } from '#imports'
 import type { Cart } from '~/types'
-import { useAsyncQuery } from '~/composables/useAsyncQuery';
 
 /**
  * @name useCart
