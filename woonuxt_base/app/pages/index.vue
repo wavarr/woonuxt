@@ -1,8 +1,4 @@
 <script setup lang="ts">
-// Import the required composables explicitly
-import { ref } from 'vue';
-import { useSeoMeta } from 'nuxt/app'
-
 // For GraphQL queries, make sure you're using the correct composable
 // If you're using @nuxtjs/apollo, it should be useQuery or useLazyQuery
 // Let's modify this to work with your setup
@@ -78,16 +74,9 @@ const productsData = ref({
 });
 
 // Set SEO metadata
-useSeoMeta({
+definePageMeta({
   title: 'Home',
-  meta: [
-    { name: 'description', content: 'Shop our curated selection of quality products with secure transactions and efficient delivery.' },
-    { property: 'og:title', content: 'Home' },
-    { property: 'og:description', content: 'Shop our curated selection of quality products with secure transactions and efficient delivery.' },
-    { property: 'og:type', content: 'website' },
-    { property: 'og:url', content: 'https://example.com' },
-    { property: 'og:image', content: 'https://example.com/og-image.jpg' },
-  ],
+  description: 'Shop our curated selection of quality products with secure transactions and efficient delivery.',
 });
 
 // Testimonials data
@@ -145,36 +134,6 @@ const testimonials: Testimonial[] = [
     <!-- Hero Banner -->
     <HeroBanner />
   
-    <!-- Featured Categories -->
-    <section class="py-12 md:py-16">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-10">
-          <h2 class="text-2xl font-medium mb-3">Featured Categories</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Browse our selection of products organized by category.</p>
-        </div>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div v-for="category in categoriesData.productCategories.nodes" :key="category.id" class="group">
-            <NuxtLink :to="`/product-category/${category.slug}`" class="block">
-              <div class="aspect-square bg-gray-50 rounded-sm overflow-hidden mb-3 transition-all duration-300 group-hover:opacity-90">
-                <img 
-                  v-if="category.image?.sourceUrl" 
-                  :src="category.image.sourceUrl" 
-                  :alt="category.name"
-                  class="w-full h-full object-cover"
-                />
-                <div v-else class="w-full h-full flex items-center justify-center bg-gray-100">
-                  <span class="text-gray-400 text-sm">No Image</span>
-                </div>
-              </div>
-              
-              <h3 class="font-medium text-center">{{ category.name }}</h3>
-            </NuxtLink>
-          </div>
-        </div>
-      </div>
-    </section>
-    
     <!-- Popular Products -->
     <section class="py-12 md:py-16 bg-gray-50">
       <div class="container mx-auto px-4">
@@ -259,31 +218,6 @@ const testimonials: Testimonial[] = [
             </div>
             <p class="text-gray-600 text-sm">{{ testimonial.content }}</p>
           </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Newsletter -->
-    <section class="py-12 md:py-16">
-      <div class="container mx-auto px-4">
-        <div class="max-w-xl mx-auto text-center">
-          <h2 class="text-2xl font-medium mb-3">Subscribe to Our Newsletter</h2>
-          <p class="text-gray-600 mb-6">Stay updated with our latest products and promotions.</p>
-          
-          <form class="flex flex-col sm:flex-row gap-3">
-            <input 
-              type="email" 
-              placeholder="Your email address" 
-              class="flex-1 px-4 py-2 border border-gray-200 rounded-sm text-sm focus:outline-none focus:border-gray-400"
-            />
-            <button 
-              type="submit" 
-              class="px-5 py-2 bg-gray-900 text-white text-sm font-medium rounded-sm hover:bg-black transition-colors duration-300"
-            >
-              Subscribe
-            </button>
-          </form>
-          <p class="text-gray-500 text-xs mt-3">We respect your privacy and will not share your information.</p>
         </div>
       </div>
     </section>

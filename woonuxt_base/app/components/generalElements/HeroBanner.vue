@@ -18,7 +18,7 @@
           <div class="overflow-hidden">
             <h1 
               class="text-[15vw] sm:text-[18vw] md:text-[20vw] font-black tracking-tighter leading-[0.85] motion-safe:animate-float notable-regular"
-              style="font-family: 'Notable', sans-serif; text-transform: uppercase; letter-spacing: -0.08em; word-wrap: break-word; background-image: linear-gradient(135deg, #172445 0%, #4f46e5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
+              style="font-family: 'Notable', sans-serif; text-transform: uppercase; letter-spacing: -0.08em; word-wrap: break-word; color: #172445; opacity: 0.9;"
             >
               <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 0ms;">Moda</span>
               <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 200ms;">Prime</span>
@@ -27,11 +27,11 @@
           </div>
           
           <p 
-            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-700 mt-4 leading-relaxed max-w-3xl hero-text-animate"
-            style="animation-delay: 600ms; font-family: 'Poppins', sans-serif;"
+            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl mt-4 leading-relaxed max-w-3xl hero-text-animate"
+            style="animation-delay: 600ms; font-family: 'Poppins', sans-serif; color: #172445; opacity: 0.9;"
           >
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold">Modafinil</span>
-            <span class="text-gray-600"> - Premium Quality</span>
+            <span class="font-semibold">Modafinil</span>
+            <span> - Premium Quality</span>
           </p>
           
           <div class="mt-8 flex flex-wrap gap-4 hero-text-animate" style="animation-delay: 800ms;">
