@@ -1,14 +1,6 @@
 <template>
   <div class="relative w-full bg-gradient-to-r from-blue-50 to-indigo-50 h-[100vh] overflow-hidden">
-    <!-- Animated background elements -->
-    <div class="absolute inset-0 overflow-hidden">
-      <div class="absolute inset-0 opacity-10" style="background-image: url('/images/bgsymbol.png'); background-repeat: repeat; background-size: 400px;"></div>
-      
-      <!-- Animated circles -->
-      <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-300 opacity-20 animate-float" style="animation-duration: 15s;"></div>
-      <div class="absolute bottom-1/4 right-1/3 w-96 h-96 rounded-full bg-indigo-300 opacity-20 animate-float-reverse" style="animation-duration: 20s;"></div>
-      <div class="absolute top-1/3 right-1/4 w-48 h-48 rounded-full bg-purple-300 opacity-10 animate-pulse" style="animation-duration: 8s;"></div>
-    </div>
+    <!-- Removed animated background elements and pattern -->
 
     <div class="container relative h-full mx-auto">
       <!-- Main Content -->
@@ -17,8 +9,8 @@
         <div class="flex flex-col items-start w-full">
           <div class="overflow-hidden">
             <h1 
-              class="text-[15vw] sm:text-[18vw] md:text-[20vw] font-black tracking-tighter leading-[0.85] motion-safe:animate-float notable-regular"
-              style="font-family: 'Notable', sans-serif; text-transform: uppercase; letter-spacing: -0.08em; word-wrap: break-word; background-image: linear-gradient(135deg, #172445 0%, #4f46e5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
+              class="text-[15vw] sm:text-[18vw] md:text-[20vw] font-black tracking-tighter leading-[0.85] motion-safe:animate-float notable-regular text-indigo-800"
+              style="font-family: 'Notable', sans-serif; text-transform: uppercase; letter-spacing: -0.08em; word-wrap: break-word;"
             >
               <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 0ms;">Moda</span>
               <span class="block transform hover:scale-105 transition-transform duration-300 hero-text-animate" style="animation-delay: 200ms;">Prime</span>
@@ -30,7 +22,7 @@
             class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-700 mt-4 leading-relaxed max-w-3xl hero-text-animate"
             style="animation-delay: 600ms; font-family: 'Poppins', sans-serif;"
           >
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 font-semibold">Modafinil</span>
+            <span class="font-semibold text-blue-600">Modafinil</span>
             <span class="text-gray-600"> - Premium Quality</span>
           </p>
           

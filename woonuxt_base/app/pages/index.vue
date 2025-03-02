@@ -10,15 +10,11 @@ declare const onMounted: any;
 const { siteName, description, shortDescription, siteImage } = useAppConfig();
 
 // Use ref to store data
-const productCategories = ref([]);
 const popularProducts = ref([]);
 
 // Fetch data in an async function
 const fetchData = async () => {
   try {
-    const { data } = await useAsyncGql('getProductCategories', { first: 6 });
-    productCategories.value = data.value?.productCategories?.nodes || [];
-    
     const { data: productData } = await useAsyncGql('getProducts', { 
       first: 5, 
       orderby: 'POPULARITY' // Use string literal instead of enum
@@ -93,37 +89,8 @@ useSeoMeta({
   <main>
     <HeroBanner />
     
-    <!-- Featured Categories Section -->
-    <section class="py-16 bg-gradient-to-b from-white to-gray-50">
-      <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Featured Categories</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">Browse our most popular categories and find exactly what you're looking for</p>
-        </div>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          <NuxtLink 
-            v-for="category in productCategories" 
-            :key="category.id" 
-            :to="`/product-category/${category.slug}`"
-            class="category-card group bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden flex flex-col items-center p-4 text-center"
-          >
-            <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-blue-50 flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors duration-300">
-              <img 
-                v-if="category.image && category.image.sourceUrl" 
-                :src="category.image.sourceUrl" 
-                :alt="category.name" 
-                class="w-10 h-10 md:w-12 md:h-12 object-contain"
-              />
-              <span v-else class="text-2xl text-blue-500">{{ category.name.charAt(0) }}</span>
-            </div>
-            <h3 class="font-medium text-gray-900 group-hover:text-primary transition-colors duration-300">{{ category.name }}</h3>
-            <p class="text-xs text-gray-500 mt-1">{{ category.count || 0 }} products</p>
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
-  
+    <!-- Featured Categories Section Removed -->
+    
     <!-- Popular Products Section -->
     <section class="py-16 bg-white" v-if="popularProducts">
       <div class="container mx-auto px-4">
