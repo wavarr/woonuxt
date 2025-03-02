@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GraphQL Browser Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 20px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>GraphQL Browser Test</h1>
+  
+  <div>
+    <button id="testIntrospection">Test Introspection</button>
+    <button id="testCart">Test Cart</button>
+    <button id="testProducts">Test Products</button>
+  </div>
+  
+  <div class="result">
+    <h2>Result:</h2>
+    <pre id="result">Click a button to test the GraphQL endpoint...</pre>
+  </div>
+
+  <script>
+    const GQL_HOST = 'https://modaprimeusa.com/graphql';
+    const APP_HOST = 'https://store.modaprimeusa.com';
+    
+    // Function to make GraphQL requests
+    async function makeGraphQLRequest(query) {
+      const resultElement = document.getElementById('result');
+      resultElement.textContent = 'Loading...';
+      
+      try {
+        const response = await fetch(GQL_HOST, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Origin': APP_HOST,
+            'Referer': APP_HOST,
+            'X-WP-Guest-Access': 'true'
+          },
+          credentials: 'include',
+          body: JSON.stringify({ query })
+        });
+        
+        const status = response.status;
+        const contentType = response.headers.get('content-type');
+        
+        if (status !== 200) {
+          const text = await response.text();
+          resultElement.textContent = `Error (${status}):\n${text}`;
+          return;
+        }
+        
+        const data = await response.json();
+        resultElement.textContent = JSON.stringify(data, null, 2);
+        
+      } catch (error) {
+        resultElement.textContent = `Error: ${error.message}`;
+      }
+    }
+    
+    // Introspection query
+    document.getElementById('testIntrospection').addEventListener('click', () => {
+      const query = `
+        query {
+          __schema {
+            queryType {
+              name
+            }
+          }
+        }
+      `;
+      makeGraphQLRequest(query);
+    });
+    
+    // Cart query
+    document.getElementById('testCart').addEventListener('click', () => {
+      const query = `
+        query GET_CART {
+          cart {
+            contents {
+              nodes {
+                key
+                product {
+                  node {
+                    id
+                    name
+                  }
+                }
+                quantity
+                subtotal
+              }
+            }
+            subtotal
+            total
+          }
+        }
+      `;
+      makeGraphQLRequest(query);
+    });
+    
+    // Products query
+    document.getElementById('testProducts').addEventListener('click', () => {
+      const query = `
+        query GET_PRODUCTS {
+          products(first: 5) {
+            nodes {
+              id
+              databaseId
+              name
+              slug
+              type
+              ... on SimpleProduct {
+                price
+                regularPrice
+                salePrice
+                onSale
+                stockStatus
+              }
+              ... on VariableProduct {
+                price
+                regularPrice
+                salePrice
+                onSale
+                stockStatus
+              }
+            }
+          }
+        }
+      `;
+      makeGraphQLRequest(query);
+    });
+  </script>
+</body>
+</html> 

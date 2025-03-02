@@ -55,6 +55,7 @@ export default defineNuxtConfig({
     clients: {
       default: {
         host: GQL_HOST,
+        clientHost: APP_HOST, // Explicitly set clientHost
         corsOptions: { 
           mode: 'cors', 
           credentials: 'include' 
@@ -67,7 +68,8 @@ export default defineNuxtConfig({
           'Referer': APP_HOST
         },
         proxyCookies: true, // Enable cookie proxying to ensure session persistence
-        retainToken: true // Ensure tokens are retained client-side
+        retainToken: true, // Ensure tokens are retained client-side
+        tokenStorage: { mode: 'cookie' } // Use cookies for token storage
       },
     },
     watch: true,
@@ -128,6 +130,7 @@ export default defineNuxtConfig({
         clients: {
           default: {
             host: GQL_HOST,
+            clientHost: APP_HOST, // Explicitly set clientHost
             headers: {
               Origin: APP_HOST,
               "X-WP-Guest-Access": "true",
@@ -136,7 +139,8 @@ export default defineNuxtConfig({
               "Referer": APP_HOST
             },
             proxyCookies: true, // Enable cookie proxying to ensure session persistence
-            retainToken: true // Ensure tokens are retained client-side
+            retainToken: true, // Ensure tokens are retained client-side
+            tokenStorage: { mode: 'cookie' } // Use cookies for token storage
           }
         }
       }
