@@ -19,7 +19,7 @@
           </div>
           
           <p 
-            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-700 mt-8 mb-12 leading-relaxed max-w-3xl hero-text-animate"
+            class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-700 mt-8 leading-relaxed max-w-3xl hero-text-animate"
             style="animation-delay: 600ms; font-family: 'Poppins', sans-serif;"
           >
             <span class="font-semibold text-blue-600">Modafinil</span>
