@@ -48,6 +48,13 @@ export default defineNuxtConfig({
   ],
 
   'graphql-client': {
+    codegen: {
+      generates: {
+        './types/graphql.ts': {
+          plugins: ['typescript', 'typescript-operations']
+        }
+      }
+    },
     clients: {
       default: {
         host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
@@ -97,6 +104,7 @@ export default defineNuxtConfig({
       '/products/**': { swr: 3600 },
       '/checkout/order-received/**': { ssr: false },
       '/order-summary/**': { ssr: false },
+      '/api/**': { cors: true }
     },
   },
 
@@ -117,6 +125,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      GRAPHQL_URL: 'https://modaprimeusa.com/graphql',
+      FRONT_END_URL: 'https://store.modaprimeusa.com',
+      PRODUCTS_PER_PAGE: 15,
       "graphql-client": {
         clients: {
           default: {
@@ -160,15 +171,7 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: true },
-    '/products/**': { 
-      swr: 3600,
-      cache: {
-        maxAge: 3600,
-        staleMaxAge: 86400
-      }
-    },
-    '/checkout/order-received/**': { ssr: false },
-    '/order-summary/**': { ssr: false },
+    '/products': { static: false },
+    '/products/**': { static: false }
   },
 });
