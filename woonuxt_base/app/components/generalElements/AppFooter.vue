@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// In Nuxt 3, composables are auto-imported, so we don't need explicit imports
 const { wooNuxtVersionInfo } = useHelpers();
 const { wishlistLink } = useAuth();
 </script>
@@ -14,10 +15,8 @@ const { wishlistLink } = useAuth();
       <div class="w-3/7 lg:w-auto">
         <div class="mb-1 font-semibold">Information</div>
         <div class="text-sm">
-          <a class="py-1.5 block" href="https://github.com/scottyzen/woonuxt?tab=readme-ov-file#next-generation-front-end-for-woocommerce" target="_blank">About</a>
-          <a href="/" class="py-1.5 block">Careers</a>
-          <a href="/" class="py-1.5 block">Press</a>
-          <a href="https://woonuxt.com/faq" class="py-1.5 block" rel="noreferrer" target="_blank">FAQ's</a>
+          <NuxtLink to="/" class="py-1.5 block">About Us</NuxtLink>
+          <NuxtLink to="/" class="py-1.5 block">FAQ</NuxtLink>
         </div>
       </div>
       <div class="w-3/7 lg:w-auto">
@@ -26,16 +25,17 @@ const { wishlistLink } = useAuth();
           <NuxtLink to="/products" class="py-1.5 block">{{ $t('messages.shop.newArrivals') }}</NuxtLink>
           <NuxtLink to="/products?filter=sale[true]" class="py-1.5 block">On sale</NuxtLink>
           <NuxtLink to="/products?orderby=rating&order=ASC&filter=rating[1]" class="py-1.5 block">Top rated</NuxtLink>
-          <a href="/" class="py-1.5 block">{{ $t('messages.shop.giftCards') }}</a>
         </div>
       </div>
       <div class="w-3/7 lg:w-auto">
         <div class="mb-1 font-semibold">{{ $t('messages.general.customerService') }}</div>
         <div class="text-sm">
           <NuxtLink to="/contact" class="py-1.5 block">Contact Us</NuxtLink>
-          <a href="/" class="py-1.5 block">Shipping & Returns</a>
-          <a href="/" class="py-1.5 block">Privacy Policy</a>
-          <a href="/" class="py-1.5 block">Terms & Conditions</a>
+          <NuxtLink to="/" class="py-1.5 block">Shipping & Returns</NuxtLink>
+          <NuxtLink to="/" class="py-1.5 block">Privacy Policy</NuxtLink>
+          <NuxtLink to="/" class="py-1.5 block">Terms & Conditions</NuxtLink>
+          <NuxtLink to="/" class="py-1.5 block">Cookie Policy</NuxtLink>
+          <NuxtLink to="/" class="py-1.5 block">Accessibility</NuxtLink>
         </div>
       </div>
       <div class="w-3/7 lg:w-auto">
@@ -43,19 +43,16 @@ const { wishlistLink } = useAuth();
         <div class="text-sm">
           <NuxtLink to="/my-account/" class="py-1.5 block">{{ $t('messages.account.myAccount') }}</NuxtLink>
           <NuxtLink to="/my-account/?tab=orders" class="py-1.5 block">{{ $t('messages.shop.orderHistory') }}</NuxtLink>
-          <NuxtLink :to="wishlistLink" class="py-1.5 block">{{ $t('messages.shop.wishlist') }}</NuxtLink>
-          <a href="/" class="py-1.5 block">{{ $t('messages.general.newsletter') }}</a>
         </div>
       </div>
     </div>
-    <div class="container border-t flex items-center justify-center mb-4">
+    <div class="container border-t flex flex-col md:flex-row items-center justify-center mb-4">
       <div class="copywrite">
         <p class="py-4 text-xs text-center">
-          <a href="https://woonuxt.com" :title="`WooNuxt v${wooNuxtVersionInfo}`">{{ `WooNuxt v${wooNuxtVersionInfo}` }}</a> - by
-          <a href="https://scottyzen.com" title="Scott Kennedy - Web Developer" target="_blank">Scott Kennedy</a>
+          © {{ new Date().getFullYear() }} Moda Prime USA. All rights reserved.
         </p>
       </div>
-      <SocialIcons class="ml-auto" />
+      <SocialIcons class="md:ml-auto" />
     </div>
   </footer>
 </template>

@@ -15,6 +15,10 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'default' },
   },
 
+  css: [
+    resolve('./app/assets/css/main.css'),
+  ],
+
   experimental: {
     sharedPrerenderData: true,
     buildCache: true,
@@ -35,9 +39,9 @@ export default defineNuxtConfig({
   'graphql-client': {
     clients: {
       default: {
-        host: process.env.GQL_HOST || 'http://localhost:4000/graphql',
+        host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
         corsOptions: { mode: 'cors', credentials: 'include' },
-        headers: { 'Origin': process.env.APP_HOST || 'http://localhost:3000' },
+        headers: { 'Origin': 'https://modaprimeusa.com' },
       },
     },
   },

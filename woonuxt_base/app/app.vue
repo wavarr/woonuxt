@@ -25,8 +25,10 @@ useHead({
 
 <template>
   <NuxtLoadingIndicator />
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen bg-pattern" style="position: relative;">
+    <div class="fixed inset-0 z-[-1] pointer-events-none" style="background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 20px), repeating-linear-gradient(-45deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 20px); background-size: 30px 30px;"></div>
     <AppHeader />
+    <SiteAnnouncement />
 
     <Transition name="slide-from-right">
       <LazyCart v-if="isShowingCart" />
@@ -49,7 +51,7 @@ useHead({
 <style lang="postcss">
 html,
 body {
-  @apply bg-gray-100 text-gray-900;
+  @apply text-gray-900;
   scroll-behavior: smooth;
 }
 

@@ -68,5 +68,28 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         window.addEventListener(event, initStore, { once: true });
       });
     }
+
+    // Add a global error handler for GraphQL requests
+    nuxtApp.hook('apollo:error', (error) => {
+      console.error('Apollo error intercepted:', error);
+      
+      // Check if it's a network error (like 503)
+      if (error.networkError && error.networkError.statusCode === 503) {
+        console.warn('GraphQL API returned 503 Service Unavailable. Using fallback mechanism.');
+        
+        // You could implement fallback logic here
+        // For example, return cached data or mock data
+      }
+    });
+    
+    // Add a global loading state for GraphQL requests
+    const isLoading = ref(false);
+    
+    nuxtApp.hook('apollo:loading', (loading) => {
+      isLoading.value = loading;
+    });
+    
+    // Provide the loading state to the app
+    nuxtApp.provide('graphqlLoading', isLoading);
   }
 });
