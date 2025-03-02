@@ -35,13 +35,8 @@ export default defineNuxtConfig({
   // Fix GraphQL client configuration
   'graphql-client': {
     codegen: {
-      skipTypesGeneration: true,
-      // Add proper codegen configuration
-      generates: {
-        './types/graphql.ts': {
-          plugins: ['typescript', 'typescript-operations']
-        }
-      }
+      silent: true,
+      disableOnBuild: false
     },
     clients: {
       default: {
@@ -124,5 +119,32 @@ export default defineNuxtConfig({
         }
       }
     }
-  }
+  },
+  
+  typescript: {
+    strict: true,
+    typeCheck: false,
+    shim: false
+  },
+
+  build: {
+    transpile: ['vue-i18n']
+  },
+
+  vite: {
+    vue: {
+      script: {
+        defineModel: true,
+        propsDestructure: true
+      }
+    }
+  },
+
+  imports: {
+    autoImport: true,
+    dirs: [
+      'composables/**',
+      'components/**'
+    ]
+  },
 });
