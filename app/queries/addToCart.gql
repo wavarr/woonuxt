@@ -1,0 +1,70 @@
+mutation AddToCart($input: AddToCartInput!) {
+  addToCart(input: $input) {
+    cartItem {
+      key
+      quantity
+      subtotal
+      subtotalTax
+      total
+      tax
+    }
+    cart {
+      contents {
+        nodes {
+          key
+          quantity
+          subtotal
+          subtotalTax
+          total
+          tax
+          product {
+            node {
+              id
+              databaseId
+              name
+              sku
+              onSale
+              slug
+              image {
+                id
+                sourceUrl
+                srcSet
+                altText
+                title
+              }
+            }
+          }
+          variation {
+            node {
+              id
+              databaseId
+              name
+              attributes {
+                nodes {
+                  id
+                  name
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+      appliedCoupons {
+        nodes {
+          code
+          discountAmount
+        }
+      }
+      subtotal
+      subtotalTax
+      total
+      totalTax
+      discountTotal
+      shippingTotal
+      shippingTax
+      feeTax
+      feeTotal
+    }
+  }
+} 
