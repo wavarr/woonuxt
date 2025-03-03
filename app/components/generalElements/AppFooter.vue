@@ -30,7 +30,7 @@
           <ul class="space-y-3">
             <li>
               <NuxtLink to="/products" class="text-gray-400 hover:text-white transition-colors">
-                {{ $t('messages.shop.newArrivals') }}
+                New Arrivals
               </NuxtLink>
             </li>
             <li>
@@ -48,7 +48,7 @@
 
         <!-- Customer Service Links -->
         <div>
-          <h3 class="text-lg font-semibold mb-4">{{ $t('messages.general.customerService') }}</h3>
+          <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
           <ul class="space-y-3">
             <li>
               <NuxtLink to="/contact" class="text-gray-400 hover:text-white transition-colors">Contact Us</NuxtLink>

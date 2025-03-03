@@ -1,0 +1,28 @@
+{
+  "messages": {
+    "shop": {
+      "popularProducts": "Popular Products",
+      "newArrivals": "New Arrivals",
+      "onSale": "On Sale",
+      "topRated": "Top Rated",
+      "viewAll": "View All",
+      "searchProducts": "Search products..."
+    },
+    "general": {
+      "home": "Home",
+      "allProducts": "Products",
+      "contact": "Contact",
+      "customerService": "Customer Service",
+      "aboutUs": "About Us",
+      "faq": "FAQ",
+      "contactUs": "Contact Us",
+      "shippingReturns": "Shipping & Returns",
+      "privacyPolicy": "Privacy Policy",
+      "termsConditions": "Terms & Conditions",
+      "cookiePolicy": "Cookie Policy",
+      "accessibility": "Accessibility",
+      "search": "Search products...",
+      "myAccount": "My Account"
+    }
+  }
+} 

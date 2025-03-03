@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useAppConfig, useSeoMeta } from '#imports';
+import { useAppConfig } from '~/composables/useAppConfig';
+import { useSeoMeta } from '~/composables/useSeoMeta';
 
 const { siteName, description, shortDescription, siteImage } = useAppConfig();
 
@@ -10,10 +11,10 @@ const popularProducts = ref([]);
 // Set SEO metadata
 useSeoMeta({
   title: `ModaPrime USA - Premium Pharmaceutical Service`,
-  ogTitle: `${siteName} - USA Based Operations`,
-  description: description,
-  ogDescription: shortDescription,
-  ogImage: siteImage,
+  ogTitle: `${siteName.value} - USA Based Operations`,
+  description: description.value,
+  ogDescription: shortDescription.value,
+  ogImage: siteImage.value,
   twitterCard: `summary_large_image`,
 });
 </script>
@@ -27,7 +28,7 @@ useSeoMeta({
       <div class="container mx-auto px-8">
         <div class="flex items-end justify-between mb-12">
           <div>
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ $t('messages.shop.popularProducts') }}</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Popular Products</h2>
             <p class="text-gray-600">Discover our most popular products</p>
           </div>
           <NuxtLink 

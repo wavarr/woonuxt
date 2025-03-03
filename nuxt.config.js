@@ -1,33 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { defineNuxtConfig } from 'nuxt/config';
-
-export default defineNuxtConfig({
-
+export default {
   // Get all the pages, components, composables and plugins from the parent theme
   extends: ['./woonuxt_base'],
 
   components: [{ path: './components', pathPrefix: false }],
-
-  modules: [
-    '@nuxtjs/i18n',
-    '@nuxtjs/tailwindcss'
-  ],
-
-  i18n: {
-    lazy: true,
-    langDir: 'locales',
-    defaultLocale: 'en',
-    strategy: 'no_prefix',
-    locales: [
-      {
-        code: 'en',
-        file: 'en.json'
-      }
-    ],
-    vueI18n: {
-      fallbackLocale: 'en'
-    }
-  },
 
   runtimeConfig: {
     public: {
@@ -54,4 +30,4 @@ export default defineNuxtConfig({
       failOnError: false,
     },
   },
-});
+} 
