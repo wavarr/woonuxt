@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onBeforeMount } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { loadStripe } from '@stripe/stripe-js';
-import type { Stripe, StripeElements, CreateSourceData, StripeCardElement } from '@stripe/stripe-js';
+import { useRoute } from 'vue-router';
+import { ref, computed, onBeforeMount } from 'vue';
 
 const { t } = useI18n();
 const { query } = useRoute();
@@ -10,15 +9,10 @@ const { cart, isUpdatingCart, paymentGateways } = useCart();
 const { customer, viewer } = useAuth();
 const { orderInput, isProcessingOrder, proccessCheckout } = useCheckout();
 const runtimeConfig = useRuntimeConfig();
-const stripeKey = runtimeConfig.public?.STRIPE_PUBLISHABLE_KEY || null;
 
 const buttonText = ref<string>(isProcessingOrder.value ? t('messages.general.processing') : t('messages.shop.checkoutButton'));
 const isCheckoutDisabled = computed<boolean>(() => isProcessingOrder.value || isUpdatingCart.value || !orderInput.value.paymentMethod);
-
 const isInvalidEmail = ref<boolean>(false);
-const stripe: Stripe | null = stripeKey ? await loadStripe(stripeKey) : null;
-const elements = ref();
-const isPaid = ref<boolean>(false);
 
 onBeforeMount(async () => {
   if (query.cancel_order) window.close();
@@ -26,32 +20,13 @@ onBeforeMount(async () => {
 
 const payNow = async () => {
   buttonText.value = t('messages.general.processing');
-
-  const { stripePaymentIntent } = await GqlGetStripePaymentIntent();
-  const clientSecret = stripePaymentIntent?.clientSecret || '';
-
   try {
-    if (orderInput.value.paymentMethod.id === 'stripe' && stripe && elements.value) {
-      const cardElement = elements.value.getElement('card') as StripeCardElement;
-      const { setupIntent } = await stripe.confirmCardSetup(clientSecret, { payment_method: { card: cardElement } });
-      const { source } = await stripe.createSource(cardElement as CreateSourceData);
-
-      if (source) orderInput.value.metaData.push({ key: '_stripe_source_id', value: source.id });
-      if (setupIntent) orderInput.value.metaData.push({ key: '_stripe_intent_id', value: setupIntent.id });
-
-      isPaid.value = setupIntent?.status === 'succeeded' || false;
-      orderInput.value.transactionId = source?.created?.toString() || new Date().getTime().toString();
-    }
+    orderInput.value.transactionId = new Date().getTime().toString();
+    proccessCheckout(false);
   } catch (error) {
     console.error(error);
     buttonText.value = t('messages.shop.placeOrder');
   }
-
-  proccessCheckout(isPaid.value);
-};
-
-const handleStripeElement = (stripeElements: StripeElements): void => {
-  elements.value = stripeElements;
 };
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -63,6 +38,16 @@ const checkEmailOnBlur = (email?: string | null): void => {
 const checkEmailOnInput = (email?: string | null): void => {
   if (email && isInvalidEmail.value) isInvalidEmail.value = !emailRegex.test(email);
 };
+
+// Prioritize BTCPay if available
+onMounted(() => {
+  if (paymentGateways?.nodes?.length) {
+    const btcpayGateway = paymentGateways.nodes.find(gateway => gateway.id === 'btcpay');
+    if (btcpayGateway) {
+      orderInput.paymentMethod = btcpayGateway;
+    }
+  }
+});
 
 useSeoMeta({
   title: t('messages.shop.checkout'),
@@ -126,7 +111,7 @@ useSeoMeta({
             <BillingDetails v-model="customer.billing" />
           </div>
 
-          <label v-if="cart.availableShippingMethods.length > 0" for="shipToDifferentAddress" class="flex items-center gap-2">
+          <label v-if="cart.availableShippingMethods?.length > 0" for="shipToDifferentAddress" class="flex items-center gap-2">
             <span>{{ $t('messages.billing.differentAddress') }}</span>
             <input id="shipToDifferentAddress" v-model="orderInput.shipToDifferentAddress" type="checkbox" name="shipToDifferentAddress" />
           </label>
@@ -139,16 +124,15 @@ useSeoMeta({
           </Transition>
 
           <!-- Shipping methods -->
-          <div v-if="cart.availableShippingMethods.length">
+          <div v-if="cart.availableShippingMethods?.length">
             <h3 class="mb-4 text-xl font-semibold">{{ $t('messages.general.shippingSelect') }}</h3>
-            <ShippingOptions :options="cart.availableShippingMethods[0].rates" :active-option="cart.chosenShippingMethods[0]" />
+            <ShippingOptions :options="cart.availableShippingMethods[0].rates" :active-option="cart.chosenShippingMethods?.[0]" />
           </div>
 
           <!-- Pay methods -->
-          <div v-if="paymentGateways?.nodes.length" class="mt-2 col-span-full">
+          <div v-if="paymentGateways?.nodes?.length" class="mt-2 col-span-full">
             <h2 class="mb-4 text-xl font-semibold">{{ $t('messages.billing.paymentOptions') }}</h2>
-            <PaymentOptions v-model="orderInput.paymentMethod" class="mb-4" :paymentGateways />
-            <StripeElement v-if="stripe" v-show="orderInput.paymentMethod.id == 'stripe'" :stripe @updateElement="handleStripeElement" />
+            <PaymentOptions v-model="orderInput.paymentMethod" class="mb-4" :paymentGateways="paymentGateways" />
           </div>
 
           <!-- Order note -->
@@ -183,8 +167,7 @@ useSeoMeta({
 .checkout-form input[type='tel'],
 .checkout-form input[type='password'],
 .checkout-form textarea,
-.checkout-form select,
-.checkout-form .StripeElement {
+.checkout-form select {
   @apply bg-white border rounded-md outline-none border-gray-300 shadow-sm w-full py-2 px-4;
 }
 
@@ -196,8 +179,4 @@ useSeoMeta({
 .checkout-form label {
   @apply my-1.5 text-xs text-gray-600 uppercase;
 }
-
-.checkout-form .StripeElement {
-  padding: 1rem 0.75rem;
-}
-</style>
+</style> 

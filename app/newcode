@@ -1,0 +1,31 @@
+
+// app/composables/useAsyncQuery.js (Updated)
+_____________________________________________________
+
+// app/plugins/graphql-compatibility.ts (Updated)
+
+_____________________________________________________
+
+// app/components/generalElements/SEOHead.vue (Updated)
+
+_____________________________________________________
+
+// app/composables/useAuth.ts (Updated)
+
+_____________________________________________________
+
+// app/composables/useCart.ts (Updated)
+
+_____________________________________________________
+
+// app/components/shopElements/PaymentOptions.vue (Updated)
+
+
+_____________________________________________________
+
+// app/pages/checkout.vue (Update BTC Pay Integration)
+
+
+_____________________________________________________
+
+// app/plugins/global-fixes.ts (New)

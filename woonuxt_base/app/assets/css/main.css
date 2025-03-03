@@ -27,8 +27,8 @@ body::before {
   z-index: -1;
   background-image: url('/images/bgsymbol.png');
   background-repeat: repeat;
-  background-size: 200px auto;
-  opacity: 0.08;
+  background-size: 600px auto;
+  opacity: 0.3;
   pointer-events: none;
 }
 

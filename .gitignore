@@ -29,3 +29,4 @@ logs
 *.pem
 .history
 
+app/components/generalElements/SEOHead.vue

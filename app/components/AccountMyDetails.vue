@@ -1,11 +1,3 @@
-<template>
-  <div class="grid gap-8 account-form">
-    <PersonalInformation />
-    <BillingAndShipping />
-    <ChangePassword />
-  </div>
-</template>
-
 <style lang="postcss">
 .account-form input[type='text'],
 .account-form input[type='email'],
@@ -19,4 +11,4 @@
 .account-form label {
   @apply text-xs mb-1 text-gray-600 inline-block uppercase;
 }
-</style>
+</style> 

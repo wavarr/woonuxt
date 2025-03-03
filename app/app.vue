@@ -20,15 +20,29 @@ watch(
 
 useHead({
   titleTemplate: `%s - ${siteName}`,
+  link: [
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com'
+    },
+    {
+      rel: 'preconnect', 
+      href: 'https://fonts.gstatic.com',
+      crossorigin: ''
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Notable&family=Sigmar&display=swap'
+    }
+  ]
 });
 </script>
 
 <template>
   <NuxtLoadingIndicator />
-  <div class="flex flex-col min-h-screen bg-pattern" style="position: relative;">
-    <!-- Removed gradient background div -->
-    <AppHeader />
-    <SiteAnnouncement />
+  <div class="flex flex-col min-h-screen relative">
+    <div class="absolute inset-0 bg-[url('/images/bgsymbol.png')] bg-repeat opacity-5 pointer-events-none"></div>
+    <AppHeader class="relative bg-gray-100" />
 
     <Transition name="slide-from-right">
       <LazyCart v-if="isShowingCart" />
@@ -38,20 +52,20 @@ useHead({
       <MobileMenu v-if="isShowingMobileMenu" />
     </Transition>
 
-    <NuxtPage />
+    <NuxtPage class="relative" />
 
     <Transition name="fade">
       <div v-if="isShowingCart || isShowingMobileMenu" class="bg-black opacity-25 inset-0 z-40 fixed" @click="closeCartAndMenu" />
     </Transition>
 
-    <AppFooter />
+    <AppFooter class="relative bg-gray-100" />
   </div>
 </template>
 
 <style lang="postcss">
 html,
 body {
-  @apply text-gray-900;
+  @apply bg-gray-100 text-gray-900;
   scroll-behavior: smooth;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
     <!-- Your existing layout content -->
     <slot />
     
@@ -46,6 +46,21 @@ onMounted(() => {
   }
 });
 </script>
+
+<style>
+/* Global styles */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Ensure proper stacking context */
+#__nuxt {
+  position: relative;
+  z-index: 0;
+}
+</style>
 
 <style scoped>
 .debug-shortcut-handler {

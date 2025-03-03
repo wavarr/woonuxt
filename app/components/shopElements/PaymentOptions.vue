@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { toRef, computed, onMounted } from 'vue';
-
 const props = defineProps<{
   modelValue: string | object;
   paymentGateways: PaymentGateways;
@@ -15,15 +13,7 @@ const updatePaymentMethod = (value: any) => {
 };
 
 onMounted(() => {
-  if (props.paymentGateways?.nodes.length) {
-    // Prioritize BTCPay if available
-    const btcpayGateway = props.paymentGateways.nodes.find(gateway => gateway.id === 'btcpay');
-    if (btcpayGateway) {
-      updatePaymentMethod(btcpayGateway);
-    } else {
-      updatePaymentMethod(props.paymentGateways.nodes[0]);
-    }
-  }
+  if (props.paymentGateways?.nodes.length) updatePaymentMethod(props.paymentGateways?.nodes[0]);
 });
 </script>
 

@@ -1,0 +1,74 @@
+/* Import Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Notable&family=Sigmar&display=swap');
+
+/* Global styles */
+.notable-font {
+  font-family: 'Notable', sans-serif;
+  line-height: 1.1;
+}
+
+.sigmar-font {
+  font-family: 'Sigmar', cursive;
+  line-height: 1.2;
+} 
+
+/* Background pattern */
+body {
+  position: relative;
+  background-color: #0a2463;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('/public/images/bgsymbol.png');
+  background-repeat: repeat;
+  background-size: 250px auto;
+  opacity: 0.2;
+  filter: brightness(1.3) contrast(1.2);
+  pointer-events: none;
+}
+
+.bg-pattern {
+  position: relative;
+  background-color: transparent;
+}
+
+.bg-pattern::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('/public/images/bgsymbol.png');
+  background-repeat: repeat;
+  background-size: 250px auto;
+  opacity: 0.2;
+  filter: brightness(1.3) contrast(1.2);
+  pointer-events: none;
+}
+
+/* Keep the original class for compatibility */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url('/images/bgsymbol.png');
+  background-repeat: repeat;
+  background-size: 200px auto;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Keep the original class for compatibility */
