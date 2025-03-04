@@ -88,3 +88,4 @@ export default defineNuxtConfig({
     strategy: 'no_prefix',
   },
 });
+// The closing bracket for defineNuxtConfig was removed, adding it back

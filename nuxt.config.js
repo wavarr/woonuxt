@@ -30,4 +30,6 @@ export default {
       failOnError: false,
     },
   },
-} 
+
+  compatibilityDate: '2025-03-03',
+};

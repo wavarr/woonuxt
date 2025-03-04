@@ -79,7 +79,7 @@ And here is the live demo of the customized WooNuxt site: [My Shop](https://mysh
 
 | Payment Method                                                      | Supported |
 | ------------------------------------------------------------------- | --------- |
-| [Stripe](https://wordpress.org/plugins/woocommerce-gateway-stripe/) | ✅        |
+| [Stripe](https://wordpress.org/plugins/woocommerce-gateway-                            /) | ✅        |
 | [PayPal Standard](https://woo.com/document/paypal-standard/)        | ✅        |
 | Cash on Delivery                                                    | ✅        |
 
