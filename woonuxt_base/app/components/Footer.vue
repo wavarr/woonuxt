@@ -1,16 +1,23 @@
 <template>
-  <footer class="relative w-full bg-gray-800 text-white">
-    <!-- Top wave separator -->
+  <footer class="relative w-full bg-navy-blue text-white">
+    <!-- Top wave separator - enhanced flowing effect like a waving flag -->
     <div class="wave-top">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" class="w-full h-16">
-        <path fill="#f3f4f6" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none" class="w-full h-32">
+        <path fill="#f8f9fa" fill-opacity="1" d="M0,192 C80,160 160,128 240,144 C320,160 400,224 480,240 C560,256 640,224 720,192 C800,160 880,128 960,144 C1040,160 1120,224 1200,240 C1280,256 1360,224 1440,192 L1440,0 L0,0 Z"></path>
       </svg>
     </div>
     
-    <div class="container mx-auto px-4 py-12">
+    <!-- Flag-like stripes in the background -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="flag-stripe footer-stripe-red"></div>
+      <div class="flag-stripe footer-stripe-white"></div>
+      <div class="flag-stripe footer-stripe-blue"></div>
+    </div>
+    
+    <div class="container mx-auto px-4 py-12 relative z-10">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <!-- Company Info -->
-        <div>
+        <div data-scroll-reveal="enter left move 20px over 0.6s after 0.1s">
           <h3 class="text-xl font-bold mb-4">ModaPrime USA</h3>
           <p class="mb-4 text-gray-300">Premium modafinil delivered across the USA with fast shipping and reliable service.</p>
           <div class="flex space-x-4">

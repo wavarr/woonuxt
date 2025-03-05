@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+import { useCart } from '~/composables/useCart';
+import { useHelpers } from '~/composables/useHelpers';
+import { useAppConfig } from '#app';
+import { watch } from 'vue';
+
 const route = useRoute();
 const { isShowingCart, toggleCart } = useCart();
 const { isShowingMobileMenu, toggleMobileMenu, addBodyClass, removeBodyClass } = useHelpers();
@@ -47,9 +53,18 @@ useHead({
     <Transition name="slide-from-right">
       <LazyCart v-if="isShowingCart" />
     </Transition>
-
+    
     <Transition name="slide-from-left">
-      <MobileMenu v-if="isShowingMobileMenu" />
+      <generalElements-MobileMenu v-if="isShowingMobileMenu" />
+    </Transition>
+    
+    <!-- Overlay for mobile menu -->
+    <Transition name="fade">
+      <div 
+        v-if="isShowingMobileMenu" 
+        class="fixed inset-0 bg-black bg-opacity-50 z-40"
+        @click="toggleMobileMenu(false)">
+      </div>
     </Transition>
 
     <NuxtPage class="relative" />

@@ -4,14 +4,9 @@
       <div class="flex items-center justify-between h-20">
         <!-- Left Section -->
         <div class="flex items-center">
-          <!-- Mobile Menu Trigger -->
-          <div class="lg:hidden">
-            <MenuTrigger />
-          </div>
-          
           <!-- Logo -->
           <NuxtLink to="/" class="flex items-center gap-3">
-            <img src="/logo.svg" alt="Logo" class="w-8 h-8">
+            <img src="/logo.svg" alt="Logo" class="w-10 h-10">
             <span class="text-xl font-bold text-gray-900">ModaPrime USA</span>
           </NuxtLink>
         </div>
@@ -29,22 +24,22 @@
 
         <!-- Right Section -->
         <div class="flex items-center space-x-6">
-          <!-- Search -->
-          <form class="relative hidden sm:block">
-            <input
-              type="text"
-              placeholder="Search products..."
-              class="w-64 px-4 py-2 pl-10 text-sm text-gray-600 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-            />
-            <Icon name="ion:search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size="18" />
-          </form>
-
           <!-- Icons -->
           <div class="flex items-center space-x-4">
             <NuxtLink to="/my-account" class="text-gray-600 hover:text-primary transition-colors">
               <Icon name="ion:person" size="22" />
             </NuxtLink>
             <CartTrigger />
+            
+            <!-- Custom Menu Trigger (replacing hamburger) -->
+            <div class="lg:hidden cursor-pointer" @click="toggleMobileMenu">
+              <div class="menu-icon">
+                <div class="menu-icon-diamond"></div>
+                <div class="menu-icon-diamond"></div>
+                <div class="menu-icon-diamond"></div>
+                <div class="menu-icon-diamond"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -53,6 +48,10 @@
 </template>
 
 <script setup>
+import { useHelpers } from '@/composables/useHelpers';
+
+const { toggleMobileMenu } = useHelpers();
+
 const menuItems = [
   { label: 'Home', path: '/' },
   { label: 'Products', path: '/products' },
@@ -64,5 +63,34 @@ const menuItems = [
 <style scoped>
 .text-primary {
   color: #5E38C6;
+}
+
+/* Custom menu icon (diamond pattern) */
+.menu-icon {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 4px;
+  width: 30px;
+  height: 30px;
+  padding: 3px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+}
+
+.menu-icon-diamond {
+  width: 10px;
+  height: 10px;
+  background-color: #5E38C6;
+  transform: rotate(45deg);
+  transition: all 0.3s ease;
+}
+
+.menu-icon:hover {
+  background-color: #efefef;
+}
+
+.menu-icon:hover .menu-icon-diamond {
+  background-color: #7E58E6;
 }
 </style> 

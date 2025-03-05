@@ -7,11 +7,12 @@ const { wishlistLink } = useAuth();
 <template>
   <footer class="footer-container order-last">
     <div class="wave-container">
-      <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120">
-        <path class="wave-path" d="M0,96L60,80C120,64,240,32,360,32C480,32,600,64,720,80C840,96,960,96,1080,80C1200,64,1320,32,1380,16L1440,0L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+      <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path class="wave-path wave-path-1" d="M0,40 Q180,60 360,40 Q540,20 720,40 Q900,60 1080,40 Q1260,20 1440,40 L1440,120 L0,120 Z"></path>
+        <path class="wave-path wave-path-2" d="M0,50 Q180,30 360,50 Q540,70 720,50 Q900,30 1080,50 Q1260,70 1440,50 L1440,120 L0,120 Z"></path>
       </svg>
     </div>
-    <div class="footer-content bg-gray-200">
+    <div class="footer-content" style="background-color: #e9e9e9;">
       <div class="container flex flex-wrap justify-between gap-12 py-24 md:gap-24">
         <div class="mr-auto">
           <Logo />
@@ -79,17 +80,27 @@ a {
   height: 120px;
   width: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 .wave {
   width: 100%;
   height: 120px;
+  overflow: visible;
 }
 
 .wave-path {
-  fill: #0047AB; /* Navy blue color */
-  transform-origin: bottom;
-  animation: wave-animation 10s linear infinite;
+  fill: #e9e9e9;
+}
+
+.wave-path-1 {
+  opacity: 0.7;
+  animation: wave-animation-vertical 8s ease-in-out infinite;
+}
+
+.wave-path-2 {
+  opacity: 0.5;
+  animation: wave-animation-vertical 6s ease-in-out infinite reverse;
 }
 
 .footer-content {
@@ -97,15 +108,15 @@ a {
   z-index: 1;
 }
 
-@keyframes wave-animation {
+@keyframes wave-animation-vertical {
   0% {
-    transform: translateX(0) translateY(0) scaleY(1);
+    d: path("M0,40 Q180,60 360,40 Q540,20 720,40 Q900,60 1080,40 Q1260,20 1440,40 L1440,120 L0,120 Z");
   }
   50% {
-    transform: translateX(-25px) translateY(5px) scaleY(1.1);
+    d: path("M0,50 Q180,30 360,50 Q540,70 720,50 Q900,30 1080,50 Q1260,70 1440,50 L1440,120 L0,120 Z");
   }
   100% {
-    transform: translateX(0) translateY(0) scaleY(1);
+    d: path("M0,40 Q180,60 360,40 Q540,20 720,40 Q900,60 1080,40 Q1260,20 1440,40 L1440,120 L0,120 Z");
   }
 }
 </style>

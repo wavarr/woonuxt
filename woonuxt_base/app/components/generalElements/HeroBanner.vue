@@ -1,141 +1,385 @@
 <template>
-  <div class="relative mx-auto w-full overflow-hidden bg-gradient-to-r from-blue-900 to-blue-700 text-white">
-    <!-- Flowing background elements -->
-    <div class="absolute inset-0 z-0">
-      <div class="flowing-blob-1"></div>
-      <div class="flowing-blob-2"></div>
-      <div class="flowing-blob-3"></div>
-    </div>
-    
-    <div class="container relative z-10 flex flex-col md:flex-row items-center justify-between py-16 md:py-24">
-      <!-- Left content -->
-      <div class="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
-        <h1 class="text-left notable-font">
-          <div class="text-block">
-            <div class="text-white">Moda</div>
-            <div class="text-white">Prime</div>
-            <div class="text-white">USA</div>
-          </div>
-        </h1>
-        <p class="mt-6 text-xl text-blue-100 max-w-md">Premium modafinil delivered across the USA with fast shipping and reliable service.</p>
-        <div class="mt-8 flex flex-wrap gap-4">
-          <NuxtLink class="px-8 py-4 font-bold text-white bg-blue-600 rounded-full hover:bg-blue-500 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl" to="/products">
-            Shop Now
-            <span class="ml-2">→</span>
-          </NuxtLink>
-          <NuxtLink class="px-8 py-4 font-bold text-white bg-transparent border-2 border-white rounded-full hover:bg-white hover:text-blue-700 transition-all" to="/contact">
-            Contact Us
-          </NuxtLink>
+  <div class="relative w-full overflow-hidden banner-container">
+    <!-- Horizontal red, white, and blue stripes -->
+    <div class="stripes-container">
+      <!-- Large background star -->
+      <div class="bg-star-container mx-auto absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[5]" style="top: calc(50% - 40px);">
+        <svg class="bg-star" viewBox="0 0 51 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M25.5 0L31.4 18.2H50.5L35 29.5L40.9 47.7L25.5 36.4L10.1 47.7L16 29.5L0.5 18.2H19.6L25.5 0Z" fill="#f5f5f0" stroke="#222220" stroke-width="5" stroke-opacity="0.8"/>
+        </svg>
+      </div>
+      
+      <!-- Red stripe (top) -->
+      <div class="stripe red-stripe">
+        <div class="container mx-auto px-4 flex items-center justify-center h-full">
+          <span class="text-7xl md:text-8xl font-bold text-white notable-font text-shadow tight-line-height transform -translate-y-[5px] relative z-20 text-outline-white">MODA</span>
         </div>
       </div>
       
-      <!-- Right content - Featured product or promo -->
-      <div class="md:w-1/2 flex justify-center">
-        <div class="bg-white/10 backdrop-blur-md rounded-3xl p-8 max-w-md w-full border border-white/20 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="bg-blue-500/20 rounded-2xl p-4">
-              <svg class="w-10 h-10 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="text-2xl font-bold text-white mb-1">Special Offer</h3>
-              <p class="text-blue-100">Free shipping on all orders over $150</p>
-            </div>
-          </div>
-          
-          <div class="w-full h-px bg-gradient-to-r from-transparent via-blue-200/20 to-transparent my-6"></div>
-          
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <p class="text-green-300">Limited time offer</p>
-            </div>
-            <NuxtLink 
-              to="/products"
-              class="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full text-center transition-colors duration-300"
-            >
-              Shop Now
-            </NuxtLink>
-          </div>
+      <!-- White stripe (middle) -->
+      <div class="stripe white-stripe">
+        <div class="container mx-auto px-4 flex items-center justify-center h-full">
+          <span class="text-8xl md:text-9xl font-bold text-usa-red notable-font text-shadow-red relative z-20 tight-line-height transform -translate-y-[45px] text-outline-black">PRIME</span>
+        </div>
+      </div>
+      
+      <!-- Blue stripe (bottom) -->
+      <div class="stripe blue-stripe">
+        <div class="container mx-auto px-4 flex items-center justify-center h-full">
+          <span class="text-8xl md:text-9xl font-bold text-white notable-font text-shadow tight-line-height transform -translate-y-[5px] relative z-20 text-outline-white usa-text">USA</span>
         </div>
       </div>
     </div>
     
-    <!-- Wave separator at bottom -->
-    <div class="absolute bottom-0 left-0 w-full">
-      <svg class="w-full h-16" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-        <path d="M0 120L48 105C96 90 192 60 288 55C384 50 480 70 576 75C672 80 768 70 864 65C960 60 1056 60 1152 70C1248 80 1344 100 1392 110L1440 120V0H1392C1344 0 1248 0 1152 0C1056 0 960 0 864 0C768 0 672 0 576 0C480 0 384 0 288 0C192 0 96 0 48 0H0V120Z" fill="white"/>
-      </svg>
+    <!-- Bottom wave separator with menu -->
+    <div class="absolute bottom-0 left-0 w-full z-20">
+      <!-- Wave separator -->
+      <div class="wave-separator">
+        <svg class="w-full h-full" viewBox="0 0 1440 40" preserveAspectRatio="none">
+          <!-- Base wave path (white/light background) -->
+          <path class="wave-path" d="M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z" 
+                fill="#e9e9e9"/>
+          
+          <!-- Navy blue frosted wave effect (5-10px from top) -->
+          <path class="wave-path-navy" d="M0,25 C240,45 480,5 720,25 C960,45 1200,5 1440,25 L1440,40 L0,40 Z" 
+                fill="#1d3557" opacity="0.3"/>
+                
+          <!-- White frosted wave effect (first 5px) -->
+          <path class="wave-path-white" d="M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,25 L0,25 Z" 
+                fill="white" opacity="0.4"/>
+        </svg>
+      </div>
+      
+      <!-- Menu container positioned over the wave -->
+      <div class="menu-container bg-[#e9e9e9] py-2 shadow-md wave-menu">
+        <div class="container mx-auto px-4">
+          <nav class="flex justify-center space-x-8 md:space-x-12">
+            <NuxtLink to="/" class="nav-link text-base md:text-lg font-medium wave-item">Home</NuxtLink>
+            <NuxtLink to="/products" class="nav-link text-base md:text-lg font-medium wave-item">Products</NuxtLink>
+            <NuxtLink to="/contact" class="nav-link text-base md:text-lg font-medium wave-item">Contact</NuxtLink>
+          </nav>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.text-block {
-  display: flex;
-  flex-direction: column;
+/* Banner container with fixed height instead of viewport height */
+.banner-container {
+  height: 360px; /* Increased height to accommodate larger text and tiered layout */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Stripes container */
+.stripes-container {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  line-height: 0.9;
-  max-height: 75; 
+  height: 100%;
+  z-index: 1;
 }
 
-.text-block div {
-  font-size: clamp(2rem, 15vw, 6rem);
-  white-space: nowrap;
-  font-weight: bold;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Flowing blob animations */
-.flowing-blob-1 {
+/* Individual stripes */
+.stripe {
   position: absolute;
-  top: -15%;
-  right: -10%;
-  width: 50%;
-  height: 70%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  animation: morph 15s linear infinite alternate;
+  width: 100%;
+  left: 0;
 }
 
-.flowing-blob-2 {
-  position: absolute;
-  bottom: -20%;
-  left: -10%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  animation: morph 18s linear infinite alternate-reverse;
+.red-stripe {
+  top: 0;
+  height: 30%; /* Adjusted for tiered layout */
+  background-color: #e63946;
+  background-image: linear-gradient(90deg, 
+    rgba(255,255,255,0.05) 0%, 
+    rgba(255,255,255,0) 50%, 
+    rgba(255,255,255,0.05) 100%);
 }
 
-.flowing-blob-3 {
-  position: absolute;
-  top: 30%;
-  left: 30%;
-  width: 40%;
-  height: 40%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  animation: morph 20s linear infinite alternate;
+.white-stripe {
+  top: 25%; /* Overlap with red stripe for tiered effect */
+  height: 35%;
+  background-color: #f1faee;
+  background-image: linear-gradient(90deg, 
+    rgba(0,0,0,0.02) 0%, 
+    rgba(0,0,0,0) 50%, 
+    rgba(0,0,0,0.02) 100%);
 }
 
-@keyframes morph {
-  0% {
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  }
-  25% {
-    border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+.blue-stripe {
+  top: 55%; /* Overlap with white stripe for tiered effect */
+  height: 45%; /* Increased height for larger USA text */
+  background-color: #1d3557;
+  background-image: linear-gradient(90deg, 
+    rgba(255,255,255,0.05) 0%, 
+    rgba(255,255,255,0) 50%, 
+    rgba(255,255,255,0.05) 100%);
+  padding-bottom: 10px; /* Add padding to prevent USA text from being cut off */
+}
+
+.notable-font {
+  font-family: 'Notable', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Add tight line height class */
+.tight-line-height {
+  line-height: 0.3; /* Changed from 0.2 to 0.3 */
+}
+
+/* Text outline styles */
+.text-outline-white {
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+  text-stroke: 1px rgba(255, 255, 255, 0.3);
+}
+
+.text-outline-black {
+  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.2);
+  text-stroke: 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Large background star styling */
+.bg-star-container {
+  display: inline-block;
+  height: 300px; /* Much larger background star */
+  width: 320px;
+  opacity: 0.7;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.bg-star {
+  height: 100%;
+  width: 100%;
+}
+
+/* Text shadow for better visibility */
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.text-shadow-red {
+  text-shadow: 2px 2px 4px rgba(230, 57, 70, 0.3);
+}
+
+/* Theme colors */
+.text-usa-red {
+  color: #e63946;
+}
+
+.text-navy-blue {
+  color: #1d3557;
+}
+
+.bg-navy-blue {
+  background-color: #1d3557;
+}
+
+/* Wave separator positioning */
+.wave-separator {
+  height: 40px; /* Smaller wave for header */
+  position: relative;
+  z-index: 1;
+  margin-bottom: -1px; /* Ensure seamless connection with menu */
+  overflow: hidden;
+}
+
+.wave-path {
+  animation: waveFlow 8s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+.wave-path-navy {
+  animation: waveFlowNavy 8s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+.wave-path-white {
+  animation: waveFlowWhite 8s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+/* Wave menu animation */
+.wave-menu {
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-item {
+  display: inline-block;
+  animation: waveText 3s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.2s);
+}
+
+.wave-item:nth-child(1) {
+  --i: 0;
+}
+
+.wave-item:nth-child(2) {
+  --i: 1;
+}
+
+.wave-item:nth-child(3) {
+  --i: 2;
+}
+
+@keyframes waveText {
+  0%, 100% {
+    transform: translateY(0);
   }
   50% {
-    border-radius: 30% 70% 70% 30% / 70% 70% 30% 30%;
+    transform: translateY(-5px) skewX(5deg);
   }
-  75% {
-    border-radius: 70% 30% 30% 70% / 30% 30% 70% 70%;
+}
+
+@keyframes waveFlow {
+  0% {
+    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z");
+    transform: scaleX(1);
+  }
+  50% {
+    d: path("M0,20 C240,0 480,40 720,20 C960,0 1200,40 1440,20 L1440,40 L0,40 Z");
+    transform: scaleX(1.05) skewX(-2deg);
   }
   100% {
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z");
+    transform: scaleX(1);
+  }
+}
+
+@keyframes waveFlowNavy {
+  0% {
+    d: path("M0,25 C240,45 480,5 720,25 C960,45 1200,5 1440,25 L1440,40 L0,40 Z");
+    transform: scaleX(1);
+  }
+  50% {
+    d: path("M0,25 C240,5 480,45 720,25 C960,5 1200,45 1440,25 L1440,40 L0,40 Z");
+    transform: scaleX(1.1) skewX(-3deg);
+  }
+  100% {
+    d: path("M0,25 C240,45 480,5 720,25 C960,45 1200,5 1440,25 L1440,40 L0,40 Z");
+    transform: scaleX(1);
+  }
+}
+
+@keyframes waveFlowWhite {
+  0% {
+    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,25 L0,25 Z");
+    transform: scaleX(1);
+  }
+  50% {
+    d: path("M0,20 C240,0 480,40 720,20 C960,0 1200,40 1440,20 L1440,25 L0,25 Z");
+    transform: scaleX(1.15) skewX(-4deg);
+  }
+  100% {
+    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,25 L0,25 Z");
+    transform: scaleX(1);
+  }
+}
+
+/* Menu styling */
+.menu-container {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.nav-link {
+  font-weight: 500;
+  color: #1d3557;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #e63946;
+  transform: translateY(-3px) skewX(5deg);
+}
+
+.nav-link.router-link-active {
+  color: #e63946;
+  font-weight: 600;
+}
+
+.nav-link.router-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0.5rem;
+  right: 0.5rem;
+  height: 2px;
+  background-color: #e63946;
+}
+
+/* Responsive text adjustments */
+@media (max-width: 768px) {
+  .banner-container {
+    height: 320px; /* Slightly smaller on mobile but still with space for menu */
+  }
+  
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .bg-star-container {
+    height: 250px;
+    width: 270px;
+  }
+}
+
+.usa-text {
+  font-weight: 900;
+  letter-spacing: 0em;
+  font-size: 8rem; /* Default size for mobile */
+  padding-right: 2px;
+  padding-left: 1px;
+  position: relative;
+  top: -100px;
+  margin-bottom: -30px;
+  z-index: 109;
+  color: #FFFFFF;
+  text-shadow: rgba(0, 10, 10, 0.9) 10px 5px 0px;
+  /* transform: translateY(-15px); */
+}
+
+@media (min-width: 768px) {
+  .usa-text {
+    font-size: 10rem; /* Larger size for screens over 768px */
   }
 }
 </style>
+
+<script setup>
+import { onMounted, onUnmounted } from 'vue';
+
+onMounted(() => {
+  // Simple scroll reveal implementation
+  const revealElements = document.querySelectorAll('[data-scroll-reveal]');
+  
+  const revealOnScroll = () => {
+    revealElements.forEach(element => {
+      const elementTop = element.getBoundingClientRect().top;
+      const elementVisible = 150;
+      
+      if (elementTop < window.innerHeight - elementVisible) {
+        element.classList.add('is-revealed');
+      } else {
+        element.classList.remove('is-revealed');
+      }
+    });
+  };
+  
+  window.addEventListener('scroll', revealOnScroll);
+  // Initial check
+  revealOnScroll();
+  
+  // Cleanup
+  onUnmounted(() => {
+    window.removeEventListener('scroll', revealOnScroll);
+  });
+});
+</script>
