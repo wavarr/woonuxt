@@ -12,65 +12,8 @@
     
     <!-- Site header -->
     <HeroBanner v-if="$route.path === '/'" />
-    <header v-else class="bg-white/90 backdrop-blur-sm shadow-sm relative z-20">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between py-4">
-          <!-- Logo -->
-          <NuxtLink to="/" class="flex items-center">
-            <span class="text-xl font-bold text-navy-900">ModaPrime</span>
-            <span class="text-lg font-bold text-usa-red ml-1">USA</span>
-          </NuxtLink>
-          
-          <!-- Main Navigation -->
-          <nav class="hidden md:flex space-x-8">
-            <NuxtLink to="/" class="nav-link">Home</NuxtLink>
-            <NuxtLink to="/products" class="nav-link">Products</NuxtLink>
-            <NuxtLink to="/contact" class="nav-link">Contact</NuxtLink>
-          </nav>
-          
-          <!-- Search, Account, Cart -->
-          <div class="flex items-center space-x-4">
-            <!-- Search -->
-            <div class="relative">
-              <input 
-                type="text" 
-                placeholder="Search Products..." 
-                class="py-2 pl-3 pr-10 rounded-full text-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-navy-900/20"
-              >
-              <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-            </div>
-            
-            <!-- Account & Cart icons -->
-            <div class="flex items-center space-x-4">
-              <NuxtLink to="/account" class="text-gray-600 hover:text-navy-900">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </NuxtLink>
-              
-              <NuxtLink to="/cart" class="text-gray-600 hover:text-navy-900 relative">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span class="absolute -top-2 -right-2 bg-usa-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-              </NuxtLink>
-            </div>
-            
-            <!-- Mobile menu button -->
-            <button class="md:hidden text-gray-600 hover:text-navy-900">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-
+    <AppHeader v-else />
+    
     <!-- Main content -->
     <main class="flex-grow relative z-10 bg-white/90">
       <slot />
@@ -114,6 +57,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import DebugPanel from '~/components/debug/DebugPanel.vue';
+import AppHeader from '~/components/generalElements/AppHeader.vue';
+import HeroBanner from '~/components/generalElements/HeroBanner.vue';
 
 const showDebugPanel = ref(process.env.NODE_ENV === 'development' && process.client);
 

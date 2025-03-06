@@ -11,7 +11,7 @@ export default {
       siteDescription: 'Premium Pharmaceutical Service',
       siteShortDescription: 'Your trusted source for premium modafinil',
       siteImage: '/images/placeholder.jpg',
-      frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000'
+      frontendUrl: process.env.FRONTEND_URL || 'https://modaprimeusa.com'
     }
   },
 

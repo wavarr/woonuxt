@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="124" height="440" viewBox="0 0 124 440" preserveAspectRatio="xMidYMid meet">
+  <!-- Red top stripe -->
+  <rect x="10" y="80" width="104" height="90" fill="#FF0000" rx="5" ry="5"/>
+  <text x="62" y="125" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">USA</text>
+  
+  <!-- White middle stripe with USA text -->
+  <rect x="10" y="170" width="104" height="90" fill="#FFFFFF" rx="5" ry="5" stroke="#CCCCCC" stroke-width="1"/>
+  <text x="62" y="215" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#0066CC" text-anchor="middle" dominant-baseline="middle">USA</text>
+  
+  <!-- Blue bottom stripe -->
+  <rect x="10" y="260" width="104" height="90" fill="#0066CC" rx="5" ry="5"/>
+  <text x="62" y="305" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle" dominant-baseline="middle">USA</text>
+</svg> 

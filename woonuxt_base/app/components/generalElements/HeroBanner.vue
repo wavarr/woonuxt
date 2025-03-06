@@ -1,355 +1,291 @@
 <template>
-  <div class="relative w-full overflow-hidden banner-container">
-    <!-- Horizontal red, white, and blue stripes -->
-    <div class="stripes-container">
-      <!-- Large background star -->
-      <div class="bg-star-container mx-auto absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[5]" style="top: calc(50% - 40px);">
-        <svg class="bg-star" viewBox="0 0 51 48" xmlns="http://www.w3.org/2000/svg">
-          <path d="M25.5 0L31.4 18.2H50.5L35 29.5L40.9 47.7L25.5 36.4L10.1 47.7L16 29.5L0.5 18.2H19.6L25.5 0Z" fill="#f5f5f0" stroke="#222220" stroke-width="5" stroke-opacity="0.8"/>
-        </svg>
+  <div class="relative w-full overflow-hidden banner-container bg-gradient-to-r from-[#1d3557] via-[#457b9d] to-[#1d3557]">
+    <!-- Background elements -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="stars-pattern">
+        <div v-for="n in 30" :key="n" class="star" :style="`top: ${Math.random() * 100}%; left: ${Math.random() * 100}%; animation-delay: ${n * 0.2}s;`"></div>
       </div>
-      
-      <!-- Red stripe (top) -->
-      <div class="stripe red-stripe">
-        <div class="container mx-auto px-4 flex items-center justify-center h-full">
-          <span class="text-7xl md:text-8xl font-bold text-white notable-font text-shadow tight-line-height transform -translate-y-[5px] relative z-20 text-outline-white">MODA</span>
+    </div>
+    
+    <!-- Main content -->
+    <div class="container mx-auto px-4 py-16 md:py-24 relative z-10">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        <!-- Left content -->
+        <div class="w-full md:w-1/2 text-white mb-10 md:mb-0">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+            <span class="text-[#e63946]">Moda</span>Prime <span class="text-[#f1faee]">USA</span>
+          </h1>
+          <p class="text-xl md:text-2xl mb-6 text-[#f1faee] font-light">Premium Modafinil Service</p>
+          <p class="mb-8 text-[#a8dadc] max-w-lg">Boutique Modafinil Vendor with fast shipping, US to US. Quality products delivered discreetly to your doorstep.</p>
+          
+          <div class="flex flex-wrap gap-4">
+            <NuxtLink to="/products" class="btn-primary">
+              Shop Now
+            </NuxtLink>
+            <NuxtLink to="/contact" class="btn-secondary">
+              Contact Us
+            </NuxtLink>
+          </div>
+          
+          <!-- Trust badges -->
+          <div class="mt-10 flex items-center gap-6">
+            <div class="flex items-center gap-2">
+              <div class="w-10 h-10 rounded-full bg-[#f1faee] flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#1d3557]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span class="text-[#f1faee]">US Shipping</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-10 h-10 rounded-full bg-[#f1faee] flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#1d3557]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <span class="text-[#f1faee]">Secure Payment</span>
+            </div>
+          </div>
         </div>
-      </div>
-      
-      <!-- White stripe (middle) -->
-      <div class="stripe white-stripe">
-        <div class="container mx-auto px-4 flex items-center justify-center h-full">
-          <span class="text-8xl md:text-9xl font-bold text-usa-red notable-font text-shadow-red relative z-20 tight-line-height transform -translate-y-[45px] text-outline-black">PRIME</span>
-        </div>
-      </div>
-      
-      <!-- Blue stripe (bottom) -->
-      <div class="stripe blue-stripe">
-        <div class="container mx-auto px-4 flex items-center justify-center h-full">
-          <span class="text-8xl md:text-9xl font-bold text-white notable-font text-shadow tight-line-height transform -translate-y-[5px] relative z-20 text-outline-white usa-text">USA</span>
+        
+        <!-- Right content - USA flag inspired design -->
+        <div class="w-full md:w-1/2 flex justify-center">
+          <div class="usa-flag-container relative w-full max-w-md aspect-[4/3]">
+            <!-- Stars section -->
+            <div class="absolute top-0 left-0 w-2/5 h-1/2 bg-[#1d3557] rounded-sm overflow-hidden flex items-center justify-center">
+              <div class="stars-grid">
+                <div v-for="n in 20" :key="`flag-star-${n}`" class="flag-star"></div>
+              </div>
+            </div>
+            
+            <!-- Stripes -->
+            <div class="absolute top-0 right-0 w-3/5 h-1/2 overflow-hidden">
+              <div v-for="n in 3" :key="`stripe-${n}`" 
+                   :class="`stripe ${n % 2 === 0 ? 'bg-[#f1faee]' : 'bg-[#e63946]'}`"
+                   :style="`top: ${(n-1) * 33.33}%`">
+              </div>
+            </div>
+            
+            <!-- Bottom half with product image or text -->
+            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-[#f1faee]/10 backdrop-blur-sm rounded-sm flex items-center justify-center overflow-hidden">
+              <!-- Special offer announcement inside flag -->
+              <div class="special-offer text-center p-4 w-full">
+                <div class="announcement-badge mb-2 inline-block">
+                  <span class="bg-[#e63946] text-white px-3 py-1 rounded-full text-xs font-bold">NEW CUSTOMERS</span>
+                </div>
+                <h3 class="text-[#f1faee] font-bold text-xl mb-1">10 FREE MODAWAKE</h3>
+                <p class="text-[#a8dadc] text-sm px-2">Try ModaPrime today! Limit 1 per new customer.<br>Cannot be combined with other offers.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     
-    <!-- Bottom wave separator with menu -->
+    <!-- Wave separator -->
+    <div class="absolute bottom-0 left-0 w-full">
+      <svg class="w-full h-16 md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path class="fill-[#f1faee]" d="M0,50 C240,100 480,0 720,50 C960,100 1200,0 1440,50 L1440,100 L0,100 Z"></path>
+      </svg>
+    </div>
+    
+    <!-- Navigation menu -->
     <div class="absolute bottom-0 left-0 w-full z-20">
-      <!-- Wave separator -->
-      <div class="wave-separator">
-        <svg class="w-full h-full" viewBox="0 0 1440 40" preserveAspectRatio="none">
-          <!-- Base wave path (white/light background) -->
-          <path class="wave-path" d="M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z" 
-                fill="#e9e9e9"/>
-          
-          <!-- Navy blue frosted wave effect (5-10px from top) -->
-          <path class="wave-path-navy" d="M0,25 C240,45 480,5 720,25 C960,45 1200,5 1440,25 L1440,40 L0,40 Z" 
-                fill="#1d3557" opacity="0.3"/>
-                
-          <!-- White frosted wave effect (first 5px) -->
-          <path class="wave-path-white" d="M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,25 L0,25 Z" 
-                fill="white" opacity="0.4"/>
-        </svg>
-      </div>
-      
-      <!-- Menu container positioned over the wave -->
-      <div class="menu-container bg-[#e9e9e9] py-2 shadow-md wave-menu">
-        <div class="container mx-auto px-4">
-          <nav class="flex justify-center space-x-8 md:space-x-12">
-            <NuxtLink to="/" class="nav-link text-base md:text-lg font-medium wave-item">Home</NuxtLink>
-            <NuxtLink to="/products" class="nav-link text-base md:text-lg font-medium wave-item">Products</NuxtLink>
-            <NuxtLink to="/contact" class="nav-link text-base md:text-lg font-medium wave-item">Contact</NuxtLink>
-          </nav>
-        </div>
+      <div class="container mx-auto px-4">
+        <nav class="flex justify-center space-x-8 md:space-x-12 py-2 relative z-30">
+          <NuxtLink to="/" class="nav-link text-base md:text-lg font-medium">Home</NuxtLink>
+          <NuxtLink to="/products" class="nav-link text-base md:text-lg font-medium">Products</NuxtLink>
+          <NuxtLink to="/contact" class="nav-link text-base md:text-lg font-medium">Contact</NuxtLink>
+        </nav>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* Banner container with fixed height instead of viewport height */
+/* Banner container */
 .banner-container {
-  height: 360px; /* Increased height to accommodate larger text and tiered layout */
+  min-height: 550px;
   position: relative;
-  overflow: hidden;
 }
 
-/* Stripes container */
-.stripes-container {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* Stars pattern */
+.stars-pattern {
   width: 100%;
   height: 100%;
-  z-index: 1;
+  position: relative;
 }
 
-/* Individual stripes */
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.2; transform: scale(0.8); }
+}
+
+/* USA Flag styling */
+.usa-flag-container {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  transform: perspective(1000px) rotateY(-5deg);
+  transition: transform 0.5s ease;
+}
+
+.usa-flag-container:hover {
+  transform: perspective(1000px) rotateY(0deg);
+}
+
+.stars-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  width: 100%;
+  height: 100%;
+  padding: 10%;
+}
+
+.flag-star {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.flag-star::before {
+  content: '★';
+  color: white;
+  font-size: 14px;
+}
+
 .stripe {
   position: absolute;
   width: 100%;
-  left: 0;
+  height: 33.33%;
 }
 
-.red-stripe {
-  top: 0;
-  height: 30%; /* Adjusted for tiered layout */
-  background-color: #e63946;
-  background-image: linear-gradient(90deg, 
-    rgba(255,255,255,0.05) 0%, 
-    rgba(255,255,255,0) 50%, 
-    rgba(255,255,255,0.05) 100%);
+/* Button styling */
+.btn-primary {
+  @apply bg-[#e63946] hover:bg-[#e63946]/90 text-white font-medium py-3 px-6 rounded-md transition duration-300 inline-block;
 }
 
-.white-stripe {
-  top: 25%; /* Overlap with red stripe for tiered effect */
-  height: 35%;
-  background-color: #f1faee;
-  background-image: linear-gradient(90deg, 
-    rgba(0,0,0,0.02) 0%, 
-    rgba(0,0,0,0) 50%, 
-    rgba(0,0,0,0.02) 100%);
+.btn-secondary {
+  @apply bg-transparent border-2 border-[#f1faee] hover:bg-[#f1faee]/10 text-[#f1faee] font-medium py-3 px-6 rounded-md transition duration-300 inline-block;
 }
 
-.blue-stripe {
-  top: 55%; /* Overlap with white stripe for tiered effect */
-  height: 45%; /* Increased height for larger USA text */
-  background-color: #1d3557;
-  background-image: linear-gradient(90deg, 
-    rgba(255,255,255,0.05) 0%, 
-    rgba(255,255,255,0) 50%, 
-    rgba(255,255,255,0.05) 100%);
-  padding-bottom: 10px; /* Add padding to prevent USA text from being cut off */
-}
-
-.notable-font {
-  font-family: 'Notable', sans-serif;
-  letter-spacing: -0.02em;
-}
-
-/* Add tight line height class */
-.tight-line-height {
-  line-height: 0.3; /* Changed from 0.2 to 0.3 */
-}
-
-/* Text outline styles */
-.text-outline-white {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
-  text-stroke: 1px rgba(255, 255, 255, 0.3);
-}
-
-.text-outline-black {
-  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.2);
-  text-stroke: 2px rgba(0, 0, 0, 0.2);
-}
-
-/* Large background star styling */
-.bg-star-container {
-  display: inline-block;
-  height: 300px; /* Much larger background star */
-  width: 320px;
-  opacity: 0.7;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-}
-
-.bg-star {
-  height: 100%;
-  width: 100%;
-}
-
-/* Text shadow for better visibility */
-.text-shadow {
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.text-shadow-red {
-  text-shadow: 2px 2px 4px rgba(230, 57, 70, 0.3);
-}
-
-/* Theme colors */
-.text-usa-red {
-  color: #e63946;
-}
-
-.text-navy-blue {
-  color: #1d3557;
-}
-
-.bg-navy-blue {
-  background-color: #1d3557;
-}
-
-/* Wave separator positioning */
-.wave-separator {
-  height: 40px; /* Smaller wave for header */
-  position: relative;
-  z-index: 1;
-  margin-bottom: -1px; /* Ensure seamless connection with menu */
-  overflow: hidden;
-}
-
-.wave-path {
-  animation: waveFlow 8s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-
-.wave-path-navy {
-  animation: waveFlowNavy 8s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-
-.wave-path-white {
-  animation: waveFlowWhite 8s ease-in-out infinite alternate;
-  transform-origin: center;
-}
-
-/* Wave menu animation */
-.wave-menu {
-  position: relative;
-  overflow: hidden;
-}
-
-.wave-item {
-  display: inline-block;
-  animation: waveText 3s ease-in-out infinite;
-  animation-delay: calc(var(--i, 0) * 0.2s);
-}
-
-.wave-item:nth-child(1) {
-  --i: 0;
-}
-
-.wave-item:nth-child(2) {
-  --i: 1;
-}
-
-.wave-item:nth-child(3) {
-  --i: 2;
-}
-
-@keyframes waveText {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px) skewX(5deg);
-  }
-}
-
-@keyframes waveFlow {
-  0% {
-    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z");
-    transform: scaleX(1);
-  }
-  50% {
-    d: path("M0,20 C240,0 480,40 720,20 C960,0 1200,40 1440,20 L1440,40 L0,40 Z");
-    transform: scaleX(1.05) skewX(-2deg);
-  }
-  100% {
-    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,40 L0,40 Z");
-    transform: scaleX(1);
-  }
-}
-
-@keyframes waveFlowNavy {
-  0% {
-    d: path("M0,25 C240,45 480,5 720,25 C960,45 1200,5 1440,25 L1440,40 L0,40 Z");
-    transform: scaleX(1);
-  }
-  50% {
-    d: path("M0,25 C240,5 480,45 720,25 C960,5 1200,45 1440,25 L1440,40 L0,40 Z");
-    transform: scaleX(1.1) skewX(-3deg);
-  }
-  100% {
-    d: path("M0,25 C240,45 480,5 720,25 C960,45 1200,5 1440,25 L1440,40 L0,40 Z");
-    transform: scaleX(1);
-  }
-}
-
-@keyframes waveFlowWhite {
-  0% {
-    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,25 L0,25 Z");
-    transform: scaleX(1);
-  }
-  50% {
-    d: path("M0,20 C240,0 480,40 720,20 C960,0 1200,40 1440,20 L1440,25 L0,25 Z");
-    transform: scaleX(1.15) skewX(-4deg);
-  }
-  100% {
-    d: path("M0,20 C240,40 480,0 720,20 C960,40 1200,0 1440,20 L1440,25 L0,25 Z");
-    transform: scaleX(1);
-  }
-}
-
-/* Menu styling */
-.menu-container {
-  position: relative;
-  z-index: 2;
-  border-top: 1px solid rgba(0,0,0,0.05);
-}
-
+/* Navigation styling */
 .nav-link {
-  font-weight: 500;
   color: #1d3557;
-  padding: 0.5rem;
-  transition: all 0.2s ease;
   position: relative;
+  transition: all 0.3s ease;
 }
 
 .nav-link:hover {
   color: #e63946;
-  transform: translateY(-3px) skewX(5deg);
 }
 
-.nav-link.router-link-active {
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #e63946;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.router-link-active {
   color: #e63946;
   font-weight: 600;
 }
 
-.nav-link.router-link-active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0.5rem;
-  right: 0.5rem;
-  height: 2px;
+.router-link-active::after {
+  width: 100%;
   background-color: #e63946;
 }
 
-/* Responsive text adjustments */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .banner-container {
-    height: 320px; /* Slightly smaller on mobile but still with space for menu */
-  }
-  
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  .bg-star-container {
-    height: 250px;
-    width: 270px;
+    min-height: 650px;
   }
 }
 
-.usa-text {
-  font-weight: 900;
-  letter-spacing: 0em;
-  font-size: 8rem; /* Default size for mobile */
-  padding-right: 2px;
-  padding-left: 1px;
+/* Announcement badge animation */
+.announcement-badge {
+  animation: pulse 2s infinite;
   position: relative;
-  top: -100px;
-  margin-bottom: -30px;
-  z-index: 109;
-  color: #FFFFFF;
-  text-shadow: rgba(0, 10, 10, 0.9) 10px 5px 0px;
-  /* transform: translateY(-15px); */
 }
 
-@media (min-width: 768px) {
-  .usa-text {
-    font-size: 10rem; /* Larger size for screens over 768px */
-  }
+.announcement-badge::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  bottom: -4px;
+  left: -4px;
+  border-radius: 9999px;
+  background-color: rgba(230, 57, 70, 0.3);
+  z-index: -1;
+  animation: ripple 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Special offer styling */
+.special-offer {
+  position: relative;
+  overflow: hidden;
+}
+
+.special-offer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shine 3s infinite;
+}
+
+.special-offer h3 {
+  animation: glow 2s ease-in-out infinite alternate;
+  text-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px rgba(230, 57, 70, 0.5); }
+  to { text-shadow: 0 0 15px rgba(230, 57, 70, 0.8), 0 0 20px rgba(241, 250, 238, 0.8); }
 }
 </style>
 
@@ -357,29 +293,6 @@
 import { onMounted, onUnmounted } from 'vue';
 
 onMounted(() => {
-  // Simple scroll reveal implementation
-  const revealElements = document.querySelectorAll('[data-scroll-reveal]');
-  
-  const revealOnScroll = () => {
-    revealElements.forEach(element => {
-      const elementTop = element.getBoundingClientRect().top;
-      const elementVisible = 150;
-      
-      if (elementTop < window.innerHeight - elementVisible) {
-        element.classList.add('is-revealed');
-      } else {
-        element.classList.remove('is-revealed');
-      }
-    });
-  };
-  
-  window.addEventListener('scroll', revealOnScroll);
-  // Initial check
-  revealOnScroll();
-  
-  // Cleanup
-  onUnmounted(() => {
-    window.removeEventListener('scroll', revealOnScroll);
-  });
+  // Add any additional functionality here if needed
 });
-</script>
+</script> 

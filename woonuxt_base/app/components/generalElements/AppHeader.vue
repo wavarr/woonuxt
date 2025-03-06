@@ -1,28 +1,58 @@
 <script setup lang="ts">
-const { isShowingSearch } = useSearching();
+// No imports needed
 </script>
 
 <template>
-  <header class="sticky top-0 z-40 bg-white shadow-sm shadow-light-500">
-    <div class="container flex items-center justify-between py-4">
+  <header class="sticky top-0 z-40 bg-[#1d3557]/95 backdrop-blur-sm">
+    <div class="container flex items-center justify-between py-3 relative z-10">
       <div class="flex items-center">
-        <MenuTrigger class="lg:hidden" />
-        <Logo class="md:w-[160px]" />
+        <MenuTrigger class="lg:hidden menu-trigger" />
+        <Logo class="md:w-[140px] logo" />
       </div>
-      <MainMenu class="items-center hidden gap-6 text-sm text-gray-500 lg:flex lg:px-4" />
-      <div class="flex justify-end items-center md:w-[160px] flex-1 ml-auto gap-4 md:gap-6">
-        <ProductSearch class="hidden sm:inline-flex max-w-[320px] w-[60%]" />
-        <SearchTrigger />
+      <div class="flex items-center gap-4">
+        <ProductSearch class="hidden sm:inline-flex max-w-[250px]" />
+        <SearchTrigger class="search-trigger" />
         <div class="flex gap-4 items-center">
-          <SignInLink />
-          <CartTrigger />
+          <SignInLink class="sign-in-link" />
+          <CartTrigger class="cart-trigger" />
         </div>
       </div>
     </div>
-    <Transition name="scale-y" mode="out-in">
-      <div class="container mb-3 -mt-1 sm:hidden" v-if="isShowingSearch">
-        <ProductSearch class="flex w-full" />
-      </div>
-    </Transition>
   </header>
 </template>
+
+<style scoped>
+/* Header Styling */
+header {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Component Styling for Better Contrast */
+:deep(.menu-trigger), 
+:deep(.search-trigger), 
+:deep(.sign-in-link), 
+:deep(.cart-trigger) {
+  color: #f1faee !important;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
+  transition: all 0.2s ease;
+}
+
+:deep(.menu-trigger:hover), 
+:deep(.search-trigger:hover), 
+:deep(.sign-in-link:hover), 
+:deep(.cart-trigger:hover) {
+  color: white !important;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+}
+
+:deep(.logo) {
+  filter: drop-shadow(1px 1px 3px rgba(255, 255, 255, 0.3));
+}
+
+:deep(.logo span) {
+  color: #f1faee !important;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.02em;
+}
+</style>

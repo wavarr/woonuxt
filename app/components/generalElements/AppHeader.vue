@@ -1,48 +1,47 @@
 <template>
-  <header class="sticky top-0 z-40 bg-white shadow-sm">
-    <div class="container mx-auto px-8">
-      <div class="flex items-center justify-between h-20">
-        <!-- Left Section -->
-        <div class="flex items-center">
-          <!-- Logo -->
-          <NuxtLink to="/" class="flex items-center gap-3">
-            <img src="/logo.svg" alt="Logo" class="w-10 h-10">
-            <span class="text-xl font-bold text-gray-900">ModaPrime USA</span>
-          </NuxtLink>
+  <header class="sticky top-0 z-40 bg-[#1d3557]/95 backdrop-blur-sm">
+    <div class="container flex items-center justify-between py-3 relative z-10">
+      
+      <!-- Left Section (Logo) -->
+      <div class="flex items-center">
+        
+        <!-- Mobile Menu Icon -->
+        <div class="lg:hidden">
+          <span 
+            class="iconify i-ion:menu-outline mr-4 cursor-pointer text-[#f1faee] hover:text-white" 
+            aria-hidden="true" 
+            style="font-size:26px; filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));"
+            @click="toggleMobileMenu">
+          </span>
         </div>
 
-        <!-- Center Section - Navigation -->
-        <nav class="hidden lg:flex items-center space-x-8">
-          <NuxtLink 
-            v-for="item in menuItems" 
-            :key="item.path"
-            :to="item.path"
-            class="text-gray-600 hover:text-primary transition-colors">
-            {{ item.label }}
-          </NuxtLink>
-        </nav>
-
-        <!-- Right Section -->
-        <div class="flex items-center space-x-6">
-          <!-- Icons -->
-          <div class="flex items-center space-x-4">
-            <NuxtLink to="/my-account" class="text-gray-600 hover:text-primary transition-colors">
-              <Icon name="ion:person" size="22" />
-            </NuxtLink>
-            <CartTrigger />
-            
-            <!-- Custom Menu Trigger (replacing hamburger) -->
-            <div class="lg:hidden cursor-pointer" @click="toggleMobileMenu">
-              <div class="menu-icon">
-                <div class="menu-icon-diamond"></div>
-                <div class="menu-icon-diamond"></div>
-                <div class="menu-icon-diamond"></div>
-                <div class="menu-icon-diamond"></div>
-              </div>
-            </div>
+        <!-- Logo - Simplified -->
+        <NuxtLink to="/" class="router-link-active router-link-exact-active inline-flex items-center">
+          <div class="flex items-center gap-2 text-lg font-bold text-[#f1faee] hover:text-white">
+            <img src="/logo.svg" alt="Logo" width="40" height="40" class="usa-logo">
+            <span class="hidden sm:inline logo-text">ModaPrime</span>
           </div>
+        </NuxtLink>
+      </div>
+
+      <!-- Right Section (Search, Cart, Sign In) -->
+      <div class="flex items-center gap-4">
+        
+        <!-- Search Bar -->
+        <form class="relative items-center hidden sm:inline-flex max-w-[250px]">
+          <span class="iconify i-ion:search-outline absolute z-10 pointer-events-none left-2 text-gray-600" style="font-size:18px;"></span>
+          <input id="product-search-input" type="text" placeholder="Search..." class="search-input">
+        </form>
+
+        <!-- Cart and Sign-In -->
+        <div class="flex gap-4 items-center">
+          <NuxtLink to="/my-account" class="inline-flex items-center text-[#f1faee] hover:text-white" title="Sign In">
+            <Icon name="ion:person-outline" class="border border-transparent header-icon" size="20" />
+          </NuxtLink>
+          <CartTrigger />
         </div>
       </div>
+
     </div>
   </header>
 </template>
@@ -51,46 +50,44 @@
 import { useHelpers } from '@/composables/useHelpers';
 
 const { toggleMobileMenu } = useHelpers();
-
-const menuItems = [
-  { label: 'Home', path: '/' },
-  { label: 'Products', path: '/products' },
-  { label: 'About', path: '/about' },
-  { label: 'Contact', path: '/contact' }
-];
 </script>
 
 <style scoped>
-.text-primary {
-  color: #5E38C6;
-}
-
-/* Custom menu icon (diamond pattern) */
-.menu-icon {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 4px;
-  width: 30px;
-  height: 30px;
-  padding: 3px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background-color: #f5f5f5;
-}
-
-.menu-icon-diamond {
-  width: 10px;
-  height: 10px;
-  background-color: #5E38C6;
-  transform: rotate(45deg);
+/* Header Styling */
+header {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;
 }
 
-.menu-icon:hover {
-  background-color: #efefef;
+/* Logo Styling */
+.usa-logo {
+  object-fit: contain;
+  max-width: 100%;
+  filter: drop-shadow(1px 1px 3px rgba(255, 255, 255, 0.3));
 }
 
-.menu-icon:hover .menu-icon-diamond {
-  background-color: #7E58E6;
+.logo-text {
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.02em;
 }
-</style> 
+
+.header-icon {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.4));
+  transition: all 0.2s ease;
+}
+
+.header-icon:hover {
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+}
+
+/* Search Bar Styling */
+.search-input {
+  @apply z-0 inline-flex items-center w-full p-1.5 pl-8 text-sm text-gray-700 border border-gray-300 rounded-md shadow-inner outline-none bg-white/95 shadow-gray-200;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  @apply bg-white border-blue-300;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+</style>

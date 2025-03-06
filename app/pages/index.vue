@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useAppConfig } from '~/composables/useAppConfig';
 import { useSeoMeta } from '~/composables/useSeoMeta';
+import HeroBanner from '~/components/generalElements/HeroBanner.vue';
 
 const { siteName, description, shortDescription, siteImage } = useAppConfig();
 

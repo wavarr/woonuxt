@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import HeroBanner from '../components/generalElements/HeroBanner.vue';
+import HeroBanner from '~/components/generalElements/HeroBanner.vue';
 
 // Set page metadata
 useHead({

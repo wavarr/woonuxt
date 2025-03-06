@@ -24,18 +24,16 @@ export default defineNuxtConfig({
         file: 'en.json'
       }
     ],
-    vueI18n: {
-      fallbackLocale: 'en'
-    }
+    vueI18n: './i18n.config.ts'
   },
 
   runtimeConfig: {
     public: {
       siteTitle: 'ModaPrime USA',
-      siteDescription: 'Premium Pharmaceutical Service',
-      siteShortDescription: 'Your trusted source for premium modafinil',
+      siteDescription: 'Premium MD Service',
+      siteShortDescription: 'Boutique Modafinil Vendor with fast shipping, us to us',
       siteImage: '/images/placeholder.jpg',
-      frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000'
+      frontendUrl: process.env.FRONTEND_URL || 'https://modaprimeusa.com'
     }
   },
 
@@ -54,4 +52,5 @@ export default defineNuxtConfig({
       failOnError: false,
     },
   },
+  
 });
