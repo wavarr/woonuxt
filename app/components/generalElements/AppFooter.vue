@@ -1,11 +1,11 @@
 <template>
-  <footer class="bg-gray-900 text-white">
+  <footer class="bg-gradient-to-r from-[#1d3557] via-[#457b9d] to-[#1d3557] text-white">
     <div class="container mx-auto px-8 py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <!-- Brand Section -->
         <div class="space-y-6">
           <Logo class="text-white" />
-          <p class="text-gray-400 text-sm leading-relaxed">
+          <p class="text-[#f1faee] text-sm leading-relaxed">
             Your trusted source for premium modafinil, operating from our USA office with professional service.
           </p>
           <LangSwitcher class="mt-8" />
@@ -13,33 +13,33 @@
 
         <!-- Information Links -->
         <div>
-          <h3 class="text-lg font-semibold mb-4">Information</h3>
+          <h3 class="text-lg font-semibold mb-4 text-[#f1faee]">Information</h3>
           <ul class="space-y-3">
             <li>
-              <NuxtLink to="/" class="text-gray-400 hover:text-white transition-colors">About Us</NuxtLink>
+              <NuxtLink to="/" class="text-[#a8dadc] hover:text-white transition-colors">About Us</NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/" class="text-gray-400 hover:text-white transition-colors">FAQ</NuxtLink>
+              <NuxtLink to="/" class="text-[#a8dadc] hover:text-white transition-colors">FAQ</NuxtLink>
             </li>
           </ul>
         </div>
 
         <!-- Products Links -->
         <div>
-          <h3 class="text-lg font-semibold mb-4">Products</h3>
+          <h3 class="text-lg font-semibold mb-4 text-[#f1faee]">Products</h3>
           <ul class="space-y-3">
             <li>
-              <NuxtLink to="/products" class="text-gray-400 hover:text-white transition-colors">
+              <NuxtLink to="/products" class="text-[#a8dadc] hover:text-white transition-colors">
                 New Arrivals
               </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/products?filter=sale[true]" class="text-gray-400 hover:text-white transition-colors">
+              <NuxtLink to="/products?filter=sale[true]" class="text-[#a8dadc] hover:text-white transition-colors">
                 On sale
               </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/products?orderby=rating&order=ASC&filter=rating[1]" class="text-gray-400 hover:text-white transition-colors">
+              <NuxtLink to="/products?orderby=rating&order=ASC&filter=rating[1]" class="text-[#a8dadc] hover:text-white transition-colors">
                 Top rated
               </NuxtLink>
             </li>
@@ -48,49 +48,50 @@
 
         <!-- Customer Service Links -->
         <div>
-          <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
+          <h3 class="text-lg font-semibold mb-4 text-[#f1faee]">Customer Service</h3>
           <ul class="space-y-3">
             <li>
-              <NuxtLink to="/contact" class="text-gray-400 hover:text-white transition-colors">Contact Us</NuxtLink>
+              <NuxtLink to="/contact" class="text-[#a8dadc] hover:text-white transition-colors">
+                Contact Us
+              </NuxtLink>
             </li>
             <li>
-              <NuxtLink to="/" class="text-gray-400 hover:text-white transition-colors">Shipping & Returns</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/" class="text-gray-400 hover:text-white transition-colors">Terms & Conditions</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</NuxtLink>
-            </li>
-            <li>
-              <NuxtLink to="/" class="text-gray-400 hover:text-white transition-colors">Accessibility</NuxtLink>
+              <NuxtLink to="/my-account" class="text-[#a8dadc] hover:text-white transition-colors">
+                My Account
+              </NuxtLink>
             </li>
           </ul>
         </div>
       </div>
 
       <!-- Bottom Bar -->
-      <div class="mt-16 pt-8 border-t border-gray-800">
-        <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p class="text-gray-400 text-sm">
-            © {{ new Date().getFullYear() }} ModaPrime USA. All rights reserved.
+      <div class="mt-16 pt-8 border-t border-[#457b9d]/30">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p class="text-sm text-[#a8dadc]">
+            &copy; {{ new Date().getFullYear() }} ModaPrime USA. All rights reserved.
           </p>
-          <div class="flex space-x-6">
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <Icon name="ion:logo-facebook" size="20" />
+          
+          <!-- Social Media Icons -->
+          <div class="flex space-x-4 mt-4 md:mt-0">
+            <a href="#" class="text-[#a8dadc] hover:text-white transition-colors">
+              <span class="iconify i-ion:logo-twitter" style="font-size:20px;"></span>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <Icon name="ion:logo-twitter" size="20" />
+            <a href="#" class="text-[#a8dadc] hover:text-white transition-colors">
+              <span class="iconify i-ion:logo-facebook" style="font-size:20px;"></span>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors">
-              <Icon name="ion:logo-instagram" size="20" />
+            <a href="#" class="text-[#a8dadc] hover:text-white transition-colors">
+              <span class="iconify i-ion:logo-instagram" style="font-size:20px;"></span>
             </a>
           </div>
         </div>
       </div>
+    </div>
+    
+    <!-- Bottom wave separator -->
+    <div class="relative w-full">
+      <svg class="w-full h-16 md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path class="fill-white opacity-90" d="M0,0 C240,50 480,0 720,50 C960,0 1200,50 1440,0 L1440,0 L0,0 L0,100 L1440,100 Z"></path>
+      </svg>
     </div>
   </footer>
 </template> 

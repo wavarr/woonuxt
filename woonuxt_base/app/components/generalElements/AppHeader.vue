@@ -33,7 +33,7 @@ function toggleMobileMenu() {
     <!-- Important notification banner -->
     <div v-if="showNotification" class="bg-[#1d3557] text-white py-1 px-4 text-center z-50 border-b-2 border-[#ffd700] relative">
       <p class="text-xs md:text-sm">
-        <span class="font-bold">Important:</span> MODAPRIME USA will only contact you from this email address: modaprime@protonmail.com. If in doubt, reach out!
+        <span class="font-bold">Important:</span> MODAPRIME USA will only contact you from this email address: modaprime@protonmail.com. When in doubt, please reach out!
       </p>
       <button @click="dismissNotification" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-white hover:text-[#ffd700] transition-colors">
         <span class="iconify i-ion:close-outline" style="font-size:16px;"></span>

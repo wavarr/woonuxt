@@ -41,7 +41,10 @@ export default defineNuxtConfig({
       default: {
         host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
         corsOptions: { mode: 'cors', credentials: 'include' },
-        headers: { 'Origin': 'https://store.modaprimeusa.com' },
+        headers: { 
+          'Origin': 'https://modaprimeusa.com',
+          'Referer': 'https://modaprimeusa.com'
+        },
       },
     },
   },

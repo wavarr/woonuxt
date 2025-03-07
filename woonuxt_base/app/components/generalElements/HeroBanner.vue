@@ -131,7 +131,7 @@
 
 /* Wave separator styling */
 svg.wave-separator {
-  margin-top: -155px;
+  margin-top: 0px;
   background-color: #1d3557;
 }
 
@@ -267,13 +267,10 @@ svg.wave-separator {
 
 /* Special offer styling */
 .special-offer {
+  padding-top: 10px;
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-  background-color: transparent;
-  padding: 1rem;
-  width: 100%;
   z-index: 10;
+  text-align: center;
 }
 
 .special-offer h3 {
