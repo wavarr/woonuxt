@@ -1,6 +1,17 @@
 <script setup lang="ts">
 import { toRef, computed, onMounted } from 'vue';
 
+// Define types for payment gateways
+interface PaymentGateway {
+  id: string;
+  title: string;
+  description?: string;
+}
+
+interface PaymentGateways {
+  nodes: PaymentGateway[];
+}
+
 const props = defineProps<{
   modelValue: string | object;
   paymentGateways: PaymentGateways;
@@ -33,7 +44,12 @@ onMounted(() => {
       v-for="gateway in paymentGateways?.nodes"
       :key="gateway.id"
       class="option"
-      :class="{ 'active-option': gateway.id === activePaymentMethod.id }"
+      :class="{ 
+        'active-option': gateway.id === activePaymentMethod.id,
+        'credit-card-option': gateway.id === 'stripe' || gateway.title.includes('Credit Card'),
+        'bitcoin-option': gateway.id === 'btcpay',
+        'cash-option': gateway.id === 'cod'
+      }"
       @click="updatePaymentMethod(gateway)"
       :title="gateway?.description || gateway?.title || 'Payment Method'">
       <icon v-if="gateway.id === 'btcpay'" name="ion:logo-bitcoin" size="20" />
@@ -49,14 +65,67 @@ onMounted(() => {
 
 <style lang="postcss" scoped>
 .option {
-  @apply bg-white border rounded-lg text-gray-600 cursor-pointer flex flex-1 text-sm py-3 px-4 gap-2 items-center hover:border-purple-300;
+  @apply bg-white border rounded-lg text-gray-600 cursor-pointer flex flex-1 text-sm py-3 px-4 gap-2 items-center;
+  transition: all 0.3s ease;
+  border-color: #e2e8f0;
+  
+  /* Navy blue hover effect */
+  &:hover {
+    @apply border-[#1d3557] shadow-sm;
+    background-color: rgba(29, 53, 87, 0.03);
+  }
 
   &.active-option {
-    @apply border-primary cursor-default border-opacity-50 shadow-sm pointer-events-none;
-
+    @apply cursor-default pointer-events-none shadow-sm;
+    border-color: #1d3557;
+    border-width: 2px;
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    
+    /* Gold accent for active payment method */
     & .checkmark {
       @apply opacity-100;
+      color: #ffd700;
+      filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
     }
   }
+}
+
+/* Credit card specific styling */
+.credit-card-option {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.1));
+    z-index: 1;
+  }
+  
+  &.active-option::before {
+    background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.2));
+  }
+}
+
+/* Bitcoin specific styling */
+.bitcoin-option svg {
+  color: #f7931a; /* Bitcoin orange */
+}
+
+.bitcoin-option.active-option svg {
+  filter: drop-shadow(0 0 2px rgba(247, 147, 26, 0.5));
+}
+
+/* Cash on delivery styling */
+.cash-option svg {
+  color: #2e7d32; /* Money green */
+}
+
+.cash-option.active-option svg {
+  filter: drop-shadow(0 0 2px rgba(46, 125, 50, 0.5));
 }
 </style>

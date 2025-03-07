@@ -23,8 +23,15 @@ export function useProducts() {
       return;
     }
     
-    products.value = newProducts ?? [];
-    allProducts = JSON.parse(JSON.stringify(newProducts));
+    // If we have products, use them
+    if (newProducts.length > 0) {
+      console.log(`Setting ${newProducts.length} products from API`);
+      products.value = newProducts ?? [];
+      allProducts = JSON.parse(JSON.stringify(newProducts));
+    } else {
+      // Otherwise use fallback
+      useFallbackData();
+    }
   }
 
   /**
@@ -32,14 +39,17 @@ export function useProducts() {
    */
   function useFallbackData(): void {
     isUsingFallbackData.value = true;
+    console.log('Using fallback product data');
     
     // Check if we have product data in the query
-    const queryData = window.__NUXT__?.data?.products?.nodes;
-    if (queryData && Array.isArray(queryData) && queryData.length > 0) {
-      console.log('Using product data from query');
-      products.value = queryData;
-      allProducts = JSON.parse(JSON.stringify(queryData));
-      return;
+    if (typeof window !== 'undefined') {
+      const queryData = window.__NUXT__?.data?.products?.nodes;
+      if (queryData && Array.isArray(queryData) && queryData.length > 0) {
+        console.log('Using product data from query');
+        products.value = queryData;
+        allProducts = JSON.parse(JSON.stringify(queryData));
+        return;
+      }
     }
     
     // Otherwise use hardcoded fallback data
@@ -83,6 +93,26 @@ export function useProducts() {
           altText: "A strip of modafinil (Modawake)",
           title: "modawake",
           producCardSourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modawake-239x239.png"
+        }
+      },
+      {
+        name: "Modvigil",
+        slug: "modvigil",
+        type: "VARIABLE",
+        databaseId: 23,
+        id: "cG9zdDoyMw==",
+        averageRating: 0,
+        reviewCount: 0,
+        price: "$110.00 - $270.00",
+        rawPrice: "110.00, 160.00, 270.00",
+        regularPrice: "$110.00 - $270.00",
+        rawRegularPrice: "110.00, 160.00, 270.00",
+        stockStatus: "IN_STOCK",
+        image: {
+          sourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modvigil.png",
+          altText: "Modvigil",
+          title: "Modvigil",
+          producCardSourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modvigil-239x239.png"
         }
       }
     ];

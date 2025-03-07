@@ -3,15 +3,121 @@ let allProducts = [] as Product[];
 export function useProducts() {
   // Declare the state variables and the setter functions
   const products = useState<Product[]>('products');
+  const isUsingFallbackData = useState<boolean>('isUsingFallbackData', () => false);
 
   /**
    * Sets the products state variable and the allProducts variable.
    * @param {Product[]} newProducts - The new products to set.
    */
   function setProducts(newProducts: Product[]): void {
-    if (!Array.isArray(newProducts)) throw new Error('Products must be an array.');
-    products.value = newProducts ?? [];
-    allProducts = JSON.parse(JSON.stringify(newProducts));
+    if (!Array.isArray(newProducts)) {
+      console.warn('Products must be an array. Using fallback data.');
+      useFallbackData();
+      return;
+    }
+    
+    if (newProducts.length === 0 && !isUsingFallbackData.value) {
+      console.warn('No products received from API. Using fallback data.');
+      useFallbackData();
+      return;
+    }
+    
+    // If we have products, use them
+    if (newProducts.length > 0) {
+      console.log(`Setting ${newProducts.length} products from API`);
+      products.value = newProducts ?? [];
+      allProducts = JSON.parse(JSON.stringify(newProducts));
+    } else {
+      // Otherwise use fallback
+      useFallbackData();
+    }
+  }
+  
+  /**
+   * Use fallback product data when the API is unavailable
+   */
+  function useFallbackData(): void {
+    isUsingFallbackData.value = true;
+    console.log('Using fallback product data');
+    
+    // Check if we have product data in the query
+    if (typeof window !== 'undefined') {
+      const queryData = window.__NUXT__?.data?.products?.nodes;
+      if (queryData && Array.isArray(queryData) && queryData.length > 0) {
+        console.log('Using product data from query');
+        products.value = queryData;
+        allProducts = JSON.parse(JSON.stringify(queryData));
+        return;
+      }
+    }
+    
+    // Otherwise use hardcoded fallback data
+    console.log('Using hardcoded fallback product data');
+    const fallbackProducts = [
+      {
+        name: "Modalert",
+        slug: "modalert",
+        type: "VARIABLE",
+        databaseId: 22,
+        id: "cG9zdDoyMg==",
+        averageRating: 0,
+        reviewCount: 0,
+        price: "$110.00 - $270.00",
+        rawPrice: "110.00, 160.00, 270.00",
+        regularPrice: "$110.00 - $270.00",
+        rawRegularPrice: "110.00, 160.00, 270.00",
+        stockStatus: "IN_STOCK",
+        image: {
+          sourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modalert.png",
+          altText: "Modalert",
+          title: "Modalert",
+          producCardSourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modalert-239x239.png"
+        }
+      },
+      {
+        name: "Sample order - 10 Modawake",
+        slug: "sample-order-10-modawake",
+        type: "SIMPLE",
+        databaseId: 48,
+        id: "cG9zdDo0OA==",
+        averageRating: 0,
+        reviewCount: 0,
+        price: "$25.00",
+        rawPrice: "25",
+        regularPrice: "$25.00",
+        rawRegularPrice: "25",
+        stockStatus: "IN_STOCK",
+        image: {
+          sourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modawake.png",
+          altText: "A strip of modafinil (Modawake)",
+          title: "modawake",
+          producCardSourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modawake-239x239.png"
+        }
+      },
+      {
+        name: "Modvigil",
+        slug: "modvigil",
+        type: "VARIABLE",
+        databaseId: 23,
+        id: "cG9zdDoyMw==",
+        averageRating: 0,
+        reviewCount: 0,
+        price: "$110.00 - $270.00",
+        rawPrice: "110.00, 160.00, 270.00",
+        regularPrice: "$110.00 - $270.00",
+        rawRegularPrice: "110.00, 160.00, 270.00",
+        stockStatus: "IN_STOCK",
+        image: {
+          sourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modvigil.png",
+          altText: "Modvigil",
+          title: "Modvigil",
+          producCardSourceUrl: "https://modaprimeusa.com/wp-content/uploads/2024/02/modvigil-239x239.png"
+        }
+      }
+    ];
+    
+    products.value = fallbackProducts;
+    allProducts = JSON.parse(JSON.stringify(fallbackProducts));
   }
 
   const updateProductList = async (): Promise<void> => {
@@ -42,5 +148,12 @@ export function useProducts() {
     }
   };
 
-  return { products, allProducts, setProducts, updateProductList };
+  return { 
+    products, 
+    allProducts, 
+    setProducts, 
+    updateProductList, 
+    useFallbackData,
+    isUsingFallbackData: computed(() => isUsingFallbackData.value)
+  };
 }

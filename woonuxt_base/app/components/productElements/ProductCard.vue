@@ -47,7 +47,7 @@ const addToCartQuick = (event) => {
 </script>
 
 <template>
-  <div class="relative group product-card" data-scroll-reveal="enter bottom move 20px over 0.6s after 0.1s">
+  <div class="relative group product-card is-revealed" data-scroll-reveal="enter bottom move 20px over 0.6s after 0.1s">
     <NuxtLink v-if="node.slug" :to="`/product/${decodeURIComponent(node.slug)}`" :title="node.name" class="product-link">
       <SaleBadge :node class="absolute top-2 right-2 z-10" />
       <div class="overflow-hidden rounded-t-lg product-image-container">
@@ -106,8 +106,8 @@ const addToCartQuick = (event) => {
 }
 
 [data-scroll-reveal].is-revealed {
-  opacity: 1;
-  transform: translateY(0) translateX(0);
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) !important;
 }
 
 /* Fallback for browsers without JS */

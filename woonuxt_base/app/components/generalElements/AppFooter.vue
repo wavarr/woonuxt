@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // In Nuxt 3, composables are auto-imported, so we don't need explicit imports
+// TypeScript will recognize these through Nuxt's auto-imports
 const { wooNuxtVersionInfo } = useHelpers();
 const { wishlistLink } = useAuth();
 </script>
@@ -91,13 +92,6 @@ const { wishlistLink } = useAuth();
           </div>
         </div>
       </div>
-    </div>
-    
-    <!-- Bottom wave separator -->
-    <div class="relative w-full">
-      <svg class="w-full h-16 md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none">
-        <path class="fill-white opacity-90" d="M0,0 C240,50 480,0 720,50 C960,0 1200,50 1440,0 L1440,0 L0,0 L0,100 L1440,100 Z"></path>
-      </svg>
     </div>
   </footer>
 </template>

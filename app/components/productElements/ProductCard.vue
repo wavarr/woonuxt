@@ -1,5 +1,5 @@
 <template>
-  <div class="relative group">
+  <div class="relative group is-revealed">
     <NuxtLink v-if="node.slug" :to="`/product/${decodeURIComponent(node.slug)}`" :title="node.name" class="block">
       <SaleBadge :node="node" class="absolute top-4 right-4 z-10" />
       <div class="relative overflow-hidden rounded-xl bg-white shadow-sm transition-all duration-300 group-hover:shadow-xl">
@@ -62,5 +62,11 @@ defineProps({
 
 .text-primary {
   color: #5E38C6;
+}
+
+/* Make sure products are visible */
+.is-revealed {
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) !important;
 }
 </style> 

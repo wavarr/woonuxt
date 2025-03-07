@@ -22,9 +22,9 @@
     <!-- Debug panel (only in development) -->
     <DebugPanel v-if="showDebugPanel" />
 
-    <!-- Footer wave separator - flipped to face down -->
-    <div class="relative w-full">
-      <svg class="w-full h-16 md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none">
+    <!-- Footer wave separator - adjusted to be closer to content -->
+    <div class="relative w-full -mb-1">
+      <svg class="w-full h-12 md:h-16" viewBox="0 0 1440 100" preserveAspectRatio="none">
         <path class="fill-[#1d3557]" d="M0,0 C240,100 480,0 720,100 C960,0 1200,100 1440,0 L1440,100 L0,100 Z"></path>
       </svg>
     </div>
