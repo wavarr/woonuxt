@@ -12,11 +12,10 @@
       <div class="flex flex-col md:flex-row items-center justify-between">
         <!-- Left content -->
         <div class="w-full md:w-1/2 text-white mb-10 md:mb-0">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight notable-font">
             <span class="text-[#e63946]">Moda</span>Prime <span class="text-[#f1faee]">USA</span>
           </h1>
-          <p class="text-xl md:text-2xl mb-6 text-[#f1faee] font-light">Premium Modafinil Service</p>
-          <p class="mb-8 text-[#a8dadc] max-w-lg">Boutique Modafinil Vendor with fast shipping, US to US. Quality products delivered discreetly to your doorstep.</p>
+          <p class="text-xl md:text-2xl mb-6 text-[#f1faee] font-light">The Gold Standard</p>
           
           <div class="flex flex-wrap gap-4">
             <NuxtLink to="/products" class="btn-primary">
@@ -50,31 +49,47 @@
         
         <!-- Right content - USA flag inspired design -->
         <div class="w-full md:w-1/2 flex justify-center">
-          <div class="usa-flag-container relative w-full max-w-md aspect-[4/3]">
+          <div class="usa-flag-container relative w-full max-w-md aspect-[4/3] waving-flag">
             <!-- Stars section -->
-            <div class="absolute top-0 left-0 w-2/5 h-1/2 bg-[#1d3557] rounded-sm overflow-hidden flex items-center justify-center">
+            <div class="absolute top-0 left-0 w-2/5 h-1/2 bg-[#1d3557] rounded-sm overflow-hidden flex items-center justify-center flag-stars-section">
               <div class="stars-grid">
                 <div v-for="n in 20" :key="`flag-star-${n}`" class="flag-star"></div>
               </div>
             </div>
             
-            <!-- Stripes -->
-            <div class="absolute top-0 right-0 w-3/5 h-1/2 overflow-hidden">
-              <div v-for="n in 3" :key="`stripe-${n}`" 
+            <!-- Stripes - Top half -->
+            <div class="absolute top-0 right-0 w-3/5 h-1/2 overflow-hidden flag-stripes-section">
+              <div v-for="n in 3" :key="`stripe-top-${n}`" 
                    :class="`stripe ${n % 2 === 0 ? 'bg-[#f1faee]' : 'bg-[#e63946]'}`"
                    :style="`top: ${(n-1) * 33.33}%`">
               </div>
             </div>
             
-            <!-- Bottom half with product image or text -->
-            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-[#f1faee]/10 backdrop-blur-sm rounded-sm flex items-center justify-center overflow-hidden">
+            <!-- Bottom half with additional stripes and product text -->
+            <div class="absolute bottom-0 left-0 w-full h-1/2 bg-transparent rounded-sm flex items-center justify-center overflow-hidden flag-content-section">
+              <!-- Additional stripes for bottom half - white, red, white pattern -->
+              <div class="stripe bg-[#f1faee]" style="top: 0%"></div>
+              <div class="stripe bg-[#e63946]" style="top: 33.33%"></div>
+              <div class="stripe bg-[#f1faee]" style="top: 66.66%"></div>
+              
               <!-- Special offer announcement inside flag -->
-              <div class="special-offer text-center p-4 w-full">
+              <div class="special-offer text-center relative z-10">
                 <div class="announcement-badge mb-2 inline-block">
-                  <span class="bg-[#e63946] text-white px-3 py-1 rounded-full text-xs font-bold">NEW CUSTOMERS</span>
+                  <span class="bg-[#e63946] text-white px-3 py-1 rounded-full text-xs font-bold border-2 border-[#ffd700] new-customer-badge">NEW CUSTOMERS</span>
                 </div>
-                <h3 class="text-[#f1faee] font-bold text-xl mb-1">10 FREE MODAWAKE</h3>
-                <p class="text-[#a8dadc] text-sm px-2">Try ModaPrime today! Limit 1 per new customer.<br>Cannot be combined with other offers.</p>
+                
+                <!-- Split into segments for better wave animation -->
+                <div class="offer-segments">
+                  <div class="offer-segment">
+                    <h3 class="text-white font-bold text-xl mb-1 special-offer-text">10 FREE MODAWAKE</h3>
+                  </div>
+                  <div class="offer-segment">
+                    <p class="text-white text-sm px-2 special-offer-description">Try ModaPrime today! Limit 1 per new customer.</p>
+                  </div>
+                  <div class="offer-segment">
+                    <p class="text-white text-sm px-2 special-offer-description">Cannot be combined with other offers.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -82,31 +97,42 @@
       </div>
     </div>
     
-    <!-- Wave separator -->
+    <!-- Wave separator with gradient - changed to navy blue and flipped -->
     <div class="absolute bottom-0 left-0 w-full">
-      <svg class="w-full h-16 md:h-24" viewBox="0 0 1440 100" preserveAspectRatio="none">
-        <path class="fill-[#f1faee]" d="M0,50 C240,100 480,0 720,50 C960,100 1200,0 1440,50 L1440,100 L0,100 Z"></path>
+      <svg class="w-full h-16 md:h-24 wave-separator" viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#1d3557" />
+            <stop offset="50%" style="stop-color:#457b9d" />
+            <stop offset="100%" style="stop-color:#1d3557" />
+          </linearGradient>
+        </defs>
+        <path fill="url(#waveGradient)" d="M0,50 C240,0 480,100 720,0 C960,100 1200,0 1440,50 L1440,100 L0,100 Z"></path>
       </svg>
-    </div>
-    
-    <!-- Navigation menu -->
-    <div class="absolute bottom-0 left-0 w-full z-20">
-      <div class="container mx-auto px-4">
-        <nav class="flex justify-center space-x-8 md:space-x-12 py-2 relative z-30">
-          <NuxtLink to="/" class="nav-link text-base md:text-lg font-medium">Home</NuxtLink>
-          <NuxtLink to="/products" class="nav-link text-base md:text-lg font-medium">Products</NuxtLink>
-          <NuxtLink to="/contact" class="nav-link text-base md:text-lg font-medium">Contact</NuxtLink>
-        </nav>
-      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Import Notable font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Notable&display=swap');
+
+/* Notable font class */
+.notable-font {
+  font-family: 'Notable', sans-serif;
+  letter-spacing: 1px;
+}
+
 /* Banner container */
 .banner-container {
   min-height: 550px;
   position: relative;
+}
+
+/* Wave separator styling */
+svg.wave-separator {
+  margin-top: -155px;
+  background-color: #1d3557;
 }
 
 /* Stars pattern */
@@ -137,10 +163,22 @@
   border-radius: 4px;
   transform: perspective(1000px) rotateY(-5deg);
   transition: transform 0.5s ease;
+  position: relative;
 }
 
 .usa-flag-container:hover {
   transform: perspective(1000px) rotateY(0deg);
+}
+
+.usa-flag-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(192,192,192,0.4) 0%, rgba(255,255,255,0.8) 25%, rgba(160,160,160,0.3) 50%, rgba(255,255,255,0.6) 75%, rgba(192,192,192,0.4) 100%);
+  opacity: 0.3;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
 }
 
 .stars-grid {
@@ -165,6 +203,7 @@
   content: '★';
   color: white;
   font-size: 14px;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
 }
 
 .stripe {
@@ -182,42 +221,6 @@
   @apply bg-transparent border-2 border-[#f1faee] hover:bg-[#f1faee]/10 text-[#f1faee] font-medium py-3 px-6 rounded-md transition duration-300 inline-block;
 }
 
-/* Navigation styling */
-.nav-link {
-  color: #1d3557;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover {
-  color: #e63946;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -4px;
-  left: 0;
-  background-color: #e63946;
-  transition: width 0.3s ease;
-}
-
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.router-link-active {
-  color: #e63946;
-  font-weight: 600;
-}
-
-.router-link-active::after {
-  width: 100%;
-  background-color: #e63946;
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .banner-container {
@@ -229,6 +232,13 @@
 .announcement-badge {
   animation: pulse 2s infinite;
   position: relative;
+}
+
+.announcement-badge span {
+  border-color: #ffd700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5), inset 0 0 5px rgba(255, 215, 0, 0.3);
+  background-image: linear-gradient(to bottom, #ffd700, #b8860b);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 .announcement-badge::after {
@@ -259,6 +269,73 @@
 .special-offer {
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  background-color: transparent;
+  padding: 1rem;
+  width: 100%;
+  z-index: 10;
+}
+
+.special-offer h3 {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.4);
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.new-customer-badge {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.special-offer-text {
+  position: relative;
+  display: inline-block;
+  padding: 0 10px;
+  margin: 5px 0;
+}
+
+.special-offer-description {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 5px;
+  margin-top: 5px;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.offer-segments {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.offer-segment {
+  position: relative;
+  width: 100%;
+  transform-origin: left center;
+}
+
+.offer-segment:nth-child(1) {
+  animation: segment-wave 24s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+.offer-segment:nth-child(2) {
+  animation: segment-wave 24s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.offer-segment:nth-child(3) {
+  animation: segment-wave 24s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+@keyframes segment-wave {
+  0%, 100% { transform: skewX(0deg); }
+  25% { transform: skewX(3deg); }
+  50% { transform: skewX(0deg); }
+  75% { transform: skewX(-3deg); }
 }
 
 .special-offer::before {
@@ -268,13 +345,8 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  animation: shine 3s infinite;
-}
-
-.special-offer h3 {
-  animation: glow 2s ease-in-out infinite alternate;
-  text-shadow: 0 0 5px rgba(230, 57, 70, 0.5);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shine 12s infinite; /* Slowed down 4x from 3s to 12s */
 }
 
 @keyframes shine {
@@ -283,9 +355,75 @@
   100% { left: 100%; }
 }
 
-@keyframes glow {
-  from { text-shadow: 0 0 5px rgba(230, 57, 70, 0.5); }
-  to { text-shadow: 0 0 15px rgba(230, 57, 70, 0.8), 0 0 20px rgba(241, 250, 238, 0.8); }
+/* Flag waving animation */
+.waving-flag {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  animation: flag-container-wave 24s ease-in-out infinite; /* Slowed down 4x from 6s to 24s */
+}
+
+.flag-stars-section,
+.flag-stripes-section,
+.flag-content-section {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.flag-stars-section {
+  animation: flag-section-wave 24s ease-in-out infinite; /* Slowed down 4x from 6s to 24s */
+  transform-origin: left center;
+}
+
+.flag-stripes-section {
+  animation: flag-section-wave 24s ease-in-out infinite 0.8s; /* Slowed down 4x from 0.2s to 0.8s delay */
+  transform-origin: left center;
+}
+
+.flag-content-section {
+  animation: flag-section-wave 24s ease-in-out infinite 1.6s; /* Slowed down 4x from 0.4s to 1.6s delay */
+  transform-origin: top center;
+}
+
+@keyframes flag-container-wave {
+  0%, 100% { transform: rotateY(0deg) rotateX(0deg); }
+  25% { transform: rotateY(8deg) rotateX(2deg); }
+  50% { transform: rotateY(0deg) rotateX(0deg); }
+  75% { transform: rotateY(-8deg) rotateX(-2deg); }
+}
+
+@keyframes flag-section-wave {
+  0%, 100% { transform: rotateY(0deg); }
+  25% { transform: rotateY(12deg); }
+  50% { transform: rotateY(0deg); }
+  75% { transform: rotateY(-12deg); }
+}
+
+.stripe {
+  position: absolute;
+  width: 100%;
+  height: 33.33%;
+  animation: stripe-wave 24s ease-in-out infinite; /* Slowed down 4x from 6s to 24s */
+  transform-origin: left center;
+  z-index: 1;
+}
+
+.stripe:nth-child(1) {
+  animation-delay: 0.4s; /* Slowed down 4x from 0.1s to 0.4s */
+}
+
+.stripe:nth-child(2) {
+  animation-delay: 0.8s; /* Slowed down 4x from 0.2s to 0.8s */
+}
+
+.stripe:nth-child(3) {
+  animation-delay: 1.2s; /* Slowed down 4x from 0.3s to 1.2s */
+}
+
+@keyframes stripe-wave {
+  0%, 100% { transform: skewY(0deg); }
+  25% { transform: skewY(3deg); }
+  50% { transform: skewY(0deg); }
+  75% { transform: skewY(-3deg); }
 }
 </style>
 
