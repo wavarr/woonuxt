@@ -9,7 +9,7 @@ export default {
     public: {
       siteTitle: 'ModaPrime USA',
       siteDescription: 'Premium Pharmaceutical Service',
-      siteShortDescription: 'Your trusted source for premium modafinil',
+      siteShortDescription: 'Premium Nootropic Vendor',
       siteImage: '/images/placeholder.jpg',
       frontendUrl: process.env.FRONTEND_URL || 'https://modaprimeusa.com'
     }

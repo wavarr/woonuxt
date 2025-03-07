@@ -13,7 +13,7 @@ const { wishlistLink } = useAuth();
         <div class="space-y-6">
           <Logo class="text-white" />
           <p class="text-[#f1faee] text-sm leading-relaxed">
-            Your trusted source for premium modafinil, operating from our USA office with professional service.
+            Premium Nootropic Vendor, operating from our USA office with professional service.
           </p>
           <LangSwitcher class="mt-8" />
         </div>
