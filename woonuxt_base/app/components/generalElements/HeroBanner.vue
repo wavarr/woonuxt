@@ -81,7 +81,7 @@
                 <!-- Split into segments for better wave animation -->
                 <div class="offer-segments">
                   <div class="offer-segment">
-                    <h3 class="text-white font-bold text-xl mb-1 special-offer-text">10 FREE MODAWAKE</h3>
+                    <h3 class="text-white font-bold text-xl mb-1 special-offer-text">10 FREE MODAFINIL</h3>
                   </div>
                   <div class="offer-segment">
                     <p class="text-white text-sm px-2 special-offer-description">Try ModaPrime today! Limit 1 per new customer.</p>
@@ -133,6 +133,18 @@
 svg.wave-separator {
   margin-top: 0px;
   background-color: #1d3557;
+}
+
+/* Wave separator - NEW STYLES */
+.banner-container .w-full .wave-separator{
+  transform: rotateX(180deg);
+  background-color: rgba(44,107,195,0.94);
+  background-image: linear-gradient(to right, #614385 0%, #516395 100%);
+  background-blend-mode: darken;
+}
+
+.min-h-screen .backdrop-blur-sm .justify-between{
+  height: 75px;
 }
 
 /* Stars pattern */
@@ -273,6 +285,11 @@ svg.wave-separator {
   text-align: center;
 }
 
+/* Special offer - NEW STYLES */
+.min-h-screen .overflow-hidden .special-offer{
+  z-index: 44;
+}
+
 .special-offer h3 {
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 0.4);
@@ -280,9 +297,20 @@ svg.wave-separator {
   font-weight: 800;
 }
 
+/* Heading - NEW STYLES */
+.offer-segments .offer-segment h3{
+  font-weight: 700;
+  color: #efff14;
+}
+
 .new-customer-badge {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Span Tag - NEW STYLES */
+.special-offer .announcement-badge span{
+  z-index: -1;
 }
 
 .special-offer-text {
@@ -301,6 +329,17 @@ svg.wave-separator {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
+/* Paragraph - NEW STYLES */
+.offer-segments .offer-segment p{
+  transform: translatey(-20px);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 19px;
+  border-bottom-left-radius: 17px;
+  border-bottom-right-radius: 21px;
+  box-shadow: 0px 0px 0px -50px #ffffff;
+  filter: contrast(1.56);
+}
+
 .offer-segments {
   display: flex;
   flex-direction: column;
@@ -311,6 +350,13 @@ svg.wave-separator {
   position: relative;
   width: 100%;
   transform-origin: left center;
+}
+
+/* Offer segment - NEW STYLES */
+.special-offer .offer-segments .offer-segment{
+  height: 16px;
+  margin-top: 11px;
+  padding-bottom: 31px;
 }
 
 .offer-segment:nth-child(1) {
@@ -376,6 +422,15 @@ svg.wave-separator {
   transform-origin: left center;
 }
 
+/* Stripe - NEW STYLES */
+.min-h-screen .flag-stripes-section .stripe{
+  z-index: 1001;
+}
+
+.min-h-screen .overflow-hidden .stripe{
+  z-index: 1;
+}
+
 .flag-content-section {
   animation: flag-section-wave 24s ease-in-out infinite 1.6s; /* Slowed down 4x from 0.4s to 1.6s delay */
   transform-origin: top center;
@@ -421,6 +476,29 @@ svg.wave-separator {
   25% { transform: skewY(3deg); }
   50% { transform: skewY(0deg); }
   75% { transform: skewY(-3deg); }
+}
+
+/* Main - NEW STYLES */
+#__nuxt .min-h-screen main{
+  transform: translatex(0px) translatey(0px);
+  font-size: 16px;
+  line-height: 1em;
+  font-style: normal;
+  font-weight: 400;
+  position: relative;
+  top: -4px;
+}
+
+/* Min screen - NEW STYLES */
+#__nuxt .min-h-screen{
+  transform: translatex(0px) translatey(0px);
+  top: -7px;
+}
+
+/* Relative - NEW STYLES */
+#__nuxt .min-h-screen > .relative{
+  transform: translatex(0px) translatey(0px);
+  position: sticky;
 }
 </style>
 
