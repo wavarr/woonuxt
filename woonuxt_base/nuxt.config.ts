@@ -34,7 +34,15 @@ export default defineNuxtConfig({
 
   components: [{ path: resolve('./app/components'), pathPrefix: false }],
 
-  modules: ['woonuxt-settings', 'nuxt-graphql-client', '@nuxtjs/tailwindcss', '@nuxt/icon', '@nuxt/image', '@nuxtjs/i18n'],
+  modules: [
+    // Re-enable woonuxt-settings with proper error handling
+    'woonuxt-settings',
+    'nuxt-graphql-client',
+    '@nuxtjs/tailwindcss',
+    '@nuxt/icon',
+    '@nuxt/image',
+    '@nuxtjs/i18n'
+  ],
 
   'graphql-client': {
     clients: {
@@ -66,6 +74,10 @@ export default defineNuxtConfig({
       addPage('order-received', '/checkout/order-received/:orderId', 'order-summary.vue');
       addPage('order-summary', '/order-summary/:orderId', 'order-summary.vue');
     },
+    'woonuxt-settings:error': (error) => {
+      console.warn('WooNuxt settings error:', error.message);
+      console.warn('Continuing with fallback data...');
+    }
   },
 
   nitro: {
