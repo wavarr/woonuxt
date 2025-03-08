@@ -35,12 +35,73 @@ export default {
         // CORS settings
         corsOptions: {
           mode: 'cors',
-          credentials: 'include'
+          credentials: 'include',
+          // Ensure cookies are sent with the request
+          withCredentials: true
         },
         // Handle errors gracefully
-        errorPolicy: 'all'
+        errorPolicy: 'all',
+        // Cookie handling
+        proxyCookies: true,
+        tokenStorage: {
+          mode: 'cookie',
+          cookieOptions: {
+            maxAge: 604800,
+            secure: true,
+            path: '/',
+            sameSite: 'none'
+          }
+        }
       },
     },
+  },
+
+  // Add cookie handling for all cookies
+  cookieControl: {
+    cookies: {
+      necessary: [
+        {
+          name: 'wp_woocommerce_session',
+          description: 'WooCommerce session cookie',
+          path: '/'
+        },
+        {
+          name: 'wordpress_test_cookie',
+          description: 'WordPress test cookie',
+          path: '/'
+        },
+        {
+          name: 'wp_lang',
+          description: 'WordPress language cookie',
+          path: '/'
+        },
+        {
+          name: '__ssid',
+          description: 'Session ID cookie',
+          path: '/'
+        },
+        {
+          name: '__stripe_mid',
+          description: 'Stripe cookie',
+          path: '/'
+        },
+        {
+          name: 'sbjs_current',
+          description: 'Source tracking cookie',
+          path: '/'
+        },
+        {
+          name: 'sbjs_first',
+          description: 'First visit cookie',
+          path: '/'
+        },
+        {
+          name: 'tk_ai',
+          description: 'Analytics cookie',
+          path: '/'
+        }
+      ]
+    }
   },
 
   /**
