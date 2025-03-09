@@ -1,15 +1,36 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-export default {
+import { defineNuxtConfig } from 'nuxt/config';
+
+export default defineNuxtConfig({
   // Get all the pages, components, composables and plugins from the parent theme
   extends: ['./woonuxt_base'],
 
   components: [{ path: './components', pathPrefix: false }],
 
+  modules: [
+    '@nuxtjs/i18n',
+    '@nuxtjs/tailwindcss'
+  ],
+
+  i18n: {
+    lazy: true,
+    langDir: 'locales',
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    locales: [
+      {
+        code: 'en',
+        file: 'en.json'
+      }
+    ],
+    vueI18n: './i18n.config.ts'
+  },
+
   runtimeConfig: {
     public: {
       siteTitle: 'ModaPrime USA',
-      siteDescription: 'Premium Pharmaceutical Service',
-      siteShortDescription: 'Premium Nootropic Vendor',
+      siteDescription: 'Premium Modafinil',
+      siteShortDescription: 'fast, friendly, focused. modaprime',
       siteImage: '/images/placeholder.jpg',
       frontendUrl: process.env.FRONTEND_URL || 'https://store.modaprimeusa.com',
       // Force use of fallback data
@@ -21,7 +42,6 @@ export default {
   'graphql-client': {
     clients: {
       default: {
-        // Use the real GraphQL endpoint but with proper headers
         host: process.env.GQL_HOST || 'https://modaprimeusa.com/graphql',
         // Enable fallback mode
         preferLocalData: true,
@@ -29,29 +49,17 @@ export default {
         // Add headers for authentication and CORS
         headers: {
           'Content-Type': 'application/json',
-          'Origin': process.env.FRONTEND_URL || 'https://store.modaprimeusa.com',
-          'Referer': process.env.FRONTEND_URL || 'https://store.modaprimeusa.com'
+          'Origin': 'https://store.modaprimeusa.com',
+          'Referer': 'https://store.modaprimeusa.com'
         },
         // CORS settings
         corsOptions: {
           mode: 'cors',
           credentials: 'include',
-          // Ensure cookies are sent with the request
           withCredentials: true
         },
         // Handle errors gracefully
-        errorPolicy: 'all',
-        // Cookie handling
-        proxyCookies: true,
-        tokenStorage: {
-          mode: 'cookie',
-          cookieOptions: {
-            maxAge: 604800,
-            secure: true,
-            path: '/',
-            sameSite: 'none'
-          }
-        }
+        errorPolicy: 'all'
       },
     },
   },
@@ -121,4 +129,4 @@ export default {
   },
 
   compatibilityDate: '2025-03-03',
-};
+});

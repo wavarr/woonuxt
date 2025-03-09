@@ -73,8 +73,9 @@ export default defineNuxtConfig({
       addPage('product-category-page-pager', '/product-category/:categorySlug/page/:pageNumber', 'product-category/[slug].vue');
       addPage('order-received', '/checkout/order-received/:orderId', 'order-summary.vue');
       addPage('order-summary', '/order-summary/:orderId', 'order-summary.vue');
+      addPage('btcpay', '/checkout/btcpay', 'checkout/btcpay.vue');
     },
-    'woonuxt-settings:error': (error) => {
+    'woonuxt-settings:error': (error: any) => {
       console.warn('WooNuxt settings error:', error.message);
       console.warn('Continuing with fallback data...');
     }
@@ -85,6 +86,7 @@ export default defineNuxtConfig({
       '/': { prerender: true },
       '/checkout/order-received/**': { ssr: false },
       '/order-summary/**': { ssr: false },
+      '/checkout/btcpay': { ssr: false },
     },
   },
 
@@ -103,4 +105,3 @@ export default defineNuxtConfig({
     strategy: 'no_prefix',
   },
 });
-// The closing bracket for defineNuxtConfig was removed, adding it back
