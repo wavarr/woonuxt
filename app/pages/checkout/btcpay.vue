@@ -180,7 +180,7 @@ const checkPaymentStatus = async () => {
   }
 };
 
-const debugRefresh = () => {
+const refreshPaymentStatus = () => {
   log('Manual debug refresh triggered');
   clearTimeout(paymentStatusTimeout);
   checkPaymentStatus();
