@@ -56,7 +56,7 @@
     </div>
 
     <!-- Add debug panel (only visible in development) -->
-    <div v-if="process.env.NODE_ENV === 'development'" class="fixed bottom-0 right-0 p-4 bg-gray-800 text-white text-xs max-w-md opacity-75 hover:opacity-100 transition-opacity">
+    <div v-if="prerender === 'development'" class="fixed bottom-0 right-0 p-4 bg-gray-800 text-white text-xs max-w-md opacity-75 hover:opacity-100 transition-opacity">
       <h3 class="font-bold">Debug Info</h3>
       <pre>Order ID: {{ orderId }}</pre>
       <pre>Order Key: {{ orderKey }}</pre>
@@ -307,6 +307,9 @@ onUnmounted(() => {
     });
   }
 });
+
+// Define prerender variable properly
+const prerender = process.env.NODE_ENV || 'production';
 </script>
 
 <style scoped>
