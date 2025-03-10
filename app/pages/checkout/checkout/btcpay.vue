@@ -54,15 +54,16 @@
         </div>
       </div>
     </div>
+
     <!-- Add debug panel (only visible in development) -->
-    <div v-if="process.dev" class="fixed bottom-0 right-0 p-4 bg-gray-800 text-white text-xs max-w-md opacity-75 hover:opacity-100 transition-opacity">
+    <div v-if="process.env.NODE_ENV === 'development'" class="fixed bottom-0 right-0 p-4 bg-gray-800 text-white text-xs max-w-md opacity-75 hover:opacity-100 transition-opacity">
       <h3 class="font-bold">Debug Info</h3>
       <pre>Order ID: {{ orderId }}</pre>
       <pre>Order Key: {{ orderKey }}</pre>
       <pre>Status: {{ paymentStatus }}</pre>
       <pre>Invoice ID: {{ invoiceId }}</pre>
       <pre>Checkout Mode: {{ checkoutMode }}</pre>
-      <button @click="refreshPaymentStatus" class="bg-blue-500 px-2 py-1 rounded text-xs mt-2">Force Refresh</button>
+      <button @click="debugRefresh" class="bg-blue-500 px-2 py-1 rounded text-xs mt-2">Force Refresh</button>
     </div>
   </div>
 </template>
@@ -180,7 +181,7 @@ const checkPaymentStatus = async () => {
   }
 };
 
-const refreshPaymentStatus = () => {
+const debugRefresh = () => {
   log('Manual debug refresh triggered');
   clearTimeout(paymentStatusTimeout);
   checkPaymentStatus();
@@ -306,9 +307,6 @@ onUnmounted(() => {
     });
   }
 });
-
-// Define prerender variable properly
-const prerender = process.env.NODE_ENV || 'production';
 </script>
 
 <style scoped>
