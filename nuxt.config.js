@@ -9,7 +9,10 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxtjs/i18n',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    'nuxt-graphql-client',
+    '@nuxt/icon',
+    '@nuxt/image'
   ],
 
   i18n: {

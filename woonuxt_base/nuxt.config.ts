@@ -35,8 +35,6 @@ export default defineNuxtConfig({
   components: [{ path: resolve('./app/components'), pathPrefix: false }],
 
   modules: [
-    // Re-enable woonuxt-settings with proper error handling
-    'woonuxt-settings',
     'nuxt-graphql-client',
     '@nuxtjs/tailwindcss',
     '@nuxt/icon',
@@ -74,10 +72,6 @@ export default defineNuxtConfig({
       addPage('order-received', '/checkout/order-received/:orderId', 'order-summary.vue');
       addPage('order-summary', '/order-summary/:orderId', 'order-summary.vue');
       addPage('btcpay', '/checkout/btcpay', 'checkout/btcpay.vue');
-    },
-    'woonuxt-settings:error': (error: any) => {
-      console.warn('WooNuxt settings error:', error.message);
-      console.warn('Continuing with fallback data...');
     }
   },
 
