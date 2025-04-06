@@ -1,28 +1,36 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import type { PropType } from 'vue';
 import type { CustomerAddress } from '~/types';
 const { updateShippingLocation } = useCheckout();
 const { isBillingAddressEnabled } = useCart();
 
 const props = defineProps({
-  modelValue: { type: Object as PropType<CustomerAddress>, required: true }, // Use specific type
+  modelValue: { type: Object as PropType<CustomerAddress>, required: true },
 });
 
-// Emit update event for v-model
 const emit = defineEmits(['update:modelValue']);
 
-// Local ref for reactive editing, updated via computed setter/getter
-const billing = computed({
-    get: () => props.modelValue,
-    set: (value) => emit('update:modelValue', value),
-});
+// Use a local ref and watch for changes
+const localBilling = ref({ ...props.modelValue });
+
+// Watch the prop for external changes
+watch(() => props.modelValue, (newValue) => {
+  localBilling.value = { ...newValue };
+}, { deep: true });
+
+// Watch the local ref for internal changes and emit update
+watch(localBilling, (newValue) => {
+  emit('update:modelValue', { ...newValue });
+}, { deep: true });
+
+// Rename reactive variable used in template
+const billing = localBilling;
 
 // Function to trigger shipping location update on relevant field changes
 const handleLocationChange = () => {
-    // Only update if billing address is enabled (as it affects shipping calcs)
     if (isBillingAddressEnabled.value) {
-        // Debounce or delay update if needed to avoid excessive requests
+        // Consider debouncing
         updateShippingLocation();
     }
 }
