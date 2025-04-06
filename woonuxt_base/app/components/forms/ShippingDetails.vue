@@ -104,7 +104,7 @@ const handleLocationChange = () => {
 
 <style lang="postcss" scoped>
 /* Styles are inherited from BillingDetails via shared classes */
-@import './BillingDetails.vue'; /* If using scoped CSS Modules or similar */
+/* @import './BillingDetails.vue'; */ /* Removed problematic import */
 /* Or define shared classes globally if preferred */
 
 .form-label {
