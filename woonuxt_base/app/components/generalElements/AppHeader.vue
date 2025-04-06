@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useSearching, useWishlist, useCart } from '#imports'; // Import composables
+import WishlistTrigger from './WishlistTrigger.vue'; // Import WishlistTrigger
 const { isShowingSearch, toggleSearch } = useSearching(); // Added toggleSearch
 const { wishlistCount } = useWishlist(); // Get wishlist count
 const { cart } = useCart(); // Get cart for count display

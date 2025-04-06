@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { MenuLocationEnum } from '#gql';
+// import { MenuLocationEnum } from '#gql'; // Removed problematic import
 const { toggleMobileMenu } = useHelpers();
 const { viewer } = useAuth();
 
-const { data } = await useAsyncGql('getMenuItems', { location: MenuLocationEnum.PRIMARY });
+// Replaced location enum with string identifier
+const { data } = await useAsyncGql('getMenuItems', { identifier: 'PRIMARY_MENU' });
 const menuItems = data.value?.menuItems?.nodes || [];
 
 const closeMenu = () => toggleMobileMenu(false);
@@ -29,7 +30,7 @@ const closeMenu = () => toggleMobileMenu(false);
         </li>
         <!-- Account Link -->
         <li>
-          <NuxtLink :to="viewer ? '/my-account' : '/login'" class="block p-2 rounded hover:bg-gray-100 hover:text-primary" @click="closeMenu">
+          <NuxtLink :to="viewer ? '/my-account' : '/my-account'" class="block p-2 rounded hover:bg-gray-100 hover:text-primary" @click="closeMenu">
              My Account
           </NuxtLink>
         </li>

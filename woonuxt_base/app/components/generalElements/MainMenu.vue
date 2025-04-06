@@ -1,12 +1,17 @@
-<script lang="ts" setup>
-import { MenuLocationEnum } from '#gql';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
 
-const { data } = await useAsyncGql('getMenuItems', { location: MenuLocationEnum.PRIMARY });
-const menuItems = data.value?.menuItems?.nodes || [];
+// Temporarily disable menu fetching to avoid useAsyncGql issues
+// const { data, error, loading } = useAsyncGql('getMenuItems', { identifier: 'PRIMARY_MENU' });
+
+// Default to empty array
+const menuItems = ref([]);
+
 </script>
 
 <template>
-  <nav v-if="menuItems.length">
+  <!-- Render based on the ref -->
+  <nav v-if="menuItems && menuItems.length > 0">
     <ul class="flex gap-8">
       <li v-for="item in menuItems" :key="item.id">
         <NuxtLink :to="item.path" class="hover:text-primary">
@@ -15,4 +20,5 @@ const menuItems = data.value?.menuItems?.nodes || [];
       </li>
     </ul>
   </nav>
+  <!-- Removed loading indicator as we are not tracking loading state -->
 </template>

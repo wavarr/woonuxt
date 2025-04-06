@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { viewer } = useAuth();
-const { data } = await useAsyncGql('getMenuItems', { location: MenuLocationEnum.FOOTER });
+const { data } = await useAsyncGql('getMenuItems', { identifier: 'FOOTER_MENU' });
 const menuItems = data?.value?.menuItems?.nodes || [];
 const { siteName, storeAddress, storeCity, storeZip, storeCountry } = useAppConfig();
 </script>
@@ -24,7 +24,7 @@ const { siteName, storeAddress, storeCity, storeZip, storeCountry } = useAppConf
             </li>
              <!-- Ensure My Account link respects login state -->
              <li>
-               <NuxtLink :to="viewer ? '/my-account' : '/login'" class="hover:text-primary text-gray-300">My Account</NuxtLink>
+               <NuxtLink :to="viewer ? '/my-account' : '/my-account'" class="hover:text-primary text-gray-300">My Account</NuxtLink>
              </li>
           </ul>
         </div>

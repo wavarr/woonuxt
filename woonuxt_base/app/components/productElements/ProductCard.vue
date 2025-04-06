@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute, useAppConfig } from '#imports';
+// Assuming useHelpers and Product type are available globally or auto-imported
+
 const route = useRoute();
 const { storeSettings } = useAppConfig();
 const { formatPrice, FALLBACK_IMG, stripHtml } = useHelpers(); // Import helpers
@@ -60,7 +64,7 @@ const imageTitle = computed(() => stripHtml(props.node?.image?.title || props.no
 </script>
 
 <template>
-  <div class="relative group flex flex-col h-full"> <!-- Flex column and h-full for consistent card height -->
+  <div v-if="node" class="relative group flex flex-col h-full"> <!-- Added v-if="node" -->
     <NuxtLink v-if="node.slug" :to="productSlug" :title="productName" class="block mb-2 flex-shrink-0 relative">
       <SaleBadge v-if="node.onSale" :node="node" class="absolute top-2 right-2 z-10" />
       <NuxtImg
@@ -69,14 +73,13 @@ const imageTitle = computed(() => stripHtml(props.node?.image?.title || props.no
         :title="imageTitle"
         :width="imgWidth"
         :height="imgHeight"
-        :sizes="`(max-width: 640px) 50vw, (max-width: 1024px) 33vw, ${imgWidth}px`" <!-- Responsive sizes -->
-        :loading="index < 4 ? 'eager' : 'lazy'" <!-- Eager load first few images -->
-        format="webp" <!-- Use modern format -->
-        quality="80" <!-- Adjust quality -->
-        fit="cover" <!-- Ensure image covers area -->
-        class="rounded-lg object-cover w-full aspect-[8/9] transition-transform duration-300 ease-in-out group-hover:scale-105 skeleton" <!-- Adjusted aspect ratio, hover effect -->
-        placeholder <!-- Enable placeholder -->
-         />
+        :loading="index < 4 ? 'eager' : 'lazy'"
+        format="webp"
+        quality="80"
+        fit="cover"
+        class="rounded-lg object-cover w-full aspect-[8/9] transition-transform duration-300 ease-in-out group-hover:scale-105 skeleton"
+        placeholder
+      />
     </NuxtLink>
 
      <!-- Ensure content below image takes remaining space -->
@@ -98,6 +101,8 @@ const imageTitle = computed(() => stripHtml(props.node?.image?.title || props.no
 
     </div>
   </div>
+  <!-- Optional: Add an else block for loading/skeleton state if needed -->
+  <!-- <div v-else>Loading Product...</div> -->
 </template>
 
 <style scoped>

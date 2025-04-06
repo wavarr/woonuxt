@@ -7,7 +7,7 @@ const { arraysEqual, formatArray, checkForVariationTypeOfAny, stripHtml, formatP
 const { addToCart, isUpdatingCart } = useCart();
 const { t } = useI18n();
 const slug = route.params.slug as string;
-const { $notify } = useNuxtApp(); // Assuming a notification plugin is available
+// const { $notify } = useNuxtApp(); // Temporarily comment out $notify
 
 const { data, error: productError, pending: productPending } = await useAsyncGql('getProduct', { slug });
 
@@ -71,18 +71,22 @@ const handleAddToCart = async () => {
     if (!selectProductInput.value || disabledAddToCart.value) {
       console.warn("Add to cart prevented:", { input: selectProductInput.value, disabled: disabledAddToCart.value });
        if(isVariableProduct.value && !activeVariation.value) {
-            $notify({ group: 'toasts', type: 'warn', title: 'Selection Required', text: 'Please select product options.' });
+            // $notify({ group: 'toasts', type: 'warn', title: 'Selection Required', text: 'Please select product options.' }); // Temp commented
+            console.warn('Please select product options.'); // Added console log
        } else if (disabledAddToCart.value) {
-           $notify({ group: 'toasts', type: 'warn', title: 'Unavailable', text: 'This product/variation is currently unavailable.' });
+           // $notify({ group: 'toasts', type: 'warn', title: 'Unavailable', text: 'This product/variation is currently unavailable.' }); // Temp commented
+           console.warn('This product/variation is currently unavailable.'); // Added console log
        }
       return;
     }
     try {
       await addToCart(selectProductInput.value);
-      $notify({ group: 'toasts', type: 'success', title: 'Success', text: `${displayNode.value?.name || 'Product'} added to cart.` });
+      // $notify({ group: 'toasts', type: 'success', title: 'Success', text: `${displayNode.value?.name || 'Product'} added to cart.` }); // Temp commented
+      console.log(`${displayNode.value?.name || 'Product'} added to cart.`); // Added console log
     } catch (e) {
        console.error("Error adding to cart:", e);
-       $notify({ group: 'toasts', type: 'error', title: 'Error', text: 'Could not add item to cart.' });
+       // $notify({ group: 'toasts', type: 'error', title: 'Error', text: 'Could not add item to cart.' }); // Temp commented
+       console.error('Could not add item to cart.'); // Added console log
     }
 }
 
