@@ -116,3 +116,28 @@ const handleLocationChange = () => {
      </div>
   </div>
 </template>
+
+<style lang="postcss" scoped>
+/* Shared form input/select styles */
+.form-label {
+   @apply block mb-1 text-xs font-medium text-gray-600 uppercase;
+}
+.form-input, .form-select {
+ @apply w-full p-3 text-sm bg-white border rounded-md outline-none border-gray-300 shadow-sm focus:border-primary focus:ring-1 focus:ring-primary disabled:bg-gray-50 disabled:cursor-not-allowed;
+}
+.form-select {
+  @apply pr-10; /* Add padding for select dropdown arrow */
+   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+   background-position: right 0.5rem center;
+   background-repeat: no-repeat;
+   background-size: 1.5em 1.5em;
+   -webkit-appearance: none;
+      -moz-appearance: none;
+           appearance: none;
+}
+
+/* Add error state styles if needed */
+.form-input.error, .form-select.error {
+   @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+}
+</style>

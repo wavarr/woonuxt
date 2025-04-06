@@ -1,22 +1,35 @@
 <script lang="ts" setup>
+import { ref, watch, computed } from 'vue';
+import type { PropType } from 'vue';
+import type { CustomerAddress } from '~/types';
 const { updateShippingLocation } = useCheckout();
 
 const props = defineProps({
   modelValue: { type: Object as PropType<CustomerAddress>, required: true }, // Use specific type
 });
 
-// Emit update event for v-model
 const emit = defineEmits(['update:modelValue']);
 
-// Local ref for reactive editing, updated via computed setter/getter
-const shipping = computed({
-    get: () => props.modelValue,
-    set: (value) => emit('update:modelValue', value),
-});
+// Use a local ref and watch for changes
+const localShipping = ref({ ...props.modelValue });
+
+// Watch the prop for external changes
+watch(() => props.modelValue, (newValue) => {
+  localShipping.value = { ...newValue };
+}, { deep: true });
+
+// Watch the local ref for internal changes and emit update
+watch(localShipping, (newValue) => {
+  emit('update:modelValue', { ...newValue });
+}, { deep: true });
+
+// Rename reactive variable used in template
+const shipping = localShipping;
 
 // Function to trigger shipping location update on relevant field changes
 const handleLocationChange = () => {
     // Trigger location update whenever country, state, or postcode changes
+    // Consider debouncing this if it causes performance issues
     updateShippingLocation();
 }
 </script>
