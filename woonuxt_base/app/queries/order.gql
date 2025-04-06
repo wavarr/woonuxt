@@ -1,0 +1,45 @@
+query GetOrderDetails($id: ID!) {
+  order(id: $id) {
+    id
+    databaseId
+    status
+    total
+    subtotal
+    totalTax
+    shippingTotal
+    discountTotal
+    discountTax
+    paymentMethod
+    customer {
+      email
+    }
+    lineItems {
+      nodes {
+        id
+        quantity
+        total
+        variation {
+          node {
+            name
+            image {
+              sourceUrl
+              altText
+              title
+            }
+          }
+        }
+        product {
+          node {
+            name
+            slug
+            image {
+              sourceUrl
+              altText
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+} 

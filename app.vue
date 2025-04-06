@@ -9,8 +9,13 @@ const closeCartAndMenu = () => {
   toggleMobileMenu(false);
 };
 
-watch([isShowingCart, isShowingMobileMenu], () => {
-  isShowingCart.value || isShowingMobileMenu.value ? addBodyClass('overflow-hidden') : removeBodyClass('overflow-hidden');
+watch([isShowingCart, isShowingMobileMenu], ([cartVisible, menuVisible]) => {
+  // Ensure body class is managed correctly even if one closes while the other is open
+  if (cartVisible || menuVisible) {
+    addBodyClass('overflow-hidden');
+  } else {
+    removeBodyClass('overflow-hidden');
+  }
 });
 
 watch(

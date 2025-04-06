@@ -1,14 +1,18 @@
-<script setup lang="ts">
-const { wishlistLink } = useAuth();
+<script lang="ts" setup>
+import { MenuLocationEnum } from '#gql';
+
+const { data } = await useAsyncGql('getMenuItems', { location: MenuLocationEnum.PRIMARY });
+const menuItems = data.value?.menuItems?.nodes || [];
 </script>
 
 <template>
-  <nav>
-    <NuxtLink to="/">{{ $t('messages.general.home') }}</NuxtLink>
-    <NuxtLink to="/products">{{ $t('messages.general.allProducts') }}</NuxtLink>
-    <NuxtLink to="/categories">{{ $t('messages.shop.category', 2) }}</NuxtLink>
-    <NuxtLink to="/contact">{{ $t('messages.general.contact') }}</NuxtLink>
-    <NuxtLink class="lg:hidden" :to="wishlistLink" :prefetch="false">Wishlist</NuxtLink>
-    <NuxtLink class="lg:hidden" to="/my-account" :prefetch="false">My Account</NuxtLink>
+  <nav v-if="menuItems.length">
+    <ul class="flex gap-8">
+      <li v-for="item in menuItems" :key="item.id">
+        <NuxtLink :to="item.path" class="hover:text-primary">
+          {{ item.label }}
+        </NuxtLink>
+      </li>
+    </ul>
   </nav>
 </template>

@@ -1,67 +1,55 @@
 <script setup lang="ts">
-const { wooNuxtVersionInfo } = useHelpers();
-const { wishlistLink } = useAuth();
+const { viewer } = useAuth();
+const { data } = await useAsyncGql('getMenuItems', { location: MenuLocationEnum.FOOTER });
+const menuItems = data?.value?.menuItems?.nodes || [];
+const { siteName, storeAddress, storeCity, storeZip, storeCountry } = useAppConfig();
 </script>
 
 <template>
-  <footer class="bg-white order-last">
-    <div class="container flex flex-wrap justify-between gap-12 my-24 md:gap-24">
-      <div class="mr-auto">
-        <Logo />
-        <WebsiteShortDescription />
-        <LangSwitcher class="mt-8" />
-      </div>
-      <div class="w-3/7 lg:w-auto">
-        <div class="mb-1 font-semibold">Information</div>
-        <div class="text-sm">
-          <a class="py-1.5 block" href="https://github.com/scottyzen/woonuxt?tab=readme-ov-file#next-generation-front-end-for-woocommerce" target="_blank">About</a>
-          <a href="/" class="py-1.5 block">Careers</a>
-          <a href="/" class="py-1.5 block">Press</a>
-          <a href="https://woonuxt.com/faq" class="py-1.5 block" rel="noreferrer" target="_blank">FAQ's</a>
+  <footer class="pt-12 pb-6 text-white bg-gray-800">
+    <div class="container">
+      <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div>
+          <Logo :is-dark="false" class="h-10 mb-4 text-white" />
+          <div class="text-sm text-gray-300">
+            <p>{{ storeAddress }}<br />{{ storeCity }}, {{ storeZip }} {{ storeCountry }}</p>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="mb-4 text-lg font-semibold">Information</h4>
+          <ul class="text-sm grid gap-2">
+            <li v-for="item in menuItems" :key="item.id">
+              <NuxtLink class="hover:text-primary text-gray-300" :to="item.path">{{ item.label }}</NuxtLink>
+            </li>
+             <!-- Ensure My Account link respects login state -->
+             <li>
+               <NuxtLink :to="viewer ? '/my-account' : '/login'" class="hover:text-primary text-gray-300">My Account</NuxtLink>
+             </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="mb-4 text-lg font-semibold">Products</h4>
+           <ul class="text-sm grid gap-2">
+             <li><NuxtLink to="/products" class="hover:text-primary text-gray-300">All Products</NuxtLink></li>
+             <li><NuxtLink to="/categories" class="hover:text-primary text-gray-300">Categories</NuxtLink></li>
+             <!-- Add links to specific categories or sale items if desired -->
+           </ul>
+        </div>
+
+        <div>
+          <h4 class="mb-4 text-lg font-semibold">Follow Us</h4>
+           <ul class="text-sm grid gap-2">
+             <!-- Replace # with actual social links -->
+             <li><a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-primary text-gray-300">Facebook</a></li>
+             <li><a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-primary text-gray-300">Twitter</a></li>
+             <li><a href="#" target="_blank" rel="noopener noreferrer" class="hover:text-primary text-gray-300">Instagram</a></li>
+           </ul>
         </div>
       </div>
-      <div class="w-3/7 lg:w-auto">
-        <div class="mb-1 font-semibold">Products</div>
-        <div class="text-sm">
-          <NuxtLink to="/products" class="py-1.5 block">{{ $t('messages.shop.newArrivals') }}</NuxtLink>
-          <NuxtLink to="/products?filter=sale[true]" class="py-1.5 block">On sale</NuxtLink>
-          <NuxtLink to="/products?orderby=rating&order=ASC&filter=rating[1]" class="py-1.5 block">Top rated</NuxtLink>
-          <a href="/" class="py-1.5 block">{{ $t('messages.shop.giftCards') }}</a>
-        </div>
-      </div>
-      <div class="w-3/7 lg:w-auto">
-        <div class="mb-1 font-semibold">{{ $t('messages.general.customerService') }}</div>
-        <div class="text-sm">
-          <NuxtLink to="/contact" class="py-1.5 block">Contact Us</NuxtLink>
-          <a href="/" class="py-1.5 block">Shipping & Returns</a>
-          <a href="/" class="py-1.5 block">Privacy Policy</a>
-          <a href="/" class="py-1.5 block">Terms & Conditions</a>
-        </div>
-      </div>
-      <div class="w-3/7 lg:w-auto">
-        <div class="mb-1 font-semibold">{{ $t('messages.account.myAccount') }}</div>
-        <div class="text-sm">
-          <NuxtLink to="/my-account/" class="py-1.5 block">{{ $t('messages.account.myAccount') }}</NuxtLink>
-          <NuxtLink to="/my-account/?tab=orders" class="py-1.5 block">{{ $t('messages.shop.orderHistory') }}</NuxtLink>
-          <NuxtLink :to="wishlistLink" class="py-1.5 block">{{ $t('messages.shop.wishlist') }}</NuxtLink>
-          <a href="/" class="py-1.5 block">{{ $t('messages.general.newsletter') }}</a>
-        </div>
-      </div>
-    </div>
-    <div class="container border-t flex items-center justify-center mb-4">
-      <div class="copywrite">
-        <p class="py-4 text-xs text-center">
-          <a href="https://woonuxt.com" :title="`WooNuxt v${wooNuxtVersionInfo}`">{{ `WooNuxt v${wooNuxtVersionInfo}` }}</a> - by
-          <a href="https://scottyzen.com" title="Scott Kennedy - Web Developer" target="_blank">Scott Kennedy</a>
-        </p>
-      </div>
-      <SocialIcons class="ml-auto" />
+      <hr class="my-8 border-gray-700" />
+      <div class="text-sm text-center text-gray-400">© {{ new Date().getFullYear() }} {{ siteName }}. All Rights Reserved.</div>
     </div>
   </footer>
 </template>
-
-<style scoped lang="postcss">
-a {
-  @apply hover:underline;
-}
-</style>

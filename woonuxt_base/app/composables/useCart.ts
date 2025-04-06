@@ -19,21 +19,36 @@ export function useCart() {
    * to true if the cart was successfully refreshed
    */
   async function refreshCart(): Promise<boolean> {
+    isUpdatingCart.value = true; // Set loading state immediately
     try {
-      const { cart, customer, viewer, paymentGateways, loginClients } = await GqlGetCart();
+      // Ensure WooCommerce session is included if available
+      const headers = {};
+      const sessionToken = useCookie('woocommerce-session');
+      if (sessionToken.value) {
+        headers['woocommerce-session'] = `Session ${sessionToken.value}`;
+      }
+      const authToken = useCookie('auth-token');
+       if (authToken.value) {
+         headers['Authorization'] = `Bearer ${authToken.value}`;
+       }
+
+      const { cart: cartData, customer, viewer, paymentGateways: pgData, loginClients } = await GqlGetCart({}, { headers });
       const { updateCustomer, updateViewer, updateLoginClients } = useAuth();
 
-      if (cart) updateCart(cart);
+      // Ensure data exists before updating state
+      updateCart(cartData ?? null);
       if (customer) updateCustomer(customer);
       if (viewer) updateViewer(viewer);
-      if (paymentGateways) updatePaymentGateways(paymentGateways);
-      if (loginClients) updateLoginClients(loginClients.filter((client) => client !== null));
+      if (pgData) updatePaymentGateways(pgData);
+      if (loginClients) updateLoginClients(loginClients.filter((client): client is LoginClient => client !== null)); // Type assertion
+
 
       return true; // Cart was successfully refreshed
     } catch (error: any) {
       logGQLError(error);
-      clearAllCookies();
-      resetInitialState();
+      // Avoid clearing cookies on every error, maybe only specific auth errors
+      // clearAllCookies();
+      resetInitialState(); // Reset state on error
       return false; // Cart was not successfully refreshed
     } finally {
       isUpdatingCart.value = false;
@@ -43,13 +58,20 @@ export function useCart() {
   function resetInitialState() {
     cart.value = null;
     paymentGateways.value = null;
+    // Reset other relevant state if needed
   }
 
   function updateCart(payload?: Cart | null): void {
     cart.value = payload || null;
+    // Ensure loading state is stopped when cart is updated (or becomes null)
+    isUpdatingCart.value = false;
   }
 
   function updatePaymentGateways(payload: PaymentGateways): void {
+    // Filter out null entries if the backend schema allows them
+    if (payload?.nodes) {
+        payload.nodes = payload.nodes.filter((pg): pg is PaymentGateway => pg !== null);
+    }
     paymentGateways.value = payload;
   }
 
@@ -63,87 +85,111 @@ export function useCart() {
     isUpdatingCart.value = true;
 
     try {
-      const { addToCart } = await GqlAddToCart({ input });
-      if (addToCart?.cart) cart.value = addToCart.cart;
-      // Auto open the cart when an item is added to the cart if the setting is enabled
-      const { storeSettings } = useAppConfig();
-      if (storeSettings.autoOpenCart && !isShowingCart.value) toggleCart(true);
+      const { addToCart: addToCartResponse } = await GqlAddToCart({ input });
+      if (addToCartResponse?.cart) {
+        updateCart(addToCartResponse.cart); // Use updateCart to handle state
+         // Auto open the cart when an item is added to the cart if the setting is enabled
+        if (storeSettings.autoOpenCart && !isShowingCart.value) {
+          toggleCart(true);
+        }
+      } else {
+         // Handle case where addToCart mutation doesn't return a cart
+         console.warn('AddToCart mutation did not return a cart.');
+         await refreshCart(); // Refresh cart as a fallback
+      }
+
     } catch (error: any) {
       logGQLError(error);
+      isUpdatingCart.value = false; // Ensure loading stops on error
     }
+    // Loading state should be handled by updateCart or finally block
   }
 
   // remove an item from the cart
   async function removeItem(key: string) {
     isUpdatingCart.value = true;
-    const { updateItemQuantities } = await GqlUpDateCartQuantity({ key, quantity: 0 });
-    updateCart(updateItemQuantities?.cart);
+    try {
+      const { updateItemQuantities } = await GqlUpDateCartQuantity({ key, quantity: 0 });
+      updateCart(updateItemQuantities?.cart); // updateCart handles loading state
+    } catch (error: any) {
+        logGQLError(error);
+        isUpdatingCart.value = false; // Ensure loading stops on error
+    }
   }
 
   // update the quantity of an item in the cart
   async function updateItemQuantity(key: string, quantity: number): Promise<void> {
+     if (quantity < 0) quantity = 0; // Prevent negative quantity
     isUpdatingCart.value = true;
     try {
       const { updateItemQuantities } = await GqlUpDateCartQuantity({ key, quantity });
-      updateCart(updateItemQuantities?.cart);
+      updateCart(updateItemQuantities?.cart); // updateCart handles loading state
     } catch (error: any) {
       logGQLError(error);
+      isUpdatingCart.value = false; // Ensure loading stops on error
     }
   }
 
   // empty the cart
   async function emptyCart(): Promise<void> {
+    isUpdatingCart.value = true;
     try {
-      isUpdatingCart.value = true;
-      const { emptyCart } = await GqlEmptyCart();
-      updateCart(emptyCart?.cart);
+      const { emptyCart: emptyCartResponse } = await GqlEmptyCart();
+      updateCart(emptyCartResponse?.cart); // updateCart handles loading state
     } catch (error: any) {
       logGQLError(error);
+      isUpdatingCart.value = false; // Ensure loading stops on error
     }
   }
 
   // Update shipping method
-  async function updateShippingMethod(shippingMethods: string) {
+  async function updateShippingMethod(shippingMethods: string | string[]) { // Allow string or array
+     const methodsArray = Array.isArray(shippingMethods) ? shippingMethods : [shippingMethods];
     isUpdatingCart.value = true;
-    const { updateShippingMethod } = await GqlChangeShippingMethod({ shippingMethods });
-    updateCart(updateShippingMethod?.cart);
+    try {
+      const { updateShippingMethod: updateShippingResponse } = await GqlChangeShippingMethod({ shippingMethods: methodsArray });
+      updateCart(updateShippingResponse?.cart); // updateCart handles loading state
+    } catch (error: any) {
+      logGQLError(error);
+      isUpdatingCart.value = false; // Ensure loading stops on error
+    }
   }
 
   // Apply coupon
   async function applyCoupon(code: string): Promise<{ message: string | null }> {
+    let message: string | null = null;
+    isUpdatingCoupon.value = true; // Use specific loading state
+    isUpdatingCart.value = true; // Also set general loading state
     try {
-      isUpdatingCoupon.value = true;
-      const { applyCoupon } = await GqlApplyCoupon({ code });
-      updateCart(applyCoupon?.cart);
-      isUpdatingCoupon.value = false;
+      const { applyCoupon: applyCouponResponse } = await GqlApplyCoupon({ code });
+      updateCart(applyCouponResponse?.cart); // updateCart handles loading state
     } catch (error: any) {
-      isUpdatingCoupon.value = false;
       logGQLError(error);
+       message = error?.gqlErrors?.[0]?.message || 'Failed to apply coupon.';
+       isUpdatingCart.value = false; // Stop loading if error occurs here
+    } finally {
+        isUpdatingCoupon.value = false; // Stop specific loading state
+        // General loading state handled by updateCart or error case
     }
-    return { message: null };
+    return { message };
   }
 
   // Remove coupon
   async function removeCoupon(code: string): Promise<void> {
+    isUpdatingCart.value = true; // Use general cart loading state here
     try {
-      isUpdatingCart.value = true;
       const { removeCoupons } = await GqlRemoveCoupons({ codes: [code] });
-      updateCart(removeCoupons?.cart);
+      updateCart(removeCoupons?.cart); // updateCart handles loading state
     } catch (error) {
       logGQLError(error);
-      isUpdatingCart.value = false;
+      isUpdatingCart.value = false; // Ensure loading stops on error
     }
   }
-
-  // Stop the loading spinner when the cart is updated
-  watch(cart, (val) => {
-    isUpdatingCart.value = false;
-  });
 
   // Check if all products in the cart are virtual
   const allProductsAreVirtual = computed(() => {
     const nodes = cart.value?.contents?.nodes || [];
-    return nodes.length === 0 ? false : nodes.every((node) => (node.product?.node as SimpleProduct)?.virtual === true);
+    return nodes.length > 0 && nodes.every((node) => (node.product?.node as SimpleProduct)?.virtual === true);
   });
 
   // Check if the billing address is enabled

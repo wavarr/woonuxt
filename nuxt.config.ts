@@ -17,7 +17,13 @@ export default defineNuxtConfig({
     prerender: {
       concurrency: 10,
       interval: 1000,
-      failOnError: false,
+      failOnError: false, // Keep this false for now, can be problematic with complex sites
     },
+    // Route rules removed to rely solely on server middleware for GraphQL proxying
   },
+
+  // Ensure BTCPay Server endpoint is proxied if needed, or handle directly via server route.
+  // The checkout page uses $fetch('/api/btcpay/intent'), which implies a server route exists.
+  // No explicit proxy rule needed here if the server route '/server/api/btcpay/intent.post.ts' is implemented.
+
 });

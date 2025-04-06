@@ -1,0 +1,287 @@
+/* Basic Reset & Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- THEME VARIABLES --- */
+:root {
+    /* Light Mode Colors */
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --primary-color: #007bff;
+    --secondary-color: #f8f9fa;
+    --border-color: #dee2e6;
+    --card-bg: #ffffff;
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --btn-text: #ffffff;
+    --nav-bg: #f8f9fa;
+    --nav-text: #333;
+    --footer-bg: #e9ecef;
+    --footer-text: #6c757d;
+}
+
+body.dark-mode {
+    /* Dark Mode Colors */
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --primary-color: #4dabf7; /* Lighter blue for dark mode */
+    --secondary-color: #1f1f1f;
+    --border-color: #444444;
+    --card-bg: #1e1e1e;
+    --card-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    --btn-text: #121212;
+    --nav-bg: #1f1f1f;
+    --nav-text: #e0e0e0;
+    --footer-bg: #1f1f1f;
+    --footer-text: #aaaaaa;
+}
+/* --- END THEME VARIABLES --- */
+
+
+body {
+    font-family: sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s; /* Smooth theme transition */
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 15px;
+    flex-grow: 1; /* Pushes footer down */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header & Navigation */
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 0.8rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.navbar a {
+    color: var(--nav-text);
+    margin: 0 0.8rem;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+.navbar a:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.brand-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+#darkModeToggle {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--nav-text);
+    margin-right: 1rem;
+    transition: color 0.3s;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--btn-text);
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease, color 0.3s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.btn-login {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 0.5rem 1rem;
+}
+body.dark-mode .btn-login {
+    color: var(--primary-color); /* Keep button text color consistent in dark mode */
+    border-color: var(--primary-color);
+}
+.btn-login:hover {
+    background-color: var(--primary-color);
+    color: var(--btn-text);
+}
+
+/* Shop Page - Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.product-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, border-color 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+body.dark-mode .product-card:hover {
+     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px; /* Fixed height for consistency */
+    object-fit: cover; /* Scale image nicely */
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.product-card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    transition: color 0.3s;
+}
+
+.product-card .price {
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+    transition: color 0.3s;
+}
+
+.product-card .quantity {
+    font-size: 0.9rem;
+    color: #6c757d; /* Use a fixed muted color or var(--footer-text) */
+    margin-bottom: 1rem;
+}
+body.dark-mode .product-card .quantity {
+    color: var(--footer-text);
+}
+
+.btn-add-cart {
+    width: 100%;
+}
+
+/* Contact Page */
+.contact-info {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background-color: var(--secondary-color);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+.contact-info p { margin-bottom: 0.5rem; }
+
+.contact-form, .login-form {
+    background-color: var(--card-bg);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    max-width: 600px; /* Limit form width */
+    margin: 1rem auto; /* Center form */
+    box-shadow: var(--card-shadow);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.7rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-color); /* Match background */
+    color: var(--text-color); /* Match text color */
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.form-group textarea {
+    resize: vertical; /* Allow vertical resizing */
+}
+
+/* Login Page Specific */
+.login-container {
+    text-align: center;
+}
+.login-form {
+    margin-top: 2rem;
+}
+.signup-link {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+
+/* Footer */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: auto; /* Pushes footer to bottom */
+    border-top: 1px solid var(--border-color);
+    font-size: 0.9rem;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}

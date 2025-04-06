@@ -5,8 +5,13 @@ const { siteName, description, shortDescription, siteImage } = useAppConfig();
 const { data } = await useAsyncGql('getProductCategories', { first: 6 });
 const productCategories = data.value?.productCategories?.nodes || [];
 
-const { data: productData } = await useAsyncGql('getProducts', { first: 5, orderby: ProductsOrderByEnum.POPULARITY });
-const popularProducts = productData.value.products?.nodes || [];
+// Fetch popular products
+const { data: productData, error: productError } = await useAsyncGql('getProducts', { first: 5, orderby: ProductsOrderByEnum.POPULARITY });
+const popularProducts = productData.value?.products?.nodes || [];
+
+if (productError.value) {
+  console.error("Error fetching popular products:", productError.value);
+}
 
 useSeoMeta({
   title: `Home`,
@@ -36,8 +41,11 @@ useSeoMeta({
         <h2 class="text-lg font-semibold md:text-2xl">{{ $t('messages.shop.shopByCategory') }}</h2>
         <NuxtLink class="text-primary" to="/categories">{{ $t('messages.general.viewAll') }}</NuxtLink>
       </div>
-      <div class="grid justify-center grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-6">
+      <div v-if="productCategories.length" class="grid justify-center grid-cols-2 gap-4 mt-8 md:grid-cols-3 lg:grid-cols-6">
         <CategoryCard v-for="(category, i) in productCategories" :key="i" class="w-full" :node="category" />
+      </div>
+       <div v-else class="mt-8 text-center text-gray-500">
+         {{ $t('messages.shop.noCategoriesFound') }}
       </div>
     </section>
 
@@ -72,13 +80,19 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="container my-16" v-if="popularProducts">
+    <section class="container my-16" v-if="popularProducts && popularProducts.length">
       <div class="flex items-end justify-between">
         <h2 class="text-lg font-semibold md:text-2xl">{{ $t('messages.shop.popularProducts') }}</h2>
         <NuxtLink class="text-primary" to="/products">{{ $t('messages.general.viewAll') }}</NuxtLink>
       </div>
       <ProductRow :products="popularProducts" class="grid-cols-2 md:grid-cols-4 lg:grid-cols-5 mt-8" />
     </section>
+     <div v-else-if="productError" class="container my-16 text-center text-red-500">
+       {{ $t('messages.error.fetchingProducts') }}
+    </div>
+     <div v-else class="container my-16 text-center text-gray-500">
+       {{ $t('messages.shop.noProductsFound') }}
+    </div>
   </main>
 </template>
 
