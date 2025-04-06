@@ -118,8 +118,10 @@ const hasDiscount = computed(() => cart.value?.discountTotal && parseFloat(cart.
   transform: scaleY(0.8);
   max-height: 0;
 }
-</style>
-@apply uppercase;
+
+/* Form styles */
+.form-label {
+  @apply block mb-1 text-xs font-medium text-gray-600 uppercase;
 }
 .form-input, .form-select {
  @apply w-full p-3 text-sm bg-white border rounded-md outline-none border-gray-300 shadow-sm focus:border-primary focus:ring-1 focus:ring-primary disabled:bg-gray-50 disabled:cursor-not-allowed;
