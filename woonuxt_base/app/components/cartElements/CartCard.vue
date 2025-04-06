@@ -68,13 +68,14 @@ const handleMoveToWishList = () => {
 </script>
 
 <template>
-  <li v-if="productType" class="py-4"> <!-- Use li for list context -->
+  <li v-if="productType" class="py-4">
     <SwipeCard @remove="handleRemoveItem">
-      <div class="flex items-start gap-4 group"> <!-- items-start for better alignment -->
+      <div class="flex items-start gap-4 group">
         <!-- Image Link -->
         <NuxtLink :to="productSlug" class="flex-shrink-0">
+          <!-- Larger image -->
           <NuxtImg
-            width="80"  height="80"  class="w-20 h-20 rounded-md object-cover border skeleton" <!-- Larger image -->
+            width="80" height="80" class="w-20 h-20 rounded-md object-cover border skeleton"
             :src="imgScr" :alt="imgAlt" :title="imgTitle" loading="lazy" />
         </NuxtLink>
 
