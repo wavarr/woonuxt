@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
+import type { PropType } from 'vue';
+import type { CustomerAddress } from '~/types';
 const { updateShippingLocation } = useCheckout();
 const { isBillingAddressEnabled } = useCart();
 
@@ -62,17 +65,16 @@ const handleLocationChange = () => {
       <label for="billing-city" class="form-label">{{ $t('messages.billing.city') }} <span class="text-red-600">*</span></label>
       <input id="billing-city" v-model.trim="billing.city" placeholder="Anytown" autocomplete="address-level2 locality" type="text" class="form-input" required />
     </div>
-
     <!-- Country -->
     <div v-if="isBillingAddressEnabled" class="w-full lg:col-span-1"> <!-- Adjusted span -->
       <label for="billing-country" class="form-label">{{ $t('messages.billing.country') }} <span class="text-red-600">*</span></label>
       <CountrySelect
            id="billing-country"
            v-model="billing.country"
-           :default-value="billing.country"
+           :default-value="'US'"
            @change="handleLocationChange"
            autocomplete="country"
-           class="form-select" <!-- Use select class -->
+           class="form-select"
            required />
     </div>
 
@@ -101,9 +103,9 @@ const handleLocationChange = () => {
       <input id="billing-postcode" v-model.trim="billing.postcode" placeholder="12345" autocomplete="postal-code" type="text" class="form-input" @change="handleLocationChange" required />
     </div>
 
-    <!-- Phone (Optional based on Woo settings) -->
-    <div class="w-full col-span-full">
-      <label for="billing-phone" class="form-label">{{ $t('messages.billing.phone') }} ({{ $t('messages.general.optional') }})</label> <!-- Adjust if required -->
+    <!-- Phone (Optional based on Woo settings) - Hidden as per request -->
+    <div class="w-full col-span-full hidden">
+      <label for="billing-phone" class="form-label">{{ $t('messages.billing.phone') }} ({{ $t('messages.general.optional') }})</label>
       <input id="billing-phone" v-model.trim="billing.phone" placeholder="+1 234 567 8901" autocomplete="tel" type="tel" class="form-input" />
     </div>
 
